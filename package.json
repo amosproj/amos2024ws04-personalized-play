@@ -9,6 +9,8 @@
   },
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
+    "dev": "turbo run dev",
+    "firebase:emulator": "firebase emulators:start",
     "biome:lint": "biome lint --write .",
     "biome:format": "biome format --write .",
     "biome:check": "biome check"
