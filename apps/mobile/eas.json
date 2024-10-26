@@ -1,0 +1,73 @@
+{
+  "cli": {
+    "version": ">= 10.2.3",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "dev:virtual": {
+      "autoIncrement": true,
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "dev",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true,
+        "resourceClass": "m-medium"
+      },
+      "env": {
+        "APP_NAME": "CogniKids DevClient"
+      }
+    },
+    "dev:physical": {
+      "extends": "dev:virtual",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false,
+        "resourceClass": "m-medium"
+      }
+    },
+    "pre:virtual": {
+      "autoIncrement": true,
+      "developmentClient": false,
+      "distribution": "internal",
+      "channel": "pre",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true,
+        "resourceClass": "m-medium"
+      }
+    },
+    "pre:physical": {
+      "extends": "pre:virtual",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false,
+        "resourceClass": "m-medium"
+      }
+    },
+    "prod": {
+      "autoIncrement": true,
+      "developmentClient": false,
+      "distribution": "store",
+      "channel": "prod",
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "simulator": false,
+        "resourceClass": "m-medium"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
