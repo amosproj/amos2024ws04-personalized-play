@@ -1,0 +1,39 @@
+# CI Workflow: Release Drafter
+#
+# This workflow automates the process of drafting release notes for the project. It is triggered
+# daily at midnight using a cron schedule.
+#
+# Jobs:
+# 1. **release-drafter**: This job generates a draft release based on the commits and PRs merged
+#    into the main branch. It uses the `release-config.yml` file to categorize and format the release notes.
+
+name: "CI: Release Drafter"
+
+# This workflow is triggered daily at midnight (00:00 UTC)
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+# This workflow requires write permissions to create releases and manage pull requests
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  # Job to create a draft release
+  release-drafter:
+    runs-on: ubuntu-latest
+    steps:
+      # Step to run the Release Drafter action
+      - name: Release Drafter
+        uses: release-drafter/release-drafter@v6
+        with:
+          # The config file that defines how the release draft is generated
+          config-name: release-config.yml
+          # Enable autolabeler to automatically categorize commits based on their types
+          disable-autolabeler: false
+          publish: false
+        env:
+          # GitHub token required to authenticate and perform actions (like creating releases)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
