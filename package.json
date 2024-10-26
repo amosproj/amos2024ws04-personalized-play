@@ -7,9 +7,15 @@
 	"engines": {
 		"node": "20"
 	},
-	"workspaces": ["apps/*", "packages/*"],
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {},
-	"devDependencies": {},
+	"devDependencies": {
+		"turbo": "^2.2.3",
+		"typescript": "^5.1.3"
+	},
 	"license": "MIT",
 	"contributors": [
 		"Baier, Frederick <f.baier@campus.tu-berlin.de>",
