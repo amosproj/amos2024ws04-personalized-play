@@ -13,6 +13,11 @@ name: "CI: Release Drafter"
 on:
   schedule:
     - cron: '0 0 * * *'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 # This workflow requires write permissions to create releases and manage pull requests
 permissions:
