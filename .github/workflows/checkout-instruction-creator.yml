@@ -1,0 +1,50 @@
+# CI Workflow: Checkout Instructions Creator
+#
+# This workflow automatically adds a comment with checkout instructions on newly opened 
+# pull requests (PRs) targeting the main branch.
+# The comment provides easy-to-follow steps for checking out the PR branch locally.
+
+name: "CI: Checkout Instructions Creator"
+
+# This workflow is triggered when a pull request is opened against the main branch
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+
+# This workflow requires write permissions to create comments on pull requests
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  # Job to post checkout instructions as a comment on a newly opened pull request
+  pr-commenter:
+    runs-on: ubuntu-latest
+    name: Comment on PR
+
+    steps:
+      # Step to check out the repository (required by the GitHub Action)
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      # Step to comment on the pull request with checkout instructions
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          # GitHub token required to authenticate and post the comment
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Message containing the checkout instructions
+          message: |
+            👋 Hi there!
+          
+            ### 🚀 Checkout Instructions
+            ```bash
+            git fetch origin
+            git checkout ${{ github.head_ref }}
+            ```
+
+            Happy coding! 🎉
