@@ -1,0 +1,26 @@
+{
+	"name": "mumbi",
+	"version": "1.0.0",
+	"description": "",
+	"private": true,
+	"packageManager": "npm@10.9.0",
+	"engines": {
+		"node": "20"
+	},
+	"workspaces": ["apps/*", "packages/*"],
+	"scripts": {},
+	"devDependencies": {},
+	"license": "MIT",
+	"contributors": [
+		"Baier, Frederick <f.baier@campus.tu-berlin.de>",
+		"Bennani, Abderrahmane <Abderrahmane.Bennani@fau.de>",
+		"Bhesaniya, Yash <yash.bhesaniya@fau.de>",
+		"Demirhan, Kübra <kuebra.demirhan@fau.de>",
+		"Faldu, Rushi Bhupendrabhai <rushifaldu1@gmail.com>",
+		"Hirschbeck, Anna <anna.hirschbeck@fau.de>",
+		"Pervana, Sara <sara.pervana@campus.tu-berlin.de>",
+		"Rudani, Vivek <vivekrudani148@gmail.com>",
+		"Samarakoon, Shanaka Anuradha <shanaka95@gmail.com>",
+		"Vadaliya, Preet <preet.vadaliya@fau.de>"
+	]
+}
