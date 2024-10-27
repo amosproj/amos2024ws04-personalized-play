@@ -29,9 +29,6 @@ dist/
 build/
 out/
 
-# Turbo
-.turbo/
-
 # Vercel
 .vercel/
 
@@ -48,6 +45,7 @@ web-build/
 
 # Firebase
 .firebase/
+lib
 
 # Metro (React Native)
 .metro-health-check*
@@ -58,3 +56,15 @@ web-build/
 
 # macOS
 .DS_Store
+
+# Firebase functions
+# Compiled JavaScript files
+lib/**/*.js
+lib/**/*.js.map
+
+# TypeScript v1 declaration files
+typings/
+
+# Node.js dependency directory
+node_modules/
+*.local
