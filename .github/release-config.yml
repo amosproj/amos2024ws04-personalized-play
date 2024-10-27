@@ -1,0 +1,87 @@
+version-template: "$MAJOR"
+tag-template: "sprint-$NEXT_MAJOR_VERSION-release"
+commitish: "main"
+
+name-template: "Sprint $NEXT_MAJOR_VERSION Release"
+category-template: "### $TITLE"
+change-template: "- $TITLE (#$NUMBER) by @$AUTHOR"
+
+exclude-labels:
+  - "release: ignore"
+
+categories:
+  - title: "🚀 New Features"
+    labels:
+      - "release: feature"
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "release: bug-fix"
+  - title: "📚 Documentation Updates"
+    labels:
+      - "release: documentation"
+  - title: "🔄 CI/CD Improvements"
+    labels:
+      - "release: ci-cd"
+  - title: "🛠️ Code Refactoring"
+    labels:
+      - "release: refactor"
+  - title: "⚡ Performance Improvements"
+    labels:
+      - "release: performance"
+  - title: "🔬 Tests"
+    labels:
+      - "release: test"
+  - title: "🧱 Build System"
+    labels:
+      - "release: build"
+  - title: "🎨 Style Changes"
+    labels:
+      - "release: style"
+  - title: "🔧 Chores"
+    labels:
+      - "release: chore"
+
+autolabeler:
+  - label: "release: feature"
+    title:
+      - '/^feat/i'
+  - label: "release: bug-fix"
+    title: 
+      - '/^fix/i'
+  - label: "release: documentation"
+    title:
+      - '/^docs/i'
+    files:
+      - '*.md'
+      - '*.txt'
+  - label: "release: ci-cd"
+    title: 
+      - '/^ci/i'
+  - label: "release: refactor"
+    title:
+      - '/^refactor/i'
+  - label: "release: performance"
+    title:
+      - '/^perf/i'
+  - label: "release: test"
+    title:
+      - '/^test/i'
+  - label: "release: build"
+    title:
+      - '/^build/i'
+  - label: "release: style"
+    title:
+      - '/^style/i'
+  - label: "release: chore"
+    title:
+      - '/^chore/i'
+
+template: |
+  ## 🚀 Sprint Release $NEXT_MAJOR_VERSION:
+    
+  $CHANGES
+
+
+  ## 👥 Contributors:
+    
+  $CONTRIBUTORS
