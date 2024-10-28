@@ -1,4 +1,4 @@
-import { onCall, onRequest } from "firebase-functions/https";
+import { onCall, onRequest } from 'firebase-functions/https';
 
 /**
  * HTTP Function: helloWorldHTTP
@@ -21,7 +21,7 @@ import { onCall, onRequest } from "firebase-functions/https";
  *       or require direct access to a URL.
  */
 const helloWorldHTTP = onRequest(async (_req, res) => {
-  res.status(200).send("Hello World!");
+  res.status(200).send('Hello World!');
 });
 
 /**
@@ -48,7 +48,7 @@ const helloWorldHTTP = onRequest(async (_req, res) => {
  *       authentication seamlessly, or manage data more easily.
  */
 const helloWorld = onCall(async (_request) => {
-  return { message: "Hello World!" };
+  return { message: 'Hello World!' };
 });
 
 export { helloWorldHTTP, helloWorld };

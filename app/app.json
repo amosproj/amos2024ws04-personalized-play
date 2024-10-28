@@ -9,6 +9,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "backgroundColor": "#FFFFFF",
+    "updates": {
+      "url": "https://u.expo.dev/902894a2-3fa3-42b8-9f21-224b9a226c11"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

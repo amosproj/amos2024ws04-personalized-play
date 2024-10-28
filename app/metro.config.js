@@ -6,7 +6,7 @@
  * - Enables using Tailwind classes directly in components, bringing a consistent styling
  *   approach across web and mobile.
  *
- * Note: Keep the config as-is to avoid breaking the NativeWind setup and maintain compatibility 
+ * Note: Keep the config as-is to avoid breaking the NativeWind setup and maintain compatibility
  * with Metro and Expo updates.
  */
 const { getDefaultConfig } = require('expo/metro-config');

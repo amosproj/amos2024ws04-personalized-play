@@ -4,8 +4,8 @@
  * - `babel-preset-expo`: Ensures compatibility with Expo for React Native development.
  * - `jsxImportSource: 'nativewind'`: Enables Tailwind CSS styling in React Native components.
  * - `nativewind/babel`: Provides additional support for NativeWind functionality.
- * 
- * Note: Keep these settings to ensure seamless NativeWind and Expo integration. Removing or 
+ *
+ * Note: Keep these settings to ensure seamless NativeWind and Expo integration. Removing or
  * changing them may cause compatibility issues or disable Tailwind styling in the app.
  */
 module.exports = (api) => {

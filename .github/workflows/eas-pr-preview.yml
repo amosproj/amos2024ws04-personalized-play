@@ -1,0 +1,57 @@
+# CI: EAS Build PR Preview
+#
+# This workflow automates the process of building a PR preview using EAS.
+# It is triggered on pull request events.
+#
+# Jobs:
+# 1. **build-pr-preview**: This job builds the PR preview using EAS. It sets up the necessary
+#    environment, installs dependencies, and runs the EAS update command.
+
+name: "CI: EAS Build PR Preview"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - app/**
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  # Job to build PR preview using EAS
+  build-pr-preview:
+    runs-on: ubuntu-latest
+    steps:
+      # Step to checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Step to setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      # Step to setup EAS
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      # Step to install dependencies
+      - name: Install dependencies
+        run: |
+          cd app
+          npm install
+      # Step to build PR preview
+      - name: Build PR Preview
+        uses: expo/expo-github-action/preview@v8
+        with:
+          command: eas update --auto --branch ${{ github.event.pull_request.head.ref }}
+          working-directory: app
+          comment: true
+          comment-id: eas-pr-preview
+          github-token: ${{ secrets.GITHUB_TOKEN }}

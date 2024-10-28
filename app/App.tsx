@@ -1,6 +1,6 @@
-import type React from "react";
-import { Text, View } from "react-native";
-import "./global.css"; // Import Tailwind CSS styles for NativeWind functionality. Do not remove.
+import type React from 'react';
+import { Text, View } from 'react-native';
+import './global.css'; // Import Tailwind CSS styles for NativeWind functionality. Do not remove.
 
 /**
  * Root component of the application (`App`).
@@ -11,7 +11,7 @@ import "./global.css"; // Import Tailwind CSS styles for NativeWind functionalit
  */
 export const App: React.FC = () => {
   return (
-    <View className="flex-1 justify-center items-center">
+    <View className='flex-1 justify-center items-center'>
       <Text>Hello Mumbi!</Text>
     </View>
   );

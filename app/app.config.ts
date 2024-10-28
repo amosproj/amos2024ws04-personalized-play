@@ -17,23 +17,23 @@
  *   integrations, and exposing sensitive data.
  */
 
-import { config } from "dotenv";
-import type { ConfigContext, ExpoConfig } from "expo/config";
+import { config } from 'dotenv';
+import type { ConfigContext, ExpoConfig } from 'expo/config';
 
 // Load environment variables from a .env file
 config();
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  slug: config.slug || "cognikids",
-  name: process.env.APP_NAME || config.name || "CogniKids",
+  slug: config.slug || 'cognikids',
+  name: process.env.APP_NAME || config.name || 'CogniKids',
   ios: {
     ...config.ios,
-    googleServicesFile: process.env.GOOGLE_SERVICE_INFO,
+    googleServicesFile: process.env.GOOGLE_SERVICE_INFO
   },
   android: {
     ...config.android,
-    googleServicesFile: process.env.GOOGLE_SERVICE_JSON,
+    googleServicesFile: process.env.GOOGLE_SERVICE_JSON
   },
   extra: {
     ...config.extra,
@@ -44,8 +44,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       appId: process.env.FIREBASE_APP_ID,
-      measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+      measurementId: process.env.FIREBASE_MEASUREMENT_ID
     },
-    googleAuthClientId: process.env.GOOGLE_AUTH_CLIENT_ID,
-  },
+    googleAuthClientId: process.env.GOOGLE_AUTH_CLIENT_ID
+  }
 });
