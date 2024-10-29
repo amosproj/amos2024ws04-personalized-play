@@ -1,0 +1,22 @@
+Title	URL	Sprint	Estimated	Real	Linked pull requests	Labels
+[Software Architecture] Create the diagram of runtime components	https://github.com/amosproj/amos2024ws04-personalized-play/issues/4	Sprint-1				documentation
+[Software Architecture] Create a textual explanation of diagrams and choices	https://github.com/amosproj/amos2024ws04-personalized-play/issues/7	Sprint-1				documentation
+[Software Architecture] Create the diagram of code components	https://github.com/amosproj/amos2024ws04-personalized-play/issues/5	Sprint-1				documentation
+Initialize Software Bills of Materials (SBoM)	https://github.com/amosproj/amos2024ws04-personalized-play/issues/8	Sprint-1				documentation
+[Software Architecture] Create the summary of underlying tech stack	https://github.com/amosproj/amos2024ws04-personalized-play/issues/6	Sprint-1				documentation
+Setup Development Environment	https://github.com/amosproj/amos2024ws04-personalized-play/issues/9	Sprint-1			https://github.com/amosproj/amos2024ws04-personalized-play/pull/11	dev-work
+Design team T-shirt and upload in GitHub		Sprint-1	⏰ Est. 2			
+Design team logo and upload in GitHub		Sprint-1	⏰ Est. 2			
+Host first meeting with MUMBI (industry partner)		Sprint-0	⏰ Est. 1	🕒 RL. 1		
+Upload Feature Board Snapshot in GitHub (Sprint 0)		Sprint-0	⏰ Est. 1	🕒 RL. 1		
+Upload Planning Document in GitHub (Sprint 0)		Sprint-0	⏰ Est. 1	🕒 RL. 1		
+Upload Imp-Squared Board in GitHub (Sprint 0)		Sprint-0	⏰ Est. 1	🕒 RL. 1		
+User Authentication & Authorization	https://github.com/amosproj/amos2024ws04-personalized-play/issues/17	Sprint-2				authentication, dev-work
+[Onboarding flow] Get contextual questions from user - {duration}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/21	Sprint-2				dev-work, onboarding-user
+Setup User Logout	https://github.com/amosproj/amos2024ws04-personalized-play/issues/10	Sprint-2	⏰ Est. 0	🕒 RL. 0		authentication, dev-work
+[Onboarding flow] Get contextual questions from user - {energy level}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/20	Sprint-2				dev-work, onboarding-user
+[Onboarding flow] Get contextual questions from user - {age of kids}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/19	Sprint-2				dev-work, onboarding-user
+[Onboarding flow] Get contextual questions from user - {no. of kids}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/18	Sprint-2				dev-work, onboarding-user
+CI: Add CI/CD Workflows for `Release Drafter` and `Checkout Instructions`	https://github.com/amosproj/amos2024ws04-personalized-play/pull/11	Sprint-1				release: ci-cd
+FIX: Rendering of default README and CI documentation	https://github.com/amosproj/amos2024ws04-personalized-play/pull/12					release: bug-fix, release: documentation
+FEAT: Setting up Development Environment	https://github.com/amosproj/amos2024ws04-personalized-play/pull/13	Sprint-1				release: documentation, release: feature
