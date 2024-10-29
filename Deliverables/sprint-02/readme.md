@@ -8,5 +8,7 @@
 
 :hourglass_flowing_sand: Imp-Squared Backlog TSV File
 
-:hourglass_flowing_sand: Planning Document
+:heavy_check_mark: Planning Document
+
+:heavy_check_mark: Software Architecture PDF
 
