@@ -10,6 +10,6 @@
 
 :heavy_check_mark: Planning Document
 
-:hourglass_flowing_sand: Team Logo - will be uploaded next week
+:heavy_check_mark: Team Logo - will be uploaded next week
 
-:hourglass_flowing_sand: T-Shirt Design - will be uploaded next week
+:heavy_check_mark: T-Shirt Design - link is in planning document in sprint-02 folder
