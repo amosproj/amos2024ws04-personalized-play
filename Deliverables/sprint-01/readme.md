@@ -10,6 +10,6 @@
 
 :heavy_check_mark: Planning Document
 
-:heavy_check_mark: Team Logo - will be uploaded next week
+:heavy_check_mark: Team Logo
 
 :heavy_check_mark: T-Shirt Design - link is in planning document in sprint-02 folder
