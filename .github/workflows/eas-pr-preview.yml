@@ -1,13 +1,21 @@
-# CI: EAS Build PR Preview
+# CI Workflow: EAS PR Preview
 #
-# This workflow automates the process of building a PR preview using EAS.
+# This workflow builds a PR preview using EAS.
 # It is triggered on pull request events.
 #
+# Permissions:
+# - contents: read
+#
 # Jobs:
-# 1. **build-pr-preview**: This job builds the PR preview using EAS. It sets up the necessary
-#    environment, installs dependencies, and runs the EAS update command.
+# 1. **build-pr-preview**: This job builds a PR preview using EAS.
+#    - Steps:
+#      1. Checkout the repository.
+#      2. Setup Node.js environment.
+#      3. Setup EAS.
+#      4. Install dependencies.
+#      5. Build PR preview.
 
-name: "CI: EAS Build PR Preview"
+name: "CI: EAS PR Preview"
 
 on:
   pull_request:
@@ -18,39 +26,33 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
-  # Job to build PR preview using EAS
   build-pr-preview:
+    name: Build PR Preview
     runs-on: ubuntu-latest
     steps:
-      # Step to checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-      # Step to setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: app/package-lock.json
-      # Step to setup EAS
       - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-      # Step to install dependencies
       - name: Install dependencies
         run: |
           cd app
           npm install
-      # Step to build PR preview
       - name: Build PR Preview
         uses: expo/expo-github-action/preview@v8
         with:
-          command: eas update --auto --branch ${{ github.event.pull_request.head.ref }}
+          command: eas update --auto --branch ${{ github.ref_name }}
           working-directory: app
           comment: true
           comment-id: eas-pr-preview

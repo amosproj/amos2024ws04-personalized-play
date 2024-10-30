@@ -1,21 +1,22 @@
 # CI Workflow: Biome JS | Mobile App
 #
 # This workflow automates the process of checking code style using Biome.
-# It is triggered on push and pull request events to the main branch.
+# It is triggered on push events to the `app` folder from any branch.
+#
+# Permissions:
+# - contents: read
 #
 # Jobs:
-# 1. **style-checker**: This job checks the code style using Biome. It installs the necessary
-#    dependencies and runs the `biome:check` script defined in the `package.json` file.
+# 1. **style-checker**: This job checks the code style using Biome.
+#    - Steps:
+#      1. Checkout the repository.
+#      2. Setup Node.js environment.
+#      3. Install dependencies and run Biome check.
 
 name: "CI: Biome JS | Mobile App"
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
     paths:
       - app/**
 
@@ -23,21 +24,18 @@ permissions:
   contents: read
 
 jobs:
-  # Job to check code style using Biome
   style-checker:
+    name: Style Checker
     runs-on: ubuntu-latest
     steps:
-      # Step to checkout the repository
       - name: Checkout
         uses: actions/checkout@v4
-      # Step to setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: app/package-lock.json
-      # Step to install dependencies and run Biome check
       - name: Install dependencies and run biome
         run: |
           cd app
