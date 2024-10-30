@@ -1,0 +1,22 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/node-asdf:0": {
+      "version":"20.14.0"
+    },
+    "ghcr.io/devcontainers-extra/features/firebase-cli:2": {
+      "version":"13.23.0"
+    },
+    "ghcr.io/devcontainers-extra/features/eas-cli:1": {
+      "version":"12.6.2"
+    },
+    "ghcr.io/devcontainers-extra/features/expo-cli:1": {
+      "version":"latest"
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version":"17",
+      "jdkDistro":"open",
+      "installGradle": true
+    }
+  }
+}
