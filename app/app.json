@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "CogniKids",
+    "slug": "cognikids",
+    "owner": "cognikids",
+    "scheme": "cognikids",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FFFFFF",
+    "updates": {
+      "url": "https://u.expo.dev/902894a2-3fa3-42b8-9f21-224b9a226c11"
+    },
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "platforms": ["ios", "android"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mumbi.cognikids",
+      "associatedDomains": ["applinks:cognikids.page.link"],
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {}
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.mumbi.cognikids",
+      "intentFilters": [],
+      "googleServicesFile": "./google-services.json",
+      "permissions": []
+    },
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "902894a2-3fa3-42b8-9f21-224b9a226c11"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  }
+}

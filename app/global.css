@@ -1,0 +1,4 @@
+/* Tailwind CSS setup for NativeWind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
