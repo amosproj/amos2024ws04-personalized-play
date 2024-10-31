@@ -1,6 +1,12 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "@shadcn/*": ["shadcn/*"],
+      "@src/*": ["src/*"],
+      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+    }
   }
 }

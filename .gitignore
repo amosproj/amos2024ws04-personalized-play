@@ -72,3 +72,6 @@ node_modules/
 # Config files
 google-services.json
 GoogleService-Info.plist
+
+# add by shadcn
+!app/shadcn/lib

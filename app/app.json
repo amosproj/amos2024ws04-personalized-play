@@ -35,7 +35,10 @@
       "googleServicesFile": "./google-services.json",
       "permissions": []
     },
-    "plugins": [],
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      ["expo-dev-launcher", { "launchMode": "most-recent" }]
+    ],
     "extra": {
       "eas": {
         "projectId": "902894a2-3fa3-42b8-9f21-224b9a226c11"

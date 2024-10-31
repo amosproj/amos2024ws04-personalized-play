@@ -1,0 +1,6 @@
+{
+  "aliases": {
+    "components": "@shadcn/components",
+    "lib": "@shadcn/lib"
+  }
+}
