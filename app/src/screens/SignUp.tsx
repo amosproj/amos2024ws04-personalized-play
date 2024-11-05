@@ -1,16 +1,16 @@
-import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Image, View } from 'react-native';
 import { Text } from '@shadcn/components';
 import { Asset } from 'expo-asset';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { Formik } from 'formik';
+import type React from 'react';
+import { useCallback, useState } from 'react';
+import { Image, View } from 'react-native';
 import { SubmitButton, TextInput } from 'src/components';
+import * as Yup from 'yup';
 
-import type { AppNavigation } from 'src/types';
 import { Screens, Stacks } from '@src/constants';
+import type { AppNavigation } from 'src/types';
 
 export const SignUp: React.FC = () => {
   // Load the image asset
@@ -32,21 +32,19 @@ export const SignUp: React.FC = () => {
 
   // Define the form submission handler
   const handleSignUp = useCallback(
-    
     async (data: SignUpFormData) => {
       console.log('Submitting form:');
       // Extract the form data
-      const {email, password } = data;
+      const { email, password } = data;
 
       // Set the submitting state to true
       setIsSubmitting(true);
 
       // Attempt to create a new user
       try {
-
         // Create a new user with email and password
         const { user } = await createUserWithEmailAndPassword(fireAuth, email, password);
-  
+
         // TODO: Navigate to the login screen
         navigate(Stacks.UnAuth, { screen: Screens.SignIn });
       } catch (error) {
@@ -59,10 +57,7 @@ export const SignUp: React.FC = () => {
     [fireAuth, navigate]
   );
 
- 
-
   return (
-    
     <View className='flex-1 flex-col justify-center'>
       <Image
         source={{ uri: image }}
@@ -86,23 +81,15 @@ export const SignUp: React.FC = () => {
         >
           {({ handleSubmit }) => (
             <View style={{ marginBottom: 24 }}>
-              <TextInput
-                fieldName='email'
-                lable='Email'
-                keyboardType='email-address'
-              />
-              <TextInput
-                fieldName='password'
-                lable='Password'
-                secureTextEntry={true}
-              />
+              <TextInput fieldName='email' lable='Email' keyboardType='email-address' />
+              <TextInput fieldName='password' lable='Password' secureTextEntry={true} />
               <TextInput
                 fieldName='confirmPassword'
                 lable='Re-enter Password'
                 secureTextEntry={true}
                 submitOnEnter={true}
               />
-              <SubmitButton >
+              <SubmitButton>
                 <Text>Sign up</Text>
               </SubmitButton>
             </View>
