@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer, type Theme } from '@react-navigation/native';
 import { NAV_THEME, useColorScheme } from '@shadcn/lib';
-import { Loading } from '@src/screens';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -42,10 +42,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = (props) => {
   if (!isSchemeLoaded) return null;
 
   return (
-    <NavigationContainer
-      theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
-      fallback={<Loading />}
-    >
+    <NavigationContainer theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME} fallback={<View />}>
       <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
       {children}
     </NavigationContainer>

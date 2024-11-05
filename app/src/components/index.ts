@@ -6,4 +6,5 @@ export * from './Drawer';
 export * from './FormikSubmitButton';
 export * from './FormikTextInput';
 export * from './Header';
+export * from './GoogleSignInButton';
 export * from './ThemeProvider';
