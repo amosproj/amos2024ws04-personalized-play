@@ -8,7 +8,7 @@ const { hairlineWidth } = require('nativewind/theme');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
-  content: ['./App.tsx', './src/**/*.tsx', './shadcn/**/*.tsx'],
+  content: ['./src/App.tsx', './src/**/*.tsx', './shadcn/**/*.tsx'],
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
@@ -46,6 +46,15 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         }
+      },
+      keyframes: {
+        'fade-in': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 }
+        }
+      },
+      animation: {
+        'fade-in': 'fade-in 1s ease-in-out'
       },
       borderWidth: {
         hairline: hairlineWidth()
