@@ -1,12 +1,12 @@
-## Checklist of Sprint 1 Deliverables: 
+## Checklist of Sprint 2 Deliverables: 
 
 :heavy_check_mark: Feature Board Screenshot
 
 :heavy_check_mark: Feature Board TSV File
 
-:hourglass_flowing_sand: Imp-Squared Backlog Screenshot
+:heavy_check_mark: Imp-Squared Backlog Screenshot
 
-:hourglass_flowing_sand: Imp-Squared Backlog TSV File
+:heavy_check_mark: Imp-Squared Backlog TSV File
 
 :heavy_check_mark: Planning Document
 
