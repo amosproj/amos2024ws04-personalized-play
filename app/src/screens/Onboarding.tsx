@@ -42,7 +42,6 @@ export default function Onboarding() {
 	}
 
 	const renderItem = ({ item }: { item: any }) => (
-		//<OnboardingItem item={item} />
 
 		<View className='w-screen' >
 			<ContextualQuestionNumberKids setCurrentScreenAnswered={setCurrentScreenAnswered} type={onboarding} />
@@ -63,8 +62,6 @@ export default function Onboarding() {
 			currentSlidesRef.scrollToIndex({ index: currentIndex + 1 })
 		}
 	}
-
-	const errorText = showError ? "Error" : ""
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
