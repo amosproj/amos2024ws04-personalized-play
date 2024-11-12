@@ -1,4 +1,3 @@
-
 export class OnboardingType {
-	kids: number = -1;
+  kids = -1;
 }
