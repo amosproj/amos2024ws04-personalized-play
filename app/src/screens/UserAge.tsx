@@ -1,12 +1,12 @@
-import type React from "react";
-import { View, Image, Alert } from "react-native";
-import { Button, Text, Input, H3 } from "@shadcn/components";
-import { useState } from "react";
+import { Button, H3, Input, Text } from '@shadcn/components';
+import type React from 'react';
+import { useState } from 'react';
+import { Alert, Image, View } from 'react-native';
 
 // Function to calculate age in years, months, and days
 const calculateAge = (birthDate: Date): { years: number; months: number; days: number } => {
   const today = new Date();
-  
+
   // Calculate the difference in years, months, and days
   let years = today.getFullYear() - birthDate.getFullYear();
   let months = today.getMonth() - birthDate.getMonth();
@@ -32,20 +32,20 @@ const calculateAge = (birthDate: Date): { years: number; months: number; days: n
 
 // Helper function to validate date fields
 const validateDateFields = (day: string, month: string, year: string): string | null => {
-  const dayInt = parseInt(day);
-  const monthInt = parseInt(month);
-  const yearInt = parseInt(year);
+  const dayInt = Number.parseInt(day);
+  const monthInt = Number.parseInt(month);
+  const yearInt = Number.parseInt(year);
   const today = new Date();
   const currentYear = today.getFullYear();
 
   // Validate if all fields are filled
-  if (!day || !month || !year) return "Please enter all fields.";
+  if (!day || !month || !year) return 'Please enter all fields.';
 
   // Validate Day (between 1 and 31)
-  if (dayInt < 1 || dayInt > 31) return "Please enter a valid day between 1 and 31.";
+  if (dayInt < 1 || dayInt > 31) return 'Please enter a valid day between 1 and 31.';
 
   // Validate Month (between 1 and 12)
-  if (monthInt < 1 || monthInt > 12) return "Please enter a valid month between 1 and 12.";
+  if (monthInt < 1 || monthInt > 12) return 'Please enter a valid month between 1 and 12.';
 
   // Validate Year (not greater than current year)
   if (yearInt > currentYear || yearInt < 1900) {
@@ -54,15 +54,15 @@ const validateDateFields = (day: string, month: string, year: string): string | 
 
   // Check if the date is valid
   const birthDate = new Date(yearInt, monthInt - 1, dayInt); // Month is 0-indexed
-  if (isNaN(birthDate.getTime())) return "Invalid date entered.";
+  if (Number.isNaN(birthDate.getTime())) return 'Invalid date entered.';
 
   return null; // All fields are valid
 };
 
 export const UserAge: React.FC = () => {
-  const [day, setDay] = useState<string>("");
-  const [month, setMonth] = useState<string>("");
-  const [year, setYear] = useState<string>("");
+  const [day, setDay] = useState<string>('');
+  const [month, setMonth] = useState<string>('');
+  const [year, setYear] = useState<string>('');
 
   const handleSubmit = () => {
     // Validate the input fields
@@ -73,9 +73,9 @@ export const UserAge: React.FC = () => {
     }
 
     // Parse date values
-    const dayInt = parseInt(day);
-    const monthInt = parseInt(month);
-    const yearInt = parseInt(year);
+    const dayInt = Number.parseInt(day);
+    const monthInt = Number.parseInt(month);
+    const yearInt = Number.parseInt(year);
 
     // Calculate and display the age
     const { years, months, days } = calculateAge(new Date(yearInt, monthInt - 1, dayInt));
@@ -83,38 +83,38 @@ export const UserAge: React.FC = () => {
   };
 
   return (
-    <View className="flex-1 justify-center items-center p-4 gap-5 mx-4">
-      <Image source={require("../../assets/onboarding.jpg")} />
+    <View className='flex-1 justify-center items-center p-4 gap-5 mx-4'>
+      <Image source={require('../../assets/onboarding.jpg')} />
       <H3>Awesome! How old is she/he/they?</H3>
       <Text>Please enter child's birth date</Text>
-      <View className="flex-row w-full justify-between items-center mb-4">
+      <View className='flex-row w-full justify-between items-center mb-4'>
         <Input
-          placeholder="Day"
-          className="flex-1 mx-1 p-2 text-center"
+          placeholder='Day'
+          className='flex-1 mx-1 p-2 text-center'
           value={day}
           onChangeText={(text) => setDay(text)}
-          keyboardType="numeric"
+          keyboardType='numeric'
           maxLength={2}
         />
         <Input
-          placeholder="Month"
-          className="flex-1 mx-1 p-2 text-center"
+          placeholder='Month'
+          className='flex-1 mx-1 p-2 text-center'
           value={month}
           onChangeText={(text) => setMonth(text)}
-          keyboardType="numeric"
+          keyboardType='numeric'
           maxLength={2}
         />
         <Input
-          placeholder="Year"
-          className="flex-1 mx-1 p-2 text-center"
+          placeholder='Year'
+          className='flex-1 mx-1 p-2 text-center'
           value={year}
           onChangeText={(text) => setYear(text)}
-          keyboardType="numeric"
+          keyboardType='numeric'
           maxLength={4}
         />
       </View>
 
-      <Button size={"lg"} className="w-full rounded-full" onPress={handleSubmit}>
+      <Button size={'lg'} className='w-full rounded-full' onPress={handleSubmit}>
         <Text>Next</Text>
       </Button>
     </View>
