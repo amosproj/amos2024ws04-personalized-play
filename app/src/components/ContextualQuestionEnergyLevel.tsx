@@ -1,6 +1,9 @@
+import { Input, Text } from "@shadcn/components";
 import { Asset } from "expo-asset";
+import { useState } from "react";
+import { Image, View } from "react-native";
+import type { OnboardingType } from "../types/OnboardingType";
 import React from "react";
-import { Text, View, Image } from "react-native";
 import {
   ToggleGroup,
   ToggleGroupItem,
@@ -9,9 +12,16 @@ import {
 import { Laugh, Smile, Meh, Frown, Angry } from "@shadcn/icons";
 import { Button } from "@shadcn/components";
 
-export const Energypage: React.FC = () => {
-  const image = Asset.fromModule(require("../../assets/landing.png")).uri;
+export const ContextualQuestionEnergyLevel = ({
+  type,
+  setCurrentScreenAnswered,
+}: {
+  type: OnboardingType;
+  setCurrentScreenAnswered: (answered: boolean) => void;
+}) => {
   const [value, setValue] = React.useState<string[]>([]);
+
+  const image = Asset.fromModule(require("../../assets/landing.png")).uri;
 
   return (
     <View className="flex-1 justify-center items-center">
@@ -39,10 +49,6 @@ export const Energypage: React.FC = () => {
           <ToggleGroupIcon icon={Laugh} size={42} />
         </ToggleGroupItem>
       </ToggleGroup>
-
-      <Button size={"lg"} className="rounded-full m-4">
-        <Text>Next</Text>
-      </Button>
     </View>
   );
 };

@@ -1,10 +1,11 @@
-import { Button } from '@shadcn/components';
-import { useRef, useState } from 'react';
-import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ContextualQuestionNumberKids } from '../components/ContextualQuestionNumberKids';
-import Paginator from '../components/Paginator';
-import { OnboardingType } from '../types/OnboardingType';
+import { Button } from "@shadcn/components";
+import { useRef, useState } from "react";
+import { Animated, FlatList, Text, View, type ViewToken } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ContextualQuestionNumberKids } from "../components/ContextualQuestionNumberKids";
+import Paginator from "../components/Paginator";
+import { OnboardingType } from "../types/OnboardingType";
+import { ContextualQuestionEnergyLevel } from "@src/components/ContextualQuestionEnergyLevel";
 
 export default function Onboarding() {
   const [showError, setShowError] = useState(false);
@@ -12,7 +13,9 @@ export default function Onboarding() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const slidesRef = useRef<FlatList<OnboardingQuestion>>(null);
   const onboarding = useRef(new OnboardingType()).current;
-  const [successfullAnsweredScreens, setSuccessfullAnsweredScreens] = useState<number[]>([]);
+  const [successfullAnsweredScreens, setSuccessfullAnsweredScreens] = useState<
+    number[]
+  >([]);
 
   const viewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken<OnboardingQuestion>[] }) => {
@@ -28,7 +31,9 @@ export default function Onboarding() {
       );
     } else {
       // Remove current screen index if it exists
-      setSuccessfullAnsweredScreens((prev) => prev.filter((index) => index !== currentIndex));
+      setSuccessfullAnsweredScreens((prev) =>
+        prev.filter((index) => index !== currentIndex)
+      );
     }
   };
 
@@ -37,7 +42,9 @@ export default function Onboarding() {
   };
 
   const renderItem = ({ item }: { item: OnboardingQuestion }) => (
-    <View className='w-screen'>{item.screen(setCurrentScreenAnswered, onboarding)}</View>
+    <View className="w-screen">
+      {item.screen(setCurrentScreenAnswered, onboarding)}
+    </View>
   );
 
   const scrollTo = () => {
@@ -57,8 +64,8 @@ export default function Onboarding() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View className='flex-1'>
-        <View className='flex-[0.8]'>
+      <View className="flex-1">
+        <View className="flex-[0.8]">
           <FlatList
             horizontal={true}
             pagingEnabled={true}
@@ -69,25 +76,31 @@ export default function Onboarding() {
             showsHorizontalScrollIndicator={false}
             onViewableItemsChanged={viewableItemsChanged}
             ref={slidesRef}
-            onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-              useNativeDriver: false
-            })}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              {
+                useNativeDriver: false,
+              }
+            )}
           />
         </View>
-        <View className='flex-[0.2] p-4 gap-5'>
-          <View className='flex-1'>
-            <View className='flex-[0.5]'>
+        <View className="flex-[0.2] p-4 gap-5">
+          <View className="flex-1">
+            <View className="flex-[0.5]">
               {showError && (
-                <Text className='text-center p-2 rounded border border-rose-600 text-red-700'>
+                <Text className="text-center p-2 rounded border border-rose-600 text-red-700">
                   Error
                 </Text>
               )}
             </View>
-            <View className='flex-[0.5] gap-5'>
-              <Button onPress={(e) => scrollTo()} variant={'default'}>
-                <Text className='text-white'>Next</Text>
+            <View className="flex-[0.5] gap-5">
+              <Button onPress={(e) => scrollTo()} variant={"default"}>
+                <Text className="text-white">Next</Text>
               </Button>
-              <Paginator pages={OnboardingQuestions.map((_, i) => i)} scrollX={scrollX} />
+              <Paginator
+                pages={OnboardingQuestions.map((_, i) => i)}
+                scrollX={scrollX}
+              />
             </View>
           </View>
         </View>
@@ -106,21 +119,21 @@ export interface OnboardingQuestion {
 
 export const OnboardingQuestions: OnboardingQuestion[] = [
   {
-    id: 'number-of-kids-1',
+    id: "energy-level",
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionNumberKids
+      <ContextualQuestionEnergyLevel
         setCurrentScreenAnswered={setCurrentScreenAnswered}
         type={type}
       />
-    )
+    ),
   },
   {
-    id: 'number-of-kids-2',
+    id: "number-of-kids",
     screen: (setCurrentScreenAnswered, type) => (
       <ContextualQuestionNumberKids
         setCurrentScreenAnswered={setCurrentScreenAnswered}
         type={type}
       />
-    )
-  }
+    ),
+  },
 ];
