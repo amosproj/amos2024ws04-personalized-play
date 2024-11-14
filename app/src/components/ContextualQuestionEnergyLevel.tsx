@@ -2,7 +2,7 @@ import { Text } from '@shadcn/components';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 import { Angry, Frown, Laugh, Meh, Smile } from '@shadcn/icons';
 import { Asset } from 'expo-asset';
-import React from 'react';
+import { useState } from 'react';
 import { Image, View } from 'react-native';
 import type { OnboardingType } from '../types/OnboardingType';
 
@@ -14,14 +14,12 @@ export const ContextualQuestionEnergyLevel = ({
   setCurrentScreenAnswered: (answered: boolean) => void;
 }) => {
   //define default value as 3 (Neutral/ meh emoji)
-  const [value, setValue] = React.useState<string>('3');
+  const [value, setValue] = useState('3');
 
-  function handleValueChange(e: string | undefined) {
-    if (e === undefined) {
-      //do not update value, since e should not be undefined
-    } else {
-      //update value and set Current screen as answered
-      setValue(e);
+  function handleValueChange(value: string | undefined) {
+    if (value !== undefined) {
+      setValue(value);
+      type.energy = String(value);
       setCurrentScreenAnswered(true);
     }
   }
