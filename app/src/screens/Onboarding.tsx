@@ -1,5 +1,5 @@
 import { Button } from '@shadcn/components';
-import { ContextualQuestionEnergyLevel } from '@src/components/ContextualQuestionEnergyLevel';
+import { ContextualQuestionEnergyLevel } from '../components/ContextualQuestionEnergyLevel';
 import { useRef, useState } from 'react';
 import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -107,18 +107,18 @@ export interface OnboardingQuestion {
 
 export const OnboardingQuestions: OnboardingQuestion[] = [
   {
-    id: 'energy-level',
+    id: 'number-of-kids',
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionEnergyLevel
+      <ContextualQuestionNumberKids
         setCurrentScreenAnswered={setCurrentScreenAnswered}
         type={type}
       />
     )
   },
   {
-    id: 'number-of-kids',
+    id: 'energy-level',
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionNumberKids
+      <ContextualQuestionEnergyLevel
         setCurrentScreenAnswered={setCurrentScreenAnswered}
         type={type}
       />
