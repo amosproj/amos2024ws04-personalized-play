@@ -7,17 +7,16 @@
 // - The `Stacks` enum is used in the `AppRoutes` component to define the main navigation stacks for authenticated and unauthenticated users.
 
 export enum Screens {
-  SignIn = "SignIn",
-  SignUp = "SignUp",
-  ForgotPassword = "ForgotPassword",
-  ResetPassword = "ResetPassword",
-  Landing = "Landing",
-  Energypage = "Energypage",
-  Home = "Home",
-  Profile = "Profile",
+  SignIn = 'SignIn',
+  SignUp = 'SignUp',
+  ForgotPassword = 'ForgotPassword',
+  ResetPassword = 'ResetPassword',
+  Landing = 'Landing',
+  Home = 'Home',
+  Profile = 'Profile'
 }
 
 export enum Stacks {
-  UnAuth = "UnAuth",
-  Auth = "Auth",
+  UnAuth = 'UnAuth',
+  Auth = 'Auth'
 }
