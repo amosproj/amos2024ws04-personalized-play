@@ -1,4 +1,48 @@
-/* Tailwind CSS setup for NativeWind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: 192 0% 97%;
+  --foreground: 192 0% 10%;
+  --card: 192 0% 97%;
+  --card-foreground: 192 0% 15%;
+  --popover: 192 0% 97%;
+  --popover-foreground: 192 95% 10%;
+  --primary: 192 22.5% 43.5%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 192 10% 90%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 154 10% 95%;
+  --muted-foreground: 192 0% 40%;
+  --accent: 154 10% 90%;
+  --accent-foreground: 192 0% 15%;
+  --destructive: 0 50% 50%;
+  --destructive-foreground: 192 0% 97%;
+  --border: 192 20% 82%;
+  --input: 192 20% 50%;
+  --ring: 192 22.5% 43.5%;
+  --radius: 0.75rem;
+}
+.dark {
+  --background: 192 10% 10%;
+  --foreground: 192 0% 97%;
+  --card: 192 0% 10%;
+  --card-foreground: 192 0% 97%;
+  --popover: 192 10% 5%;
+  --popover-foreground: 192 0% 97%;
+  --primary: 192 22.5% 43.5%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 192 10% 20%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 154 10% 25%;
+  --muted-foreground: 192 0% 65%;
+  --accent: 154 10% 25%;
+  --accent-foreground: 192 0% 95%;
+  --destructive: 0 50% 50%;
+  --destructive-foreground: 192 0% 97%;
+  --border: 192 20% 50%;
+  --input: 192 20% 50%;
+  --ring: 192 22.5% 43.5%;
+  --radius: 0.75rem;
+}

@@ -11,6 +11,7 @@
 module.exports = (api) => {
   api.cache(true); // Cache to avoid re-evaluation on every build for improved performance.
   return {
-    presets: [['babel-preset-expo', { jsxImportSource: 'nativewind' }], 'nativewind/babel']
+    presets: [['babel-preset-expo', { jsxImportSource: 'nativewind' }], 'nativewind/babel'],
+    plugins: ['react-native-reanimated/plugin']
   };
 };
