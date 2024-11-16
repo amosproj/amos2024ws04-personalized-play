@@ -5,12 +5,13 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Drawer, Header } from '@src/components';
 import { Screens } from '@src/constants';
-import { Home, Profile } from '@src/screens';
+import { Home, Profile, Welcome } from '@src/screens';
 
 // Define the parameter types for the AuthRoutes drawer navigator
 export type AuthRoutesParams = {
   [Screens.Home]: undefined;
   [Screens.Profile]: undefined;
+  [Screens.Welcome]: undefined;
 };
 
 // Create a drawer navigator for authenticated routes
@@ -24,10 +25,15 @@ const AuthDrawer = createDrawerNavigator<AuthRoutesParams>();
 export const AuthRoutes: React.FC = () => {
   return (
     <AuthDrawer.Navigator
-      initialRouteName={Screens.Home}
+      initialRouteName={Screens.Welcome}
       screenOptions={{ header: (props) => <Header {...props} /> }}
       drawerContent={(props) => <Drawer {...props} />}
     >
+      <AuthDrawer.Screen
+        name={Screens.Welcome}
+        component={Welcome}
+        options={{ headerShown: false }}
+      />
       <AuthDrawer.Screen name={Screens.Home} component={Home} />
       <AuthDrawer.Screen name={Screens.Profile} component={Profile} />
     </AuthDrawer.Navigator>
