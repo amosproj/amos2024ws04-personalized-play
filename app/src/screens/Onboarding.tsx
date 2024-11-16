@@ -120,10 +120,7 @@ export const OnboardingQuestions: OnboardingQuestion[] = [
   {
     id: 'play-time',
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionPlayTime
-        setCurrentScreenAnswered={setCurrentScreenAnswered}
-        type={type}
-      />
+      <ContextualQuestionPlayTime setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
     )
   },
   {
