@@ -1,4 +1,4 @@
-## Checklist of Sprint 2 Deliverables: 
+## Checklist of Sprint 4 Deliverables: 
 
 :heavy_check_mark: Feature Board Screenshot
 
@@ -10,5 +10,4 @@
 
 :heavy_check_mark: Planning Document
 
-:heavy_check_mark: Software Architecture PDF
 

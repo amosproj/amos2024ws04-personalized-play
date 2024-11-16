@@ -3,6 +3,7 @@ import { ContextualQuestionPlayTime } from '@src/components/ContextualQuestionPl
 import { useRef, useState } from 'react';
 import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ContextualQuestionEnergyLevel } from '../components/ContextualQuestionEnergyLevel';
 import { ContextualQuestionNumberKids } from '../components/ContextualQuestionNumberKids';
 import Paginator from '../components/Paginator';
 import { OnboardingType } from '../types/OnboardingType';
@@ -121,7 +122,19 @@ export const OnboardingQuestions: OnboardingQuestion[] = [
   {
     id: 'play-time',
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionPlayTime setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
+      <ContextualQuestionPlayTime 
+        setCurrentScreenAnswered={setCurrentScreenAnswered} 
+        type={type} 
+      />
+    )
+  },
+  {
+    id: 'energy-level',
+    screen: (setCurrentScreenAnswered, type) => (
+      <ContextualQuestionEnergyLevel
+        setCurrentScreenAnswered={setCurrentScreenAnswered}
+        type={type}
+      />
     )
   }
 ];
