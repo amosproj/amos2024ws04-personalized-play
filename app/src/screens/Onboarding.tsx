@@ -57,8 +57,6 @@ export default function Onboarding() {
     }
   };
 
-  const scrollBack = () => {};
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View className='flex-1'>
@@ -122,9 +120,9 @@ export const OnboardingQuestions: OnboardingQuestion[] = [
   {
     id: 'play-time',
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionPlayTime 
-        setCurrentScreenAnswered={setCurrentScreenAnswered} 
-        type={type} 
+      <ContextualQuestionPlayTime
+        setCurrentScreenAnswered={setCurrentScreenAnswered}
+        type={type}
       />
     )
   },
