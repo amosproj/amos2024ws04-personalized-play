@@ -2,6 +2,7 @@ import { Button } from '@shadcn/components';
 import { useRef, useState } from 'react';
 import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ContextualQuestionEnergyLevel } from '../components/ContextualQuestionEnergyLevel';
 import { ContextualQuestionNumberKids } from '../components/ContextualQuestionNumberKids';
 import Paginator from '../components/Paginator';
 import { OnboardingType } from '../types/OnboardingType';
@@ -106,7 +107,7 @@ export interface OnboardingQuestion {
 
 export const OnboardingQuestions: OnboardingQuestion[] = [
   {
-    id: 'number-of-kids-1',
+    id: 'number-of-kids',
     screen: (setCurrentScreenAnswered, type) => (
       <ContextualQuestionNumberKids
         setCurrentScreenAnswered={setCurrentScreenAnswered}
@@ -115,9 +116,9 @@ export const OnboardingQuestions: OnboardingQuestion[] = [
     )
   },
   {
-    id: 'number-of-kids-2',
+    id: 'energy-level',
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionNumberKids
+      <ContextualQuestionEnergyLevel
         setCurrentScreenAnswered={setCurrentScreenAnswered}
         type={type}
       />
