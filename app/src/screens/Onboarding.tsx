@@ -4,6 +4,7 @@ import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ContextualQuestionEnergyLevel } from '../components/ContextualQuestionEnergyLevel';
 import { ContextualQuestionNumberKids } from '../components/ContextualQuestionNumberKids';
+import { ContextualQuestionAgeKids } from '../components/ContextualQuestionAgeKids';
 import Paginator from '../components/Paginator';
 import { OnboardingType } from '../types/OnboardingType';
 
@@ -119,6 +120,15 @@ export const OnboardingQuestions: OnboardingQuestion[] = [
     id: 'energy-level',
     screen: (setCurrentScreenAnswered, type) => (
       <ContextualQuestionEnergyLevel
+        setCurrentScreenAnswered={setCurrentScreenAnswered}
+        type={type}
+      />
+    )
+  },
+  {
+    id: 'age-of-kids',
+    screen: (setCurrentScreenAnswered, type) => (
+      <ContextualQuestionAgeKids
         setCurrentScreenAnswered={setCurrentScreenAnswered}
         type={type}
       />
