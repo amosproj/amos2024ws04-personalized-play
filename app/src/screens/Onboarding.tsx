@@ -1,4 +1,5 @@
 import { Button } from '@shadcn/components';
+import { ContextualQuestionPlayTime } from '@src/components/ContextualQuestionPlayTime';
 import { useRef, useState } from 'react';
 import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -61,6 +62,7 @@ export default function Onboarding() {
       <View className='flex-1'>
         <View className='flex-[0.8]'>
           <FlatList
+            scrollEnabled={false}
             horizontal={true}
             pagingEnabled={true}
             data={OnboardingQuestions}
@@ -84,7 +86,7 @@ export default function Onboarding() {
                 </Text>
               )}
             </View>
-            <View className='flex-[0.5] gap-5'>
+            <View className='flex-[0.5] gap-5 w-full'>
               <Button onPress={(e) => scrollTo()} variant={'default'}>
                 <Text className='text-white'>Next</Text>
               </Button>
@@ -113,6 +115,12 @@ export const OnboardingQuestions: OnboardingQuestion[] = [
         setCurrentScreenAnswered={setCurrentScreenAnswered}
         type={type}
       />
+    )
+  },
+  {
+    id: 'play-time',
+    screen: (setCurrentScreenAnswered, type) => (
+      <ContextualQuestionPlayTime setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
     )
   },
   {
