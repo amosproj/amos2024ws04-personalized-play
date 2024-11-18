@@ -4,9 +4,21 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@shadcn/*": ["shadcn/*"],
-      "@src/*": ["src/*"],
-      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+      "@shadcn/*": [
+        "shadcn/*"
+      ],
+      "@src/*": [
+        "src/*"
+      ],
+      "@firebase/auth": [
+        "./node_modules/@firebase/auth/dist/index.rn.d.ts"
+      ],
+      "@screens/*": [
+        "src/screens/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ]
     }
   }
 }
