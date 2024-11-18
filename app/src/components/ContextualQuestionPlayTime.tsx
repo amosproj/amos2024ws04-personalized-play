@@ -14,7 +14,6 @@ export const ContextualQuestionPlayTime = ({
   const image = Asset.fromModule(require('../../assets/question-number-kids.png')).uri;
 
   useEffect(() => {
-    setCurrentScreenAnswered(true);
     type.time = defaulTime;
   }, []);
 

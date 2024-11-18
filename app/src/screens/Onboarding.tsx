@@ -8,7 +8,7 @@ import { ContextualQuestionNumberKids } from '../components/ContextualQuestionNu
 import Paginator from '../components/Paginator';
 import { OnboardingType } from '../types/OnboardingType';
 
-export default function Onboarding() {
+export const Onboarding: React.FC = () => {
   const [showError, setShowError] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -35,7 +35,7 @@ export default function Onboarding() {
   };
 
   const wasCurrentScreenAnswered = (): boolean => {
-    return successfullAnsweredScreens.includes(currentIndex);
+    return successfullAnsweredScreens.includes(currentIndex) || ONBOARDING_QUESTIONS[currentIndex].isAlwaysAnswered;
   };
 
   const renderItem = ({ item }: { item: OnboardingQuestion }) => (
@@ -52,10 +52,12 @@ export default function Onboarding() {
       console.log(onboarding);
     }
     const currentSlidesRef = slidesRef.current;
-    if (currentIndex < OnboardingQuestions.length - 1 && currentSlidesRef) {
+    if (currentIndex < ONBOARDING_QUESTIONS.length - 1 && currentSlidesRef) {
       currentSlidesRef.scrollToIndex({ index: currentIndex + 1 });
     }
   };
+
+  const isNextButtonAllowed = wasCurrentScreenAnswered()
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -65,7 +67,7 @@ export default function Onboarding() {
             scrollEnabled={false}
             horizontal={true}
             pagingEnabled={true}
-            data={OnboardingQuestions}
+            data={ONBOARDING_QUESTIONS}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             bounces={false}
@@ -87,10 +89,10 @@ export default function Onboarding() {
               )}
             </View>
             <View className='flex-[0.5] gap-5 w-full'>
-              <Button onPress={(e) => scrollTo()} variant={'default'}>
+              <Button disabled={!isNextButtonAllowed} onPress={(e) => scrollTo()} variant={'default'}>
                 <Text className='text-white'>Next</Text>
               </Button>
-              <Paginator pages={OnboardingQuestions.map((_, i) => i)} scrollX={scrollX} />
+              <Paginator pages={ONBOARDING_QUESTIONS.map((_, i) => i)} scrollX={scrollX} />
             </View>
           </View>
         </View>
@@ -100,16 +102,18 @@ export default function Onboarding() {
 }
 
 export interface OnboardingQuestion {
+  id: string;
+  isAlwaysAnswered: boolean;
   screen: (
     setCurrentScreenAnswered: (answered: boolean) => void,
     type: OnboardingType
   ) => React.JSX.Element;
-  id: string;
 }
 
-export const OnboardingQuestions: OnboardingQuestion[] = [
+export const ONBOARDING_QUESTIONS: OnboardingQuestion[] = [
   {
     id: 'number-of-kids',
+    isAlwaysAnswered: false,
     screen: (setCurrentScreenAnswered, type) => (
       <ContextualQuestionNumberKids
         setCurrentScreenAnswered={setCurrentScreenAnswered}
@@ -119,12 +123,14 @@ export const OnboardingQuestions: OnboardingQuestion[] = [
   },
   {
     id: 'play-time',
+    isAlwaysAnswered: true,
     screen: (setCurrentScreenAnswered, type) => (
       <ContextualQuestionPlayTime setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
     )
   },
   {
     id: 'energy-level',
+    isAlwaysAnswered: true,
     screen: (setCurrentScreenAnswered, type) => (
       <ContextualQuestionEnergyLevel
         setCurrentScreenAnswered={setCurrentScreenAnswered}
