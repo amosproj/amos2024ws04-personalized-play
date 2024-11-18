@@ -1,11 +1,11 @@
+import { ContextualQuestionEnergyLevel } from '@components/ContextualQuestionEnergyLevel';
+import { ContextualQuestionNumberKids } from '@components/ContextualQuestionNumberKids';
+import Paginator from '@components/Paginator';
 import { Button } from '@shadcn/components';
 import { ContextualQuestionPlayTime } from '@src/components/ContextualQuestionPlayTime';
 import { useRef, useState } from 'react';
 import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ContextualQuestionEnergyLevel } from '@components/ContextualQuestionEnergyLevel';
-import { ContextualQuestionNumberKids } from '@components/ContextualQuestionNumberKids';
-import Paginator from '@components/Paginator';
 import { OnboardingType } from '../types/OnboardingType';
 
 export const Onboarding: React.FC = () => {
@@ -35,7 +35,10 @@ export const Onboarding: React.FC = () => {
   };
 
   const wasCurrentScreenAnswered = (): boolean => {
-    return successfullAnsweredScreens.includes(currentIndex) || ONBOARDING_QUESTIONS[currentIndex].isAlwaysAnswered;
+    return (
+      successfullAnsweredScreens.includes(currentIndex) ||
+      ONBOARDING_QUESTIONS[currentIndex].isAlwaysAnswered
+    );
   };
 
   const renderItem = ({ item }: { item: OnboardingQuestion }) => (
@@ -57,7 +60,7 @@ export const Onboarding: React.FC = () => {
     }
   };
 
-  const isNextButtonAllowed = wasCurrentScreenAnswered()
+  const isNextButtonAllowed = wasCurrentScreenAnswered();
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -89,7 +92,11 @@ export const Onboarding: React.FC = () => {
               )}
             </View>
             <View className='flex-[0.5] gap-5 w-full'>
-              <Button disabled={!isNextButtonAllowed} onPress={(e) => scrollTo()} variant={'default'}>
+              <Button
+                disabled={!isNextButtonAllowed}
+                onPress={(e) => scrollTo()}
+                variant={'default'}
+              >
                 <Text className='text-white'>Next</Text>
               </Button>
               <Paginator pages={ONBOARDING_QUESTIONS.map((_, i) => i)} scrollX={scrollX} />
@@ -99,7 +106,7 @@ export const Onboarding: React.FC = () => {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 export interface OnboardingQuestion {
   id: string;
