@@ -3,4 +3,5 @@ export class OnboardingType {
   time = -1;
   energy = '3';
   age = new Date();
+  playType = 'chores';
 }

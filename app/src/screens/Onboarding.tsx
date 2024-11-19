@@ -8,6 +8,7 @@ import { useRef, useState } from 'react';
 import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { OnboardingType } from '../types/OnboardingType';
+import { ContextualQuestionPlayType } from '@src/components/ContextualQuestionPlayType';
 
 export const Onboarding: React.FC = () => {
   const [showError, setShowError] = useState(false);
@@ -130,10 +131,10 @@ export const ONBOARDING_QUESTIONS: OnboardingQuestion[] = [
     )
   },
   {
-    id: 'play-time',
-    isAlwaysAnswered: true,
+    id: 'age-of-kids',
+    isAlwaysAnswered: false,
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionPlayTime setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
+      <ContextualQuestionAgeKids setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
     )
   },
   {
@@ -147,10 +148,17 @@ export const ONBOARDING_QUESTIONS: OnboardingQuestion[] = [
     )
   },
   {
-    id: 'age-of-kids',
-    isAlwaysAnswered: false,
+    id: 'play-time',
+    isAlwaysAnswered: true,
     screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionAgeKids setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
+      <ContextualQuestionPlayTime setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
+    )
+  },
+  {
+    id: 'play-type',
+    isAlwaysAnswered: true,
+    screen: (setCurrentScreenAnswered, type) => (
+      <ContextualQuestionPlayType setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
     )
   }
 ];
