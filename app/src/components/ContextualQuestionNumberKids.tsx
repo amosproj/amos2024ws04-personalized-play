@@ -14,12 +14,22 @@ export const ContextualQuestionNumberKids = ({
 
   const handleNumberChange = (value: string) => {
     // Only allow numeric input
-    if (/^\d*$/.test(value)) {
-      setNumber(value);
-      type.kids = Number(value);
-      setCurrentScreenAnswered(true);
-    } else {
+
+    if (value === '') {
       setCurrentScreenAnswered(false);
+      setNumber(value);
+      return;
+    }
+
+    //check if value is a number
+    if (/^\d*$/.test(value)) {
+      const parsedNumber = Number(value);
+      if (parsedNumber >= 10) {
+        return;
+      }
+      setNumber(value);
+      type.kids = parsedNumber;
+      setCurrentScreenAnswered(true);
     }
   };
 
