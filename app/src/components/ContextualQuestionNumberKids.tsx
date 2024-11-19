@@ -21,6 +21,7 @@ export const ContextualQuestionNumberKids = ({
       return;
     }
 
+    //check if value is a number
     if (/^\d*$/.test(value)) {
       const parsedNumber = Number(value);
       if (parsedNumber >= 10) {
@@ -29,9 +30,6 @@ export const ContextualQuestionNumberKids = ({
       setNumber(value);
       type.kids = parsedNumber;
       setCurrentScreenAnswered(true);
-    } else {
-      console.log('answered false');
-      setCurrentScreenAnswered(false);
     }
   };
 
