@@ -148,6 +148,7 @@ export const ONBOARDING_QUESTIONS: OnboardingQuestion[] = [
   },
   {
     id: 'age-of-kids',
+    isAlwaysAnswered: false,
     screen: (setCurrentScreenAnswered, type) => (
       <ContextualQuestionAgeKids setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
     )
