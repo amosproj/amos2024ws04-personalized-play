@@ -11,3 +11,4 @@ export * from './ThemeProvider';
 export * from './ContextualQuestionEnergyLevel';
 export * from './ContextualQuestionNumberKids';
 export * from './ContextualQuestionPlayTime';
+export * from './ContextualQuestionAgeKids';

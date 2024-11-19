@@ -1,5 +1,6 @@
 import { ContextualQuestionEnergyLevel } from '@components/ContextualQuestionEnergyLevel';
 import { ContextualQuestionNumberKids } from '@components/ContextualQuestionNumberKids';
+import { ContextualQuestionAgeKids } from '@components/ContextualQuestionAgeKids';
 import Paginator from '@components/Paginator';
 import { Button } from '@shadcn/components';
 import { ContextualQuestionPlayTime } from '@src/components/ContextualQuestionPlayTime';
@@ -143,6 +144,12 @@ export const ONBOARDING_QUESTIONS: OnboardingQuestion[] = [
         setCurrentScreenAnswered={setCurrentScreenAnswered}
         type={type}
       />
+    )
+  },
+  {
+    id: 'age-of-kids',
+    screen: (setCurrentScreenAnswered, type) => (
+      <ContextualQuestionAgeKids setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
     )
   }
 ];
