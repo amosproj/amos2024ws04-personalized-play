@@ -1,25 +1,24 @@
-import { Text } from '@shadcn/components';
-import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import{Formik} from 'formik';
-import * as Yup from 'yup';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { AppRoutesParams } from '@src/routes';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Screens, Stacks } from '@src/constants/screens';
-import {  AppLogo, SubmitButton } from '@src/components';
-import { useCallback } from 'react';
+import { Text } from '@shadcn/components';
+import { Fingerprint, Mail } from '@shadcn/icons';
+import { AppLogo, SubmitButton } from '@src/components';
 import { TextInput } from '@src/components';
 import { fireAuth } from '@src/constants';
-import { Fingerprint, Mail } from '@shadcn/icons';
+import { Screens, Stacks } from '@src/constants/screens';
+import type { AppRoutesParams } from '@src/routes';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Formik } from 'formik';
+import { useCallback } from 'react';
+import { View } from 'react-native';
+import * as Yup from 'yup';
 
-type LoginFormData ={
+type LoginFormData = {
   email: string;
-  password: string; 
-}
+  password: string;
+};
 export const SignIn: React.FC = () => {
-
-  const {navigate} = useNavigation<NativeStackNavigationProp<AppRoutesParams>>();
+  const { navigate } = useNavigation<NativeStackNavigationProp<AppRoutesParams>>();
   const handleLogin = useCallback(
     async (data: LoginFormData) => {
       const { email, password } = data;
@@ -31,20 +30,20 @@ export const SignIn: React.FC = () => {
       }
     },
     [fireAuth, navigate]
-  );  
+  );
   return (
     <Formik
-    initialValues={{ email: '', password: '' }}
-    validationSchema={Yup.object().shape({
-      email: Yup.string().email().required(),
-      password: Yup.string().required(),
-    })}
-    onSubmit={handleLogin}
-    validateOnBlur={true}
-    validateOnChange={true}
+      initialValues={{ email: '', password: '' }}
+      validationSchema={Yup.object().shape({
+        email: Yup.string().email().required(),
+        password: Yup.string().required()
+      })}
+      onSubmit={handleLogin}
+      validateOnBlur={true}
+      validateOnChange={true}
     >
       <View className='flex flex-1 flex-col px-4 justify-center'>
-        <AppLogo height={80} width={200} style={{alignSelf: 'center'}} />
+        <AppLogo height={80} width={200} style={{ alignSelf: 'center' }} />
         <TextInput
           fieldName='email'
           lable='Email'
@@ -52,16 +51,15 @@ export const SignIn: React.FC = () => {
           leadingIcon={Mail}
         />
         <TextInput
-          fieldName='password'  
+          fieldName='password'
           lable='Password'
-          submitOnEnter={true} 
-          leadingIcon={Fingerprint} 
+          submitOnEnter={true}
+          leadingIcon={Fingerprint}
         />
         <SubmitButton>
           <Text>Sign In</Text>
         </SubmitButton>
-        </View>
+      </View>
     </Formik>
   );
 };
-
