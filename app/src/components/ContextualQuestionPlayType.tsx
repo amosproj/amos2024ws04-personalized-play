@@ -1,11 +1,6 @@
-import { Text, Button } from '@shadcn/components';
-import { Asset } from 'expo-asset';
-import { useEffect, useState } from 'react';
-import { Image, View, TouchableOpacity } from 'react-native';
-import type { OnboardingType } from '../types/OnboardingType';
+import { Text } from '@shadcn/components';
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -14,7 +9,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@shadcn/components/ui/alert-dialog';
+import { Asset } from 'expo-asset';
 import { Info } from 'lucide-react-native';
+import { useEffect, useState } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
+import type { OnboardingType } from '../types/OnboardingType';
 
 export const ContextualQuestionPlayType = ({
   type,

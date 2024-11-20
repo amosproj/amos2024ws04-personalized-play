@@ -4,11 +4,11 @@ import { ContextualQuestionNumberKids } from '@components/ContextualQuestionNumb
 import Paginator from '@components/Paginator';
 import { Button } from '@shadcn/components';
 import { ContextualQuestionPlayTime } from '@src/components/ContextualQuestionPlayTime';
+import { ContextualQuestionPlayType } from '@src/components/ContextualQuestionPlayType';
 import { useRef, useState } from 'react';
 import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { OnboardingType } from '../types/OnboardingType';
-import { ContextualQuestionPlayType } from '@src/components/ContextualQuestionPlayType';
 
 export const Onboarding: React.FC = () => {
   const [showError, setShowError] = useState(false);
