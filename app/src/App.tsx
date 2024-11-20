@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeProvider } from './components';
 import { AppRoutes } from './routes';
+import { PortalHost } from '@rn-primitives/portal';
 /**
  * Root component of the application (`App`).
  *
@@ -18,6 +19,7 @@ export const App: React.FC = () => {
         <GestureHandlerRootView>
           <ThemeProvider>
             <AppRoutes />
+            <PortalHost />
           </ThemeProvider>
         </GestureHandlerRootView>
       </SafeAreaView>

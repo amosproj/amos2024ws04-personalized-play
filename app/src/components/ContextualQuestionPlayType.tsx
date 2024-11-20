@@ -1,8 +1,20 @@
-import { Text } from '@shadcn/components';
+import { Text, Button } from '@shadcn/components';
 import { Asset } from 'expo-asset';
 import { useEffect, useState } from 'react';
 import { Image, View, TouchableOpacity } from 'react-native';
 import type { OnboardingType } from '../types/OnboardingType';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '@shadcn/components/ui/alert-dialog';
+import { Info } from 'lucide-react-native';
 
 export const ContextualQuestionPlayType = ({
   type,
@@ -35,11 +47,33 @@ export const ContextualQuestionPlayType = ({
           </View>
         </View>
 
-        {/* Question Container */}
         <View className='flex-1 justify-center items-center'>
-          <Text className='font-bold text-gray-700 text-center text-2xl mb-4'>
-            What kind of play would you like?
-          </Text>
+          {/* Question Container */}
+          <View className='flex flex-row mb-4 justify-center items-center'>
+            <Text className='font-bold text-gray-600 text-center text-2xl mx-2'>
+              What kind of play would you like?
+            </Text>
+            <AlertDialog>
+              <AlertDialogTrigger asChild={true}>
+                <Info color='gray' size={24} />
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Info</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis mattis
+                    risus.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>
+                    <Text>OK</Text>
+                  </AlertDialogCancel>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </View>
+          {/* Interaction Container */}
           <View className='flex-row space-x-4'>
             <TouchableOpacity
               className={`w-32 h-32 mx-4 rounded-lg justify-center items-center ${
