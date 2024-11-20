@@ -59,7 +59,10 @@ export const ContextualQuestionPlayType = ({
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Info</AlertDialogTitle>
+                  <View className='flex flex-row mb-4 justify-center items-center'>
+                    <Info color='gray' size={24} />
+                    <AlertDialogTitle className='mx-4'>What does this mean?</AlertDialogTitle>
+                  </View>
                   <AlertDialogDescription>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis mattis
                     risus.
