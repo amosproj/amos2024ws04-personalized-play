@@ -25,7 +25,7 @@ export const SliderExample = ({
       theme={{
         disableMinTrackTintColor: '#000',
         maximumTrackTintColor: '#ccc',
-        minimumTrackTintColor: '#000',
+        minimumTrackTintColor: '#620674',
         cacheTrackTintColor: '#333',
         bubbleBackgroundColor: '#666',
         heartbeatColor: '#999'
