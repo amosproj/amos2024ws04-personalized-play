@@ -1,10 +1,9 @@
-
-import React, { useEffect, useState } from 'react';
 import { Text } from '@shadcn/components';
-import { Image, View , StyleSheet} from 'react-native';
-import { useFonts } from 'expo-font';
 import { Asset } from 'expo-asset';
-
+import { useFonts } from 'expo-font';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 
 export const Loading: React.FC = () => {
   // Add animation to dots
@@ -16,7 +15,7 @@ export const Loading: React.FC = () => {
   // Load the Inter font
   const [fontsLoaded] = useFonts({
     Inter: require('../../assets/fonts/Inter-Regular.ttf'),
-    'Inter-Bold': require('../../assets/fonts/Inter-Bold.ttf'),
+    'Inter-Bold': require('../../assets/fonts/Inter-Bold.ttf')
   });
 
   // Animate dots
@@ -37,10 +36,10 @@ export const Loading: React.FC = () => {
         key={'landing-image'}
       />
       <Text style={styles.loadingText}>Loading</Text>
-      <Text style={styles.subText}>Suggesting playtime activity
+      <Text style={styles.subText}>
+        Suggesting playtime activity
         <Text style={styles.dots}>{'.'.repeat(dots).padEnd(3, ' ')}</Text>
-        
-      </Text> 
+      </Text>
     </View>
   );
 };
@@ -49,33 +48,31 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff', 
-    height: '100%',
+    backgroundColor: '#fff',
+    height: '100%'
   },
   spinner: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   loadingText: {
     fontSize: 28,
-    fontFamily: 'Inter-Bold', 
+    fontFamily: 'Inter-Bold',
     color: '#000',
     marginBottom: 5,
     fontWeight: 'bold',
     height: 40,
-    lineHeight: 34, 
+    lineHeight: 34,
     marginTop: 40
   },
   subText: {
     fontSize: 16,
-    fontFamily: 'Inter', 
+    fontFamily: 'Inter',
     color: '#888',
     width: 225,
     marginTop: 15
   },
   dots: {
-    fontFamily: 'Inter', 
-    color: '#888',
-  },
-
-  
+    fontFamily: 'Inter',
+    color: '#888'
+  }
 });

@@ -4,7 +4,7 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Screens } from '@src/constants';
-import { ForgotPassword, Landing, ResetPassword, SignIn, SignUp, Loading } from '@src/screens';
+import { ForgotPassword, Landing, Loading, ResetPassword, SignIn, SignUp } from '@src/screens';
 import type React from 'react';
 
 // Define the parameter types for the UnAuthRoutes stack navigator
