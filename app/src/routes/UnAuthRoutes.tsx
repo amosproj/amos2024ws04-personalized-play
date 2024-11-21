@@ -4,7 +4,7 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Screens } from '@src/constants';
-import { ForgotPassword, Landing, ResetPassword, SignIn, SignUp } from '@src/screens';
+import { ForgotPassword, Landing, Loading, ResetPassword, SignIn, SignUp } from '@src/screens';
 import type React from 'react';
 
 // Define the parameter types for the UnAuthRoutes stack navigator
@@ -13,6 +13,7 @@ export type UnAuthRoutesParams = {
   [Screens.SignIn]: undefined;
   [Screens.SignUp]: undefined;
   [Screens.ForgotPassword]: undefined;
+  [Screens.Loading]: undefined;
   [Screens.ResetPassword]: { oobCode: string };
 };
 
@@ -27,7 +28,7 @@ const UnAuthStack = createNativeStackNavigator<UnAuthRoutesParams>();
 export const UnAuthRoutes: React.FC = () => {
   return (
     <UnAuthStack.Navigator
-      initialRouteName={Screens.Landing}
+      initialRouteName={Screens.Loading}
       screenOptions={{ headerShown: false }}
     >
       <UnAuthStack.Screen name={Screens.Landing} component={Landing} />
@@ -35,6 +36,7 @@ export const UnAuthRoutes: React.FC = () => {
       <UnAuthStack.Screen name={Screens.SignUp} component={SignUp} />
       <UnAuthStack.Screen name={Screens.ForgotPassword} component={ForgotPassword} />
       <UnAuthStack.Screen name={Screens.ResetPassword} component={ResetPassword} />
+      <UnAuthStack.Screen name={Screens.Loading} component={Loading} />
     </UnAuthStack.Navigator>
   );
 };

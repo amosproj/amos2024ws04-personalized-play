@@ -4,6 +4,7 @@ export enum Screens {
   ForgotPassword = 'ForgotPassword',
   ResetPassword = 'ResetPassword',
   Landing = 'Landing',
+  Loading = 'Loading',
   Home = 'Home',
   Profile = 'Profile',
   Welcome = 'Welcome'
