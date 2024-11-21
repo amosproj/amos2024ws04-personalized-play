@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeProvider } from './components';
 import { AppRoutes } from './routes';
+
 /**
  * Root component of the application (`App`).
  *
