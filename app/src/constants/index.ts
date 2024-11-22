@@ -4,3 +4,4 @@
 
 export * from './firebase';
 export * from './screens';
+export * from './fonts';
