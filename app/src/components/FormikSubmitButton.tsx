@@ -44,7 +44,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = (props) => {
     <Button
       disabled={isSubmitting}
       onPress={onSubmit}
-      className={clsx('flex flex-row rounded-full my-2', className)}
+      className={clsx('flex flex-row rounded-xl my-2', className)}
       {...rest}
     >
       {isSubmitting && (

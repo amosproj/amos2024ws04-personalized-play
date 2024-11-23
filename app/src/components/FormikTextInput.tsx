@@ -18,6 +18,7 @@
 import { Input } from '@shadcn/components/ui/input';
 import { Label } from '@shadcn/components/ui/label';
 import { Eye, EyeClosed } from '@shadcn/icons';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { clsx } from 'clsx';
 import { useField, useFormikContext } from 'formik';
 import type { LucideIcon } from 'lucide-react-native';
@@ -46,6 +47,10 @@ export const TextInput: React.FC<TextInputProps> = ({
   const [field, meta] = useField(fieldName);
   const [isTextVisible, setIsTextVisible] = useState(!secureTextEntry);
 
+  if (LeadingIcon) {
+    iconWithClassName(LeadingIcon);
+  }
+
   const onSubmitEditing = useCallback(async () => {
     try {
       setSubmitting(true);
@@ -58,20 +63,20 @@ export const TextInput: React.FC<TextInputProps> = ({
   }, [setSubmitting, submitForm]);
 
   return (
-    <View className='m-2'>
+    <View className='my-2'>
       <Label className={clsx('pb-2', meta.touched && meta.error && 'text-destructive')}>
         {lable}
       </Label>
       <View
         className={clsx(
-          'flex flex-row justify-center items-center rounded-full border bg-background px-4 py-1',
+          'flex flex-row justify-center items-center rounded-xl border bg-background px-4 py-2',
           meta.touched && meta.error ? 'border-destructive' : 'border-input'
         )}
       >
         {LeadingIcon && (
           <LeadingIcon
             key={fieldName}
-            strokeWidth={1.6}
+            strokeWidth={2}
             className={clsx(meta.touched && meta.error ? 'text-destructive' : 'text-primary')}
           />
         )}
@@ -88,10 +93,21 @@ export const TextInput: React.FC<TextInputProps> = ({
         />
         {secureTextEntry && (
           <Pressable onPress={() => setIsTextVisible(!isTextVisible)}>
-            {isTextVisible ? <EyeClosed /> : <Eye />}
+            {isTextVisible ? (
+              <EyeClosed
+                strokeWidth={2}
+                className={clsx(meta.touched && meta.error ? 'text-destructive' : 'text-primary')}
+              />
+            ) : (
+              <Eye
+                strokeWidth={2}
+                className={clsx(meta.touched && meta.error ? 'text-destructive' : 'text-primary')}
+              />
+            )}
           </Pressable>
         )}
       </View>
+      {meta.touched && meta.error && <Label className='py-2 text-destructive'>{meta.error}</Label>}
     </View>
   );
 };

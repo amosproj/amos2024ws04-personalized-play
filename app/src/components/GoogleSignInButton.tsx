@@ -28,11 +28,11 @@ export const GoogleSignInButton: React.FC = () => {
   return (
     <Button
       size={'lg'}
-      className='flex flex-row items-center justify-center bg-white rounded-full border border-foreground px-6'
+      className='flex flex-row items-center justify-center bg-white rounded-xl border px-6 native:h-14 native:py-2'
       onPress={onSignInWithGoogle}
     >
       <IconGoogle />
-      <Text className='text-foreground ml-4 text-lg'>Sign in with Google</Text>
+      <Text className='text-foreground ml-4 native:text-xl'>Sign in with Google</Text>
     </Button>
   );
 };
