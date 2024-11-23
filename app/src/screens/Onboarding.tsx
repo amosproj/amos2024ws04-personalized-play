@@ -24,12 +24,12 @@ interface OnboardingFormData {
 }
 
 const onboardingQuestions = [
-  { key: 'name', component: <ContextualQuestionUserName /> },
-  { key: 'numberOfKids', component: <ContextualQuestionNumberKids /> },
-  { key: 'kidsDetails', component: <ContextualQuestionAgeKids /> },
-  { key: 'energyLevel', component: <ContextualQuestionEnergyLevel /> },
-  { key: 'time', component: <ContextualQuestionPlayTime /> },
-  { key: 'activityType', component: <ContextualQuestionActivityChoice /> }
+  { key: 'name', component: ContextualQuestionUserName },
+  { key: 'numberOfKids', component: ContextualQuestionNumberKids },
+  { key: 'kidsDetails', component: ContextualQuestionAgeKids },
+  { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
+  { key: 'time', component: ContextualQuestionPlayTime },
+  { key: 'activityType', component: ContextualQuestionActivityChoice }
 ];
 
 export const Onboarding: React.FC = () => {
@@ -137,7 +137,7 @@ export const Onboarding: React.FC = () => {
                 paddingTop: 24
               }}
             >
-              {item.component}
+              <item.component onNext={onNext} />
             </View>
           )}
         />
