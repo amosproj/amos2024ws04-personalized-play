@@ -32,6 +32,7 @@ interface TextInputProps extends BaseTextInputProps {
   lable: string;
   submitOnEnter?: boolean;
   leadingIcon?: LucideIcon;
+  onEnter?: () => void;
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
@@ -41,6 +42,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   secureTextEntry,
   leadingIcon: LeadingIcon,
   className: textFieldClassName,
+  onEnter,
   ...rest
 }) => {
   const { submitForm, setSubmitting } = useFormikContext();
@@ -86,7 +88,7 @@ export const TextInput: React.FC<TextInputProps> = ({
           onChangeText={field.onChange(fieldName)}
           onBlur={field.onBlur(fieldName)}
           value={field.value}
-          onSubmitEditing={submitOnEnter ? onSubmitEditing : undefined}
+          onSubmitEditing={submitOnEnter ? onSubmitEditing : onEnter}
           secureTextEntry={secureTextEntry ? !isTextVisible : undefined}
           autoCapitalize='none'
           autoComplete='off'
