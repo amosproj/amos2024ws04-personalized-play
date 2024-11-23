@@ -24,4 +24,9 @@ const fireStore = getFirestore(fireApp, 'mumbi-amos');
 // Firebase Functions
 const fireFunction = getFunctions(fireApp);
 
-export { fireApp, fireAuth, fireStore, fireFunction };
+// Firestore collections
+enum Collections {
+  Users = 'users'
+}
+
+export { fireApp, fireAuth, fireStore, fireFunction, Collections };
