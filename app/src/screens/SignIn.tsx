@@ -18,7 +18,7 @@ interface SignInFormData {
 }
 
 export const SignIn: React.FC = () => {
-  const { navigate } = useNavigation<AppNavigation>();
+  const { navigate, reset } = useNavigation<AppNavigation>();
 
   /**
    * Signs in a user using email and password and then navigates to either the Welcome or Home screen.
@@ -37,9 +37,15 @@ export const SignIn: React.FC = () => {
       const userData = docData.exists() ? {} : { displayName: user.displayName, email: user.email };
       // Set the last sign-in timestamp for the user
       await setDoc(userDocRef, { ...userData, lastSignIn: Timestamp.now() }, { merge: true });
-      // Navigate to either the Welcome or Home screen based on whether the user has kids or not
-      navigate(docData.get('kids') ? Stacks.Auth : Stacks.Auth, {
-        screen: docData.get('kids') ? Screens.Home : Screens.Welcome
+      // Reset the navigation stack so that the user cannot go back to the sign-in screen
+      reset({
+        index: 0,
+        routes: [
+          {
+            name: Stacks.Auth,
+            params: { screen: docData.get('kids') ? Screens.Home : Screens.Welcome }
+          }
+        ]
       });
     } catch (error) {
       console.log(error);
@@ -91,7 +97,7 @@ export const SignIn: React.FC = () => {
       </View>
       <View className='flex flex-row justify-center items-center my-4'>
         <Separator className='w-1/4' />
-        <Text className='mx-4'>Or sign in with</Text>
+        <Text className='mx-4'>Or</Text>
         <Separator className='w-1/4' />
       </View>
       <GoogleSignInButton />
