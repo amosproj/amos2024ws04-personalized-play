@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root  {
+:root {
   --background: 290 100% 100%;
   --foreground: 290 5% 10%;
   --card: 290 50% 100%;
@@ -24,7 +24,7 @@
   --ring: 290 90.2% 23.9%;
   --radius: 1rem;
 }
-.dark  {
+.dark {
   --background: 290 50% 10%;
   --foreground: 290 5% 100%;
   --card: 290 50% 10%;
