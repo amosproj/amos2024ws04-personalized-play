@@ -1,4 +1,5 @@
 import { Text } from '@shadcn/components';
+import LottieView from 'lottie-react-native';
 import { View, type ViewProps } from 'react-native';
 import { Slider } from 'react-native-awesome-slider';
 import { useSharedValue } from 'react-native-reanimated';
@@ -6,7 +7,14 @@ import { useSharedValue } from 'react-native-reanimated';
 export const ContextualQuestionEnergyLevel: React.FC<ViewProps> = () => {
   return (
     <View className='flex flex-1 items-stretch justify-center'>
-      <View className='flex flex-1 flex-col items-center mb-4'>{/*  */}</View>
+      <View className='flex flex-1 flex-col items-center justify-center mb-4'>
+        <LottieView
+          autoPlay={true}
+          loop={true}
+          source={require('../../assets/battery.json')}
+          style={{ width: 320, height: 320 }}
+        />
+      </View>
       <View className='flex flex-1 flex-col items-stretch'>
         <Text className='text-2xl text-center font-medium mb-6'>What is your energy level?</Text>
         <Text className='text-lg text-center'>
