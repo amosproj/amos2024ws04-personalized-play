@@ -30,7 +30,7 @@ const AppRoutesStack = createNativeStackNavigator<AppRoutesParams>();
  * including routes for home and profile screens.
  *
  * The `UnAuthRoutes` component is used to define the navigation structure for unauthenticated users,
- * including routes for landing, sign-in, sign-up, forgot password, and reset password screens.
+ * including routes for sign-in, sign-up, forgot password, and reset password screens.
  */
 export const AppRoutes: React.FC = () => {
   // Use Firebase Authentication to get the current user and loading state
@@ -52,7 +52,7 @@ export const AppRoutes: React.FC = () => {
       <AppRoutesStack.Screen
         name={Stacks.Auth}
         component={AuthRoutes}
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
       />
     </AppRoutesStack.Navigator>
   );
