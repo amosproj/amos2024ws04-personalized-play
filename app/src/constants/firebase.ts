@@ -26,7 +26,9 @@ const fireFunction = getFunctions(fireApp);
 
 // Firestore collections
 enum Collections {
-  Users = 'users'
+  Users = 'users',
+  Kids = 'kids',
+  PlaySessions = 'playSessions'
 }
 
 export { fireApp, fireAuth, fireStore, fireFunction, Collections };
