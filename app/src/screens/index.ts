@@ -4,7 +4,6 @@
 
 export * from './ForgotPassword';
 export * from './Home';
-export * from './Landing';
 export * from './Loading';
 export * from './Profile';
 export * from './ResetPassword';

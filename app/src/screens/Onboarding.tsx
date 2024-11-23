@@ -1,156 +1,178 @@
-import { ContextualQuestionAgeKids } from '@components/ContextualQuestionAgeKids';
-import { ContextualQuestionEnergyLevel } from '@components/ContextualQuestionEnergyLevel';
-import { ContextualQuestionNumberKids } from '@components/ContextualQuestionNumberKids';
-import Paginator from '@components/Paginator';
 import { Button } from '@shadcn/components';
-import { ContextualQuestionPlayTime } from '@src/components/ContextualQuestionPlayTime';
+import { ChevronLeft } from '@shadcn/icons';
+import {
+  ContextualQuestionActivityChoice,
+  ContextualQuestionAgeKids,
+  ContextualQuestionEnergyLevel,
+  ContextualQuestionNumberKids,
+  ContextualQuestionPlayTime,
+  ContextualQuestionUserName
+} from '@src/components';
+import { Formik, type FormikProps } from 'formik';
+import type React from 'react';
 import { useRef, useState } from 'react';
-import { Animated, FlatList, Text, View, type ViewToken } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { OnboardingType } from '../types/OnboardingType';
+import { Dimensions, FlatList, View } from 'react-native';
+import * as Yup from 'yup';
 
-export const Onboarding: React.FC = () => {
-  const [showError, setShowError] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const slidesRef = useRef<FlatList<OnboardingQuestion>>(null);
-  const onboarding = useRef(new OnboardingType()).current;
-  const [successfullAnsweredScreens, setSuccessfullAnsweredScreens] = useState<number[]>([]);
-
-  const viewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: ViewToken<OnboardingQuestion>[] }) => {
-      setCurrentIndex(viewableItems[0].index ?? 0);
-    }
-  ).current;
-
-  const setCurrentScreenAnswered = (answered: boolean) => {
-    if (answered) {
-      // If not already in array, add current screen index
-      setSuccessfullAnsweredScreens((prev) =>
-        prev.includes(currentIndex) ? prev : [...prev, currentIndex]
-      );
-    } else {
-      // Remove current screen index if it exists
-      setSuccessfullAnsweredScreens((prev) => prev.filter((index) => index !== currentIndex));
-    }
-  };
-
-  const wasCurrentScreenAnswered = (): boolean => {
-    return (
-      successfullAnsweredScreens.includes(currentIndex) ||
-      ONBOARDING_QUESTIONS[currentIndex].isAlwaysAnswered
-    );
-  };
-
-  const renderItem = ({ item }: { item: OnboardingQuestion }) => (
-    <View className='w-screen'>{item.screen(setCurrentScreenAnswered, onboarding)}</View>
-  );
-
-  const scrollTo = () => {
-    if (!wasCurrentScreenAnswered()) {
-      setShowError(true);
-      return;
-    }
-    setShowError(false);
-    if (onboarding) {
-      console.log(onboarding);
-    }
-    const currentSlidesRef = slidesRef.current;
-    if (currentIndex < ONBOARDING_QUESTIONS.length - 1 && currentSlidesRef) {
-      currentSlidesRef.scrollToIndex({ index: currentIndex + 1 });
-    }
-  };
-
-  const isNextButtonAllowed = wasCurrentScreenAnswered();
-
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View className='flex-1'>
-        <View className='flex-[0.8]'>
-          <FlatList
-            scrollEnabled={false}
-            horizontal={true}
-            pagingEnabled={true}
-            data={ONBOARDING_QUESTIONS}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            bounces={false}
-            showsHorizontalScrollIndicator={false}
-            onViewableItemsChanged={viewableItemsChanged}
-            ref={slidesRef}
-            onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-              useNativeDriver: false
-            })}
-          />
-        </View>
-        <View className='flex-[0.2] p-4 gap-5'>
-          <View className='flex-1'>
-            <View className='flex-[0.5]'>
-              {showError && (
-                <Text className='text-center p-2 rounded border border-rose-600 text-red-700'>
-                  Error
-                </Text>
-              )}
-            </View>
-            <View className='flex-[0.5] gap-5 w-full'>
-              <Button
-                disabled={!isNextButtonAllowed}
-                onPress={(e) => scrollTo()}
-                variant={'default'}
-              >
-                <Text className='text-white'>Next</Text>
-              </Button>
-              <Paginator pages={ONBOARDING_QUESTIONS.map((_, i) => i)} scrollX={scrollX} />
-            </View>
-          </View>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-};
-
-export interface OnboardingQuestion {
-  id: string;
-  isAlwaysAnswered: boolean;
-  screen: (
-    setCurrentScreenAnswered: (answered: boolean) => void,
-    type: OnboardingType
-  ) => React.JSX.Element;
+interface OnboardingFormData {
+  name: string;
+  numberOfKids: number;
+  kidsDetails: Array<{ name: string; age: number; gender: string }>;
+  energyLevel: number;
+  time: number;
+  activityType: string;
 }
 
-export const ONBOARDING_QUESTIONS: OnboardingQuestion[] = [
-  {
-    id: 'number-of-kids',
-    isAlwaysAnswered: false,
-    screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionNumberKids
-        setCurrentScreenAnswered={setCurrentScreenAnswered}
-        type={type}
-      />
-    )
-  },
-  {
-    id: 'play-time',
-    isAlwaysAnswered: true,
-    screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionPlayTime setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
-    )
-  },
-  {
-    id: 'energy-level',
-    isAlwaysAnswered: true,
-    screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionEnergyLevel
-        setCurrentScreenAnswered={setCurrentScreenAnswered}
-        type={type}
-      />
-    )
-  },
-  {
-    id: 'age-of-kids',
-    isAlwaysAnswered: false,
-    screen: (setCurrentScreenAnswered, type) => (
-      <ContextualQuestionAgeKids setCurrentScreenAnswered={setCurrentScreenAnswered} type={type} />
-    )
-  }
+const onboardingQuestions = [
+  { key: 'name', component: <ContextualQuestionUserName /> },
+  { key: 'numberOfKids', component: <ContextualQuestionNumberKids /> },
+  { key: 'kidsDetails', component: <ContextualQuestionAgeKids /> },
+  { key: 'energyLevel', component: <ContextualQuestionEnergyLevel /> },
+  { key: 'time', component: <ContextualQuestionPlayTime /> },
+  { key: 'activityType', component: <ContextualQuestionActivityChoice /> }
 ];
+
+export const Onboarding: React.FC = () => {
+  const flatListRef = useRef<FlatList>(null);
+  const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
+  const [index, setIndex] = useState(0);
+
+  const onDone = async (values: OnboardingFormData) => {};
+
+  /**
+   * Navigate to the next onboarding question.
+   * Validate the current form field and only move to the next question if the field is valid.
+   * If the field is invalid, do not move to the next question.
+   */
+  const onNext = async () => {
+    if (flatListRef.current && formikRef.current) {
+      try {
+        // If we are on the last question, do not move to the next question
+        if (index === onboardingQuestions.length - 1) return;
+        // Mark the current field as touched
+        await formikRef.current.setFieldTouched(onboardingQuestions[index].key, true);
+        // Validate the current field
+        await formikRef.current.validateField(onboardingQuestions[index].key);
+        // Get the error message for the current field
+        const { error } = formikRef.current.getFieldMeta(onboardingQuestions[index].key);
+        // If the field is invalid, do not move to the next question
+        if (error) return;
+        // Scroll to the next question
+        flatListRef.current.scrollToIndex({ index: index + 1, animated: true });
+        // Update the current index
+        setIndex(index + 1);
+      } catch (error) {
+        console.error('Error scrolling to index:', error);
+      }
+    }
+  };
+
+  /**
+   * Navigate to the previous onboarding question.
+   * If we are on the first question, do not move to the previous question.
+   */
+  const onPrevious = () => {
+    if (flatListRef.current) {
+      try {
+        // If we are on the first question, do not move to the previous question
+        if (index === 0) return;
+        // Scroll to the previous question
+        flatListRef.current.scrollToIndex({ index: index - 1, animated: true });
+        // Update the current index
+        setIndex(index - 1);
+      } catch (error) {
+        console.error('Error scrolling to index:', error);
+      }
+    }
+  };
+
+  return (
+    <View className='flex flex-col flex-1 justify-start items-stretch'>
+      <Formik
+        initialValues={{
+          name: '',
+          numberOfKids: 0,
+          kidsDetails: [],
+          energyLevel: 0,
+          time: 0,
+          activityType: ''
+        }}
+        innerRef={formikRef}
+        validationSchema={Yup.object({
+          name: Yup.string().required('Name is required'),
+          numberOfKids: Yup.number().integer().min(1).required('Number of kids is required'),
+          kidsDetails: Yup.array().of(
+            Yup.object({
+              name: Yup.string().required('Name is required'),
+              age: Yup.number().required('Age is required'),
+              gender: Yup.string().required('Gender is required')
+            })
+          ),
+          energyLevel: Yup.number().required('Energy level is required'),
+          time: Yup.number().required('Time is required'),
+          activityType: Yup.string().required('Activity type is required')
+        })}
+        onSubmit={onDone}
+        validateOnBlur={true}
+        validateOnChange={true}
+      >
+        <FlatList
+          className='flex-1'
+          ref={flatListRef}
+          data={onboardingQuestions}
+          horizontal={true}
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={Dimensions.get('window').width}
+          decelerationRate='fast'
+          bounces={false}
+          pinchGestureEnabled={false}
+          keyExtractor={(item) => item.key}
+          scrollEnabled={false}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                width: Dimensions.get('window').width,
+                paddingHorizontal: 24,
+                paddingTop: 24
+              }}
+            >
+              {item.component}
+            </View>
+          )}
+        />
+      </Formik>
+      <View className='flex flex-row items-center justify-end pt-4 pb-6 relative'>
+        <View className='flex flex-row justify-center items-center absolute left-1/2 -translate-x-1/2'>
+          {onboardingQuestions.map((_, i) => (
+            <View
+              key={`dot-${i.toString()}`}
+              style={{ opacity: i === index ? 1 : 0.12 }}
+              className='h-3 w-3 rounded-full bg-primary mr-2'
+            />
+          ))}
+        </View>
+        <View className='flex flex-row items-center justify-center pr-6'>
+          <Button
+            variant={'outline'}
+            size={'icon'}
+            className='rounded-xl mr-4'
+            onPress={onPrevious}
+            disabled={index === 0}
+          >
+            <ChevronLeft size={24} className='text-primary' />
+          </Button>
+          <Button
+            variant={'default'}
+            size={'icon'}
+            className='rounded-xl'
+            onPress={onNext}
+            disabled={index === onboardingQuestions.length - 1}
+          >
+            <ChevronLeft size={24} className='rotate-180 text-primary-foreground' />
+          </Button>
+        </View>
+      </View>
+    </View>
+  );
+};
