@@ -5,7 +5,6 @@ import { TouchableOpacity, View, type ViewProps } from 'react-native';
 
 export const ContextualQuestionActivityChoice: React.FC<ViewProps> = () => {
   const { setFieldValue, values } = useFormikContext<{ activityType: string }>();
-  console.log(values.activityType);
   return (
     <View className='flex flex-1 items-stretch justify-center'>
       <View className='flex flex-1 flex-col items-center justify-center mb-4'>
