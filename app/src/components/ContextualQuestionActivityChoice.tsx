@@ -34,11 +34,11 @@ export const ContextualQuestionActivityChoice: React.FC<ViewProps> = () => {
             type='single'
             className='gap-x-4'
           >
-            <ToggleGroupItem value='bold' className='native:h-28 native:w-28 rounded-xl'>
+            <ToggleGroupItem value='chores' className='native:h-28 native:w-28 rounded-xl'>
               <ToggleGroupIcon icon={CookingPot} size={32} />
               <Text className='text-center text-xl mt-4'>Chores</Text>
             </ToggleGroupItem>
-            <ToggleGroupItem value='italic' className='native:h-28 native:w-28 rounded-xl'>
+            <ToggleGroupItem value='play' className='native:h-28 native:w-28 rounded-xl'>
               <ToggleGroupIcon icon={Gamepad2} size={32} />
               <Text className='text-center text-xl mt-4'>Play</Text>
             </ToggleGroupItem>
