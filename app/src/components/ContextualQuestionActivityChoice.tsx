@@ -12,7 +12,7 @@ export const ContextualQuestionActivityChoice: React.FC<ViewProps> = () => {
         <LottieView
           autoPlay={true}
           loop={true}
-          source={require('../../assets/battery.json')}
+          source={require('../../assets/activity.json')}
           style={{ width: 320, height: 320 }}
         />
       </View>
