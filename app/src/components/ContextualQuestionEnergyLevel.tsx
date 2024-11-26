@@ -1,21 +1,27 @@
-import { Text } from '@shadcn/components';
-import { useField } from 'formik';
+import { Button, Text } from '@shadcn/components';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
+import type { ContextualQuestionProps } from '@src/types';
+import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
-import { View, type ViewProps } from 'react-native';
+import { BatteryCharging } from 'lucide-react-native';
+import { useState } from 'react';
+import { View } from 'react-native';
 import { Slider } from 'react-native-awesome-slider';
 import { useSharedValue } from 'react-native-reanimated';
 
-export const ContextualQuestionEnergyLevel: React.FC<ViewProps> = () => {
-  const [field, , helpers] = useField('energyLevel');
-  const sharedValue = useSharedValue(field.value);
+iconWithClassName(BatteryCharging);
 
-  const handleSlidingComplete = (value: number) => {
-    sharedValue.value = value;
-    helpers.setValue(value);
+export const ContextualQuestionEnergyLevel: React.FC<ContextualQuestionProps> = () => {
+  const { setFieldValue, values } = useFormikContext<{ energyLevel: number }>();
+  const [sliderValue, setSliderValue] = useState(values.energyLevel);
+
+  const onChange = (value: number) => {
+    setSliderValue(value);
+    setFieldValue('energyLevel', value);
   };
 
   const getLabel = (value: number) => {
-    const labels = ['Empty fuel', 'Half-charged', 'Supercharged'];
+    const labels = ['😴', '😊', '🚀'];
     return labels[value];
   };
 
@@ -34,16 +40,27 @@ export const ContextualQuestionEnergyLevel: React.FC<ViewProps> = () => {
         <Text className='text-lg text-center'>
           Empty battery or fully charged? Let us know how you're feeling today.
         </Text>
-        <View className='h-[48px] items-stretch justify-center'>
+        <View className='items-stretch justify-center mt-12'>
           <Slider
             style={{ width: '80%', alignSelf: 'center' }}
             minimumValue={useSharedValue(0)}
             maximumValue={useSharedValue(2)}
-            progress={sharedValue}
+            theme={{
+              minimumTrackTintColor: '#620674',
+              bubbleBackgroundColor: '#620674'
+            }}
+            progress={useSharedValue(sliderValue)}
+            thumbWidth={32}
             steps={2}
-            onSlidingComplete={handleSlidingComplete}
+            onSlidingComplete={onChange}
             markWidth={0}
             bubble={(value) => getLabel(value)}
+            bubbleTextStyle={{ fontSize: 14 }}
+            renderThumb={() => (
+              <Button size={'icon'} className='w-8 h-8 rounded-full bg-primary'>
+                <BatteryCharging className='w-4 h-4 text-white -rotate-90' size={16} />
+              </Button>
+            )}
           />
         </View>
       </View>
