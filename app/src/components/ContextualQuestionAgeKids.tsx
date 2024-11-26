@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@shadcn/components/ui/avata
 import type { ContextualQuestionProps } from '@src/types';
 import { useField, useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Modal, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from './FormikTextInput';
@@ -13,19 +13,36 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (pro
   const [field] = useField('numberOfKids');
   const { onNext } = props;
   const [modalVisible, setModalVisible] = useState(false);
-  const [kidInfo, setKidInfo] = useState({ name: '', age: '', gender: '' });
+  const flatListRef = useRef<FlatList>(null);
 
   const { setFieldValue, values } = useFormikContext<{
     kidsDetails: Array<{ name: string; age: string; gender: string }>;
   }>();
   const [currentKidIndex, setCurrentKidIndex] = useState(0);
-  //
 
-  const kidsData = Array.from({ length: field.value }, () => ({
-    name: '',
-    age: '',
-    gender: ''
-  }));
+  const kidsData = useMemo(
+    () =>
+      //values.kidsDetails ||
+      Array.from({ length: field.value }, () => ({
+        name: '',
+        age: '',
+        gender: ''
+      })),
+    [field.value, values.kidsDetails]
+  );
+  //
+  const handleSaveKidInfo = (updatedInfo: {
+    name: string;
+    age: string;
+    gender: string;
+  }) => {
+    if (currentKidIndex === null) return;
+    const updatedKidsDetails = [...kidsData];
+    updatedKidsDetails[currentKidIndex] = updatedInfo;
+    setFieldValue('kidsDetails', updatedKidsDetails);
+    setModalVisible(false);
+    setCurrentKidIndex(0);
+  };
 
   return (
     <View className='flex flex-1 items-stretch justify-center'>
@@ -43,23 +60,23 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (pro
         <FlatList
           ItemSeparatorComponent={() => <View className='h-5' />}
           data={kidsData}
+          ref={flatListRef}
           renderItem={({ item, index }) => (
             <TouchableOpacity
               className='flex-row  w-10 h-10 border-2'
               onPress={() => {
                 setCurrentKidIndex(index); // Track which kid is being edited
                 setModalVisible(true);
-                setKidInfo(values.kidsDetails[index] || { name: '', age: '', gender: '' });
               }}
             >
-              <View className='flex-row w-full h-20 border-2 border-primary items-center rounded-xl justify-center '>
+              <View className='flex-row w-full h-20 border-2 border-primary items-center rounded-xl justify-around '>
                 <Avatar alt='Avatar' className='w-12 h-12'>
                   <AvatarImage source={require('../../assets/boy.png')} />
                   <AvatarFallback>
                     <Text>+</Text>
                   </AvatarFallback>
                 </Avatar>
-                <Text>{item.name || `Kid ${index + 1}`}</Text>
+                <Text>{kidsData[index].name || `Kid ${index + 1}`}</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -79,31 +96,71 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (pro
               <TextInput
                 fieldName='nameofkid'
                 lable='Name'
-                value={kidInfo.name}
-                onChangeText={(text) => setKidInfo({ ...kidInfo, name: text })}
+                value={kidsData[currentKidIndex]?.name || ''}
+                onChangeText={(text) =>
+                  handleSaveKidInfo({
+                    ...kidsData[currentKidIndex],
+                    name: text
+                  })
+                }
+                //onChangeText={(text) => setKidInfo({ ...kidInfo, name: text })}
               />
+
               <TextInput
                 fieldName='ageofkid'
                 lable='Age'
                 keyboardType='numeric'
-                value={kidInfo.age}
-                onChangeText={(text) => setKidInfo({ ...kidInfo, age: text })}
+                value={kidsData[currentKidIndex]?.age || ''}
+                onChangeText={(text) =>
+                  handleSaveKidInfo({
+                    ...kidsData[currentKidIndex],
+                    age: text
+                  })
+                }
               />
-              <TextInput
-                fieldName='genderofkid'
-                lable='Gender'
-                value={kidInfo.gender}
-                onChangeText={(text) => setKidInfo({ ...kidInfo, gender: text })}
-              />
+              <Text className='text-l font-medium mb-2  '>Gender</Text>
+              <View className='h-10' />
+              <View className='flex-row justify-around'>
+                {/* Male Avatar */}
+                <TouchableOpacity
+                  className='items-center'
+                  onPress={() =>
+                    handleSaveKidInfo({
+                      ...kidsData[currentKidIndex],
+                      gender: 'Male'
+                    })
+                  }
+                >
+                  <Avatar alt='Avatar' className='w-20 h-20 rounded-full overflow-hidden'>
+                    <AvatarImage source={require('../../assets/boy.png')} className='contain' />
+                    <AvatarFallback>
+                      <Text className=''>M</Text>
+                    </AvatarFallback>
+                  </Avatar>
+                </TouchableOpacity>
+
+                {/* Female Avatar */}
+                <TouchableOpacity
+                  className='items-center'
+                  onPress={() =>
+                    handleSaveKidInfo({
+                      ...kidsData[currentKidIndex],
+                      gender: 'Female'
+                    })
+                  }
+                >
+                  <Avatar alt='Avatar' className='w-20 h-20 rounded-full overflow-hidden'>
+                    <AvatarImage source={require('../../assets/girl.png')} className='contain' />
+                    <AvatarFallback>
+                      <Text>F</Text>
+                    </AvatarFallback>
+                  </Avatar>
+                </TouchableOpacity>
+              </View>
+              <View className='h-10' />
               <Button
                 onPress={() => {
                   setModalVisible(false);
-                  // Update the kid info at the current index in the 'kidsDetails' array
-                  const updatedKidsDetails = [...values.kidsDetails];
-                  updatedKidsDetails[currentKidIndex] = { ...kidInfo };
-
-                  // Use setFieldValue to update 'kidsDetails' with the modified array
-                  setFieldValue('kidsDetails', updatedKidsDetails);
                 }}
               >
                 <Text>Save</Text>
