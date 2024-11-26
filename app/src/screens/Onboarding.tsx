@@ -94,7 +94,7 @@ export const Onboarding: React.FC = () => {
           numberOfKids: 0,
           kidsDetails: [],
           energyLevel: 0,
-          time: 0,
+          time: 10,
           activityType: ''
         }}
         innerRef={formikRef}
