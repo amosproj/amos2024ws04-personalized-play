@@ -95,7 +95,7 @@ export const Onboarding: React.FC = () => {
           kidsDetails: [],
           energyLevel: 0,
           time: 0,
-          activityType: ''
+          activityType: 'chores'
         }}
         innerRef={formikRef}
         validationSchema={Yup.object({
