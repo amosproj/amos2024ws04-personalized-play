@@ -1,15 +1,24 @@
 import { Text } from '@shadcn/components';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
+import type { ContextualQuestionProps } from '@src/types';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
 import { CookingPot, Gamepad2, Info } from 'lucide-react-native';
-import { View, type ViewProps } from 'react-native';
+import { View } from 'react-native';
 
 iconWithClassName(Info);
 
-export const ContextualQuestionActivityChoice: React.FC<ViewProps> = () => {
+export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps> = (props) => {
+  const { onNext } = props;
   const { setFieldValue, values } = useFormikContext<{ activityType: string }>();
+
+  const onChange = (value: string | undefined) => {
+    if (!value) return;
+    setFieldValue('activityType', value);
+    onNext();
+  };
+
   return (
     <View className='flex flex-1 items-stretch justify-center'>
       <View className='flex flex-1 flex-col items-center justify-center mb-4'>
@@ -30,7 +39,7 @@ export const ContextualQuestionActivityChoice: React.FC<ViewProps> = () => {
         <View className='flex-row items-center justify-center gap-x-4'>
           <ToggleGroup
             value={values.activityType}
-            onValueChange={(value) => setFieldValue('activityType', value)}
+            onValueChange={onChange}
             type='single'
             className='gap-x-4'
           >
