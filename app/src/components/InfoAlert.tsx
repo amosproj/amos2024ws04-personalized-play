@@ -9,7 +9,12 @@ import {
   AlertDialogTrigger
 } from '@shadcn/components/ui/alert-dialog';
 import { Text } from '@shadcn/components/ui/text';
-import { Info, X } from 'lucide-react-native';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
+import { HelpCircle, Info, X } from 'lucide-react-native';
+
+iconWithClassName(Info);
+iconWithClassName(X);
+iconWithClassName(HelpCircle);
 
 interface AlertIconDialogProps {
   title: string;
@@ -20,23 +25,23 @@ export function InfoAlertIcon({ title, description }: AlertIconDialogProps) {
   return (
     <AlertDialog>
       {/* Info Icon as Trigger */}
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger asChild={true}>
         <Info size={24} className='text-primary' />
       </AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader className='flex flex-row items-center justify-between'>
-          <Info size={28} className='text-primary' />
-          <AlertDialogTitle className='text-xl font-medium'>{title}</AlertDialogTitle>
-          <AlertDialogCancel className='border-secondary bg-secondary rounded-xl text-center native:w-12 native:h-12'>
-            <X className='text-primary' />
+          <HelpCircle size={28} className='text-primary' />
+          <AlertDialogTitle className='text-xl text-primary font-medium'>{title}</AlertDialogTitle>
+          <AlertDialogCancel className='border-primary rounded-xxl text-center native:w-9 native:h-9'>
+            <X size='24' className='text-primary' />
           </AlertDialogCancel>
         </AlertDialogHeader>
 
         <AlertDialogDescription className='text-lg mb-4'>{description}</AlertDialogDescription>
 
         <AlertDialogFooter className='flex flex-row justify-center'>
-          <AlertDialogCancel className='border-secondary bg-secondary text-black rounded-xl text-center'>
+          <AlertDialogCancel className='border-secondary bg-primary text-white rounded-xl text-center'>
             <Text className='text-xl'>Okay</Text>
           </AlertDialogCancel>
         </AlertDialogFooter>

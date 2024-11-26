@@ -1,14 +1,12 @@
 import { Text } from '@shadcn/components';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
-import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
+
 import type { ContextualQuestionProps } from '@src/types';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
-import { CookingPot, Gamepad2, Info } from 'lucide-react-native';
+import { CookingPot, Gamepad2 } from 'lucide-react-native';
 import { View } from 'react-native';
 import { InfoAlertIcon } from './InfoAlert';
-
-iconWithClassName(Info);
 
 export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps> = (props) => {
   const { onNext } = props;
