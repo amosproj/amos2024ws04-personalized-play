@@ -93,7 +93,7 @@ export const Onboarding: React.FC = () => {
           name: '',
           numberOfKids: 0,
           kidsDetails: [],
-          energyLevel: 0,
+          energyLevel: 1,
           time: 0,
           activityType: 'chores'
         }}
