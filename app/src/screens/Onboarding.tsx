@@ -1,4 +1,4 @@
-import { Button } from '@shadcn/components';
+import { Button, Text } from '@shadcn/components';
 import { ChevronLeft } from '@shadcn/icons';
 import {
   ContextualQuestionActivityChoice,
@@ -6,7 +6,8 @@ import {
   ContextualQuestionEnergyLevel,
   ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
-  ContextualQuestionUserName
+  ContextualQuestionUserName,
+  SubmitButton
 } from '@src/components';
 import type { OnboardingFormData } from '@src/types';
 import { Formik, type FormikProps } from 'formik';
@@ -29,7 +30,9 @@ export const Onboarding: React.FC = () => {
   const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
   const [index, setIndex] = useState(0);
 
-  const onDone = async (values: OnboardingFormData) => {};
+  const onDone = async (values: OnboardingFormData) => {
+    console.log(values);
+  };
 
   /**
    * Navigate to the next onboarding question.
@@ -119,63 +122,71 @@ export const Onboarding: React.FC = () => {
         validateOnBlur={true}
         validateOnChange={true}
       >
-        <FlatList
-          className='flex-1'
-          ref={flatListRef}
-          data={onboardingQuestions}
-          horizontal={true}
-          pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={Dimensions.get('window').width}
-          decelerationRate='fast'
-          bounces={false}
-          pinchGestureEnabled={false}
-          keyExtractor={(item) => item.key}
-          scrollEnabled={false}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                width: Dimensions.get('window').width,
-                paddingHorizontal: 24,
-                paddingTop: 24
-              }}
-            >
-              <item.component onNext={onNext} />
+        <>
+          <FlatList
+            className='flex-1'
+            ref={flatListRef}
+            data={onboardingQuestions}
+            horizontal={true}
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            snapToInterval={Dimensions.get('window').width}
+            decelerationRate='fast'
+            bounces={false}
+            pinchGestureEnabled={false}
+            keyExtractor={(item) => item.key}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <View
+                style={{
+                  width: Dimensions.get('window').width,
+                  paddingHorizontal: 24,
+                  paddingTop: 24
+                }}
+              >
+                <item.component onNext={onNext} />
+              </View>
+            )}
+          />
+          <View className='flex flex-row items-center justify-end pt-4 pb-6 relative'>
+            <View className='flex flex-row justify-center items-center absolute left-1/2 -translate-x-1/2'>
+              {onboardingQuestions.map((_, i) => (
+                <View
+                  key={`dot-${i.toString()}`}
+                  style={{ opacity: i === index ? 1 : 0.12 }}
+                  className='h-3 w-3 rounded-full bg-primary mr-2'
+                />
+              ))}
             </View>
-          )}
-        />
+            <View className='flex flex-row items-center justify-center pr-6'>
+              <Button
+                variant={'outline'}
+                size={'icon'}
+                className='rounded-xl mr-4'
+                onPress={onPrevious}
+                disabled={index === 0}
+              >
+                <ChevronLeft size={24} className='text-primary' />
+              </Button>
+              {index === onboardingQuestions.length - 1 ? (
+                <SubmitButton size={'sm'} className='h-10'>
+                  <Text>Save</Text>
+                </SubmitButton>
+              ) : (
+                <Button
+                  variant={'default'}
+                  size={'icon'}
+                  className='rounded-xl'
+                  onPress={onNext}
+                  disabled={index === onboardingQuestions.length - 1}
+                >
+                  <ChevronLeft size={24} className='rotate-180 text-primary-foreground' />
+                </Button>
+              )}
+            </View>
+          </View>
+        </>
       </Formik>
-      <View className='flex flex-row items-center justify-end pt-4 pb-6 relative'>
-        <View className='flex flex-row justify-center items-center absolute left-1/2 -translate-x-1/2'>
-          {onboardingQuestions.map((_, i) => (
-            <View
-              key={`dot-${i.toString()}`}
-              style={{ opacity: i === index ? 1 : 0.12 }}
-              className='h-3 w-3 rounded-full bg-primary mr-2'
-            />
-          ))}
-        </View>
-        <View className='flex flex-row items-center justify-center pr-6'>
-          <Button
-            variant={'outline'}
-            size={'icon'}
-            className='rounded-xl mr-4'
-            onPress={onPrevious}
-            disabled={index === 0}
-          >
-            <ChevronLeft size={24} className='text-primary' />
-          </Button>
-          <Button
-            variant={'default'}
-            size={'icon'}
-            className='rounded-xl'
-            onPress={onNext}
-            disabled={index === onboardingQuestions.length - 1}
-          >
-            <ChevronLeft size={24} className='rotate-180 text-primary-foreground' />
-          </Button>
-        </View>
-      </View>
     </View>
   );
 };
