@@ -1,48 +1,35 @@
-import { Button, Text } from '@shadcn/components';
-import { Avatar, AvatarFallback, AvatarImage } from '@shadcn/components/ui/avatar';
-import type { ContextualQuestionProps } from '@src/types';
-import { useField, useFormikContext } from 'formik';
+import { Label, Text } from '@shadcn/components';
+import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
+import type { ContextualQuestionProps, OnboardingFormData } from '@src/types';
+import {
+  IconGenderFemale,
+  IconGenderMale,
+  IconGenderTransgender
+} from '@tabler/icons-react-native';
+import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
-import { useMemo, useRef, useState } from 'react';
-import { Modal, View } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { Baby, Cake, IdCard } from 'lucide-react-native';
+import { useEffect } from 'react';
+import { ScrollView, View } from 'react-native';
 import { TextInput } from './FormikTextInput';
 
+iconWithClassName(IdCard);
+iconWithClassName(Baby);
+iconWithClassName(Cake);
+iconWithClassName(IconGenderMale);
+
 export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (props) => {
-  //use FormikContext ( setField)
-  const [field] = useField('numberOfKids');
-  const { onNext } = props;
-  const [modalVisible, setModalVisible] = useState(false);
-  const flatListRef = useRef<FlatList>(null);
+  const { setFieldValue, values } = useFormikContext<OnboardingFormData>();
 
-  const { setFieldValue, values } = useFormikContext<{
-    kidsDetails: Array<{ name: string; age: string; gender: string }>;
-  }>();
-  const [currentKidIndex, setCurrentKidIndex] = useState(0);
-
-  const kidsData = useMemo(
-    () =>
-      //values.kidsDetails ||
-      Array.from({ length: field.value }, () => ({
-        name: '',
-        age: '',
-        gender: ''
-      })),
-    [field.value, values.kidsDetails]
-  );
-  //
-  const handleSaveKidInfo = (updatedInfo: {
-    name: string;
-    age: string;
-    gender: string;
-  }) => {
-    if (currentKidIndex === null) return;
-    const updatedKidsDetails = [...kidsData];
-    updatedKidsDetails[currentKidIndex] = updatedInfo;
-    setFieldValue('kidsDetails', updatedKidsDetails);
-    setModalVisible(false);
-    setCurrentKidIndex(0);
-  };
+  useEffect(() => {
+    if (values.numberOfKids === 0) return
+    (async () => {
+      if (values.kidsDetails.length > values.numberOfKids) {
+        await setFieldValue('kidsDetails', values.kidsDetails.slice(0, values.numberOfKids));
+      }
+    })();
+  }, [values.numberOfKids]);
 
   return (
     <View className='flex flex-1 items-stretch justify-center'>
@@ -56,118 +43,52 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (pro
       </View>
       <View className='flex flex-1 flex-col items-stretch'>
         <Text className='text-2xl text-center font-medium mb-6'>Tell us about your kids</Text>
-
-        <FlatList
-          ItemSeparatorComponent={() => <View className='h-5' />}
-          data={kidsData}
-          ref={flatListRef}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity
-              className='flex-row  w-10 h-10 border-2'
-              onPress={() => {
-                setCurrentKidIndex(index); // Track which kid is being edited
-                setModalVisible(true);
-              }}
-            >
-              <View className='flex-row w-full h-20 border-2 border-primary items-center rounded-xl justify-around '>
-                <Avatar alt='Avatar' className='w-12 h-12'>
-                  <AvatarImage source={require('../../assets/boy.png')} />
-                  <AvatarFallback>
-                    <Text>+</Text>
-                  </AvatarFallback>
-                </Avatar>
-                <Text>{kidsData[index].name || `Kid ${index + 1}`}</Text>
+        <ScrollView className='flex flex-1' horizontal={false} showsVerticalScrollIndicator={false}>
+          {Array(values.numberOfKids)
+            .fill(0)
+            .map((_, index) => (
+              <View key={`kid-${index.toString()}`} className='mb-6'>
+                <View className='flex items-center flex-row mb-1'>
+                  <Baby className='text-secondary-foreground mr-2' size={24} />
+                  <Label>Kid {index + 1}</Label>
+                </View>
+                <TextInput
+                  lable='Name'
+                  fieldName={`kidsDetails.${index}.name`}
+                  leadingIcon={IdCard}
+                />
+                <View className='flex flex-row gap-x-4'>
+                  <TextInput
+                    lable='Age'
+                    fieldName={`kidsDetails.${index}.age`}
+                    keyboardType='numeric'
+                    leadingIcon={Cake}
+                    className='flex-1'
+                    placeholder='Age in months'
+                  />
+                  <View className='mt-2'>
+                    <Label className='mb-4'>Gender</Label>
+                    <ToggleGroup
+                      value={values.kidsDetails[index]?.gender}
+                      onValueChange={(value) => setFieldValue(`kidsDetails.${index}.gender`, value)}
+                      type='single'
+                      className='flex flex-row gap-x-2'
+                    >
+                      <ToggleGroupItem value='male' className='rounded-xl'>
+                        <ToggleGroupIcon icon={IconGenderMale} size={18} />
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value='female' className='rounded-xl'>
+                        <ToggleGroupIcon icon={IconGenderFemale} size={18} />
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value='transgender' className='rounded-xl'>
+                        <ToggleGroupIcon icon={IconGenderTransgender} size={18} />
+                      </ToggleGroupItem>
+                    </ToggleGroup>
+                  </View>
+                </View>
               </View>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(_, index) => index.toString()}
-        />
-
-        <Modal
-          visible={modalVisible}
-          transparent={true}
-          animationType='slide'
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View className='flex-1 bg-black/50 items-center justify-center'>
-            <View className='w-11/12 bg-white p-6 rounded-lg'>
-              <Text className='text-xl font-bold mb-4 text-center'>Enter Kid's Information</Text>
-
-              <TextInput
-                fieldName='nameofkid'
-                lable='Name'
-                value={kidsData[currentKidIndex]?.name || ''}
-                onChangeText={(text) =>
-                  handleSaveKidInfo({
-                    ...kidsData[currentKidIndex],
-                    name: text
-                  })
-                }
-                //onChangeText={(text) => setKidInfo({ ...kidInfo, name: text })}
-              />
-
-              <TextInput
-                fieldName='ageofkid'
-                lable='Age'
-                keyboardType='numeric'
-                value={kidsData[currentKidIndex]?.age || ''}
-                onChangeText={(text) =>
-                  handleSaveKidInfo({
-                    ...kidsData[currentKidIndex],
-                    age: text
-                  })
-                }
-              />
-              <Text className='text-l font-medium mb-2  '>Gender</Text>
-              <View className='h-10' />
-              <View className='flex-row justify-around'>
-                {/* Male Avatar */}
-                <TouchableOpacity
-                  className='items-center'
-                  onPress={() =>
-                    handleSaveKidInfo({
-                      ...kidsData[currentKidIndex],
-                      gender: 'Male'
-                    })
-                  }
-                >
-                  <Avatar alt='Avatar' className='w-20 h-20 rounded-full overflow-hidden'>
-                    <AvatarImage source={require('../../assets/boy.png')} className='contain' />
-                    <AvatarFallback>
-                      <Text className=''>M</Text>
-                    </AvatarFallback>
-                  </Avatar>
-                </TouchableOpacity>
-
-                {/* Female Avatar */}
-                <TouchableOpacity
-                  className='items-center'
-                  onPress={() =>
-                    handleSaveKidInfo({
-                      ...kidsData[currentKidIndex],
-                      gender: 'Female'
-                    })
-                  }
-                >
-                  <Avatar alt='Avatar' className='w-20 h-20 rounded-full overflow-hidden'>
-                    <AvatarImage source={require('../../assets/girl.png')} className='contain' />
-                    <AvatarFallback>
-                      <Text>F</Text>
-                    </AvatarFallback>
-                  </Avatar>
-                </TouchableOpacity>
-              </View>
-              <View className='h-10' />
-              <Button
-                onPress={() => {
-                  setModalVisible(false);
-                }}
-              >
-                <Text>Save</Text>
-              </Button>
-            </View>
-          </View>
-        </Modal>
+            ))}
+        </ScrollView>
       </View>
     </View>
   );
