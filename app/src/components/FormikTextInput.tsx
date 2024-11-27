@@ -45,13 +45,21 @@ export const TextInput: React.FC<TextInputProps> = ({
   onEnter,
   ...rest
 }) => {
-  const { submitForm, setSubmitting } = useFormikContext();
+  const { submitForm, setSubmitting, setFieldValue } = useFormikContext();
   const [field, meta] = useField(fieldName);
   const [isTextVisible, setIsTextVisible] = useState(!secureTextEntry);
 
   if (LeadingIcon) {
     iconWithClassName(LeadingIcon);
   }
+
+  const onChange = (value: string | number) =>
+    setFieldValue(
+      fieldName,
+      rest.keyboardType === 'numeric'
+        ? Number.parseInt(String(value === '' ? '0' : value), 10)
+        : value
+    );
 
   const onSubmitEditing = useCallback(async () => {
     try {
@@ -65,7 +73,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   }, [setSubmitting, submitForm]);
 
   return (
-    <View className='my-2'>
+    <View className={clsx('my-2', textFieldClassName)}>
       <Label className={clsx('pb-2', meta.touched && meta.error && 'text-destructive')}>
         {lable}
       </Label>
@@ -85,9 +93,9 @@ export const TextInput: React.FC<TextInputProps> = ({
         <Input
           {...rest}
           className={clsx('flex-1 ml-2 border-0', textFieldClassName)}
-          onChangeText={field.onChange(fieldName)}
+          onChangeText={onChange}
           onBlur={field.onBlur(fieldName)}
-          value={field.value}
+          value={field.value?.toString()}
           onSubmitEditing={submitOnEnter ? onSubmitEditing : onEnter}
           secureTextEntry={secureTextEntry ? !isTextVisible : undefined}
           autoCapitalize='none'

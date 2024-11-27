@@ -23,7 +23,7 @@ export const ContextualQuestionNumberKids: React.FC<ContextualQuestionProps> = (
           lable='Number of kids'
           fieldName='numberOfKids'
           className='w-full'
-          keyboardType='number-pad'
+          keyboardType='numeric'
           leadingIcon={Baby}
           onEnter={onNext}
         />

@@ -8,6 +8,15 @@ export interface ContextualQuestionProps {
   onNext: () => void;
 }
 
+export interface OnboardingFormData {
+  name: string;
+  numberOfKids: number;
+  kidsDetails: Array<{ name: string; age: number; gender: string }>;
+  energyLevel: number;
+  time: number;
+  activityType: string;
+}
+
 export interface User {
   displayName: string;
   email: string;
