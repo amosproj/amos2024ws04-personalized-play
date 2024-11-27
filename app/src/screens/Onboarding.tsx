@@ -106,7 +106,7 @@ export const Onboarding: React.FC = () => {
                   .typeError('Age must be a number')
                   .required('Age is required')
                   .min(1, 'Minimum age is 1 month')
-                  .max(60, 'Maximum age is 60 months'),
+                  .max(60, 'Maximum age is 60 months')
               })
             )
             .required('Kids details are required')

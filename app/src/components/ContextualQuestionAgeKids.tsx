@@ -23,7 +23,7 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (pro
   const { setFieldValue, values } = useFormikContext<OnboardingFormData>();
 
   useEffect(() => {
-    if (values.numberOfKids === 0) return
+    if (values.numberOfKids === 0) return;
     (async () => {
       if (values.kidsDetails.length > values.numberOfKids) {
         await setFieldValue('kidsDetails', values.kidsDetails.slice(0, values.numberOfKids));
