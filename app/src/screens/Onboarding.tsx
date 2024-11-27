@@ -8,20 +8,12 @@ import {
   ContextualQuestionPlayTime,
   ContextualQuestionUserName
 } from '@src/components';
+import type { OnboardingFormData } from '@src/types';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
-
-interface OnboardingFormData {
-  name: string;
-  numberOfKids: number;
-  kidsDetails: Array<{ name: string; age: number; gender: string }>;
-  energyLevel: number;
-  time: number;
-  activityType: string;
-}
 
 const onboardingQuestions = [
   { key: 'name', component: ContextualQuestionUserName },
@@ -100,14 +92,25 @@ export const Onboarding: React.FC = () => {
         innerRef={formikRef}
         validationSchema={Yup.object({
           name: Yup.string().required('Name is required'),
-          numberOfKids: Yup.number().integer().min(1).required('Number of kids is required'),
-          kidsDetails: Yup.array().of(
-            Yup.object({
-              name: Yup.string().required('Name is required'),
-              age: Yup.number().required('Age is required'),
-              gender: Yup.string().required('Gender is required')
-            })
-          ),
+          numberOfKids: Yup.number()
+            .integer('Number of kids must be an integer')
+            .typeError('Number of kids must be an integer')
+            .min(1, 'Minimum of 1 kid required')
+            .max(3, 'Maximum of 3 kids allowed')
+            .required('Number of kids is required'),
+          kidsDetails: Yup.array()
+            .of(
+              Yup.object({
+                name: Yup.string().required('Name is required'),
+                age: Yup.number()
+                  .typeError('Age must be a number')
+                  .required('Age is required')
+                  .min(1, 'Minimum age is 1 month')
+                  .max(60, 'Maximum age is 60 months'),
+              })
+            )
+            .required('Kids details are required')
+            .min(1, 'Minimum of 1 kid required'),
           energyLevel: Yup.number().required('Energy level is required'),
           time: Yup.number().required('Time is required'),
           activityType: Yup.string().required('Activity type is required')
