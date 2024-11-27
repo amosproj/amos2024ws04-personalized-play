@@ -3,11 +3,11 @@ export enum Screens {
   SignUp = 'SignUp',
   ForgotPassword = 'ForgotPassword',
   ResetPassword = 'ResetPassword',
-  Landing = 'Landing',
   Loading = 'Loading',
   Home = 'Home',
   Profile = 'Profile',
-  Welcome = 'Welcome'
+  Welcome = 'Welcome',
+  Onboarding = 'Onboarding'
 }
 
 export enum Stacks {

@@ -8,3 +8,4 @@ export * from "./Smile";
 export * from "./Meh";
 export * from "./Frown";
 export * from "./Angry";
+export * from './ChevronLeft';

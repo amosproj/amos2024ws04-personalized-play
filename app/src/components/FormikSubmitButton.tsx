@@ -13,14 +13,13 @@
  * <SubmitButton className="custom-class">Submit</SubmitButton>
  */
 
-import { Button } from '@shadcn/components/ui';
+import { Button, type ButtonProps } from '@shadcn/components/ui';
 import { RotateCw } from '@shadcn/icons';
 import clsx from 'clsx';
 import { useFormikContext } from 'formik';
 import { useCallback } from 'react';
-import type { PressableProps } from 'react-native';
 
-interface SubmitButtonProps extends PressableProps {
+interface SubmitButtonProps extends ButtonProps {
   className?: string;
   children: React.ReactNode | ((props: { pressed: boolean }) => React.ReactNode);
 }
@@ -44,7 +43,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = (props) => {
     <Button
       disabled={isSubmitting}
       onPress={onSubmit}
-      className={clsx('flex flex-row rounded-full my-2', className)}
+      className={clsx('flex flex-row rounded-xl my-2', className)}
       {...rest}
     >
       {isSubmitting && (

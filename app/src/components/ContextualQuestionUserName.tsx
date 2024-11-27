@@ -1,11 +1,11 @@
 import { Text } from '@shadcn/components';
 import type { ContextualQuestionProps } from '@src/types';
 import LottieView from 'lottie-react-native';
-import { Baby } from 'lucide-react-native';
+import { User } from 'lucide-react-native';
 import { View } from 'react-native';
 import { TextInput } from './FormikTextInput';
 
-export const ContextualQuestionNumberKids: React.FC<ContextualQuestionProps> = (props) => {
+export const ContextualQuestionUserName: React.FC<ContextualQuestionProps> = (props) => {
   const { onNext } = props;
   return (
     <View className='flex flex-1 items-stretch justify-center'>
@@ -13,18 +13,17 @@ export const ContextualQuestionNumberKids: React.FC<ContextualQuestionProps> = (
         <LottieView
           autoPlay={true}
           loop={true}
-          source={require('../../assets/kids.json')}
+          source={require('../../assets/hello.json')}
           style={{ width: 320, height: 320 }}
         />
       </View>
       <View className='flex flex-1 flex-col items-stretch'>
-        <Text className='text-2xl text-center font-medium mb-6'>How many kids do you have?</Text>
+        <Text className='text-2xl text-center font-medium mb-6'>What is your name?</Text>
         <TextInput
-          lable='Number of kids'
-          fieldName='numberOfKids'
+          lable='Your Name'
+          fieldName='name'
           className='w-full'
-          keyboardType='numeric'
-          leadingIcon={Baby}
+          leadingIcon={User}
           onEnter={onNext}
         />
       </View>
