@@ -9,12 +9,16 @@ import {
   ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
+import { fireApp, fireAuth, fireStore, Collections } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
+import { doc, setDoc } from 'firebase/firestore';
+
 
 const onboardingQuestions = [
   { key: 'name', component: ContextualQuestionUserName },
@@ -30,9 +34,27 @@ export const Onboarding: React.FC = () => {
   const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
   const [index, setIndex] = useState(0);
 
-  const onDone = async (values: OnboardingFormData) => {
-    console.log(values);
-  };
+const [user] = useAuthState(fireAuth);
+
+const onDone = async (values: OnboardingFormData) => {
+  try {
+    if (!user) {
+      console.error('User not authenticated');
+      return;
+    }
+    const userId = user.uid;
+
+    // Reference to the user's document in Firestore
+    const userDocRef = doc(fireStore, Collections.Users, userId);
+
+    // Save the data
+    await setDoc(userDocRef, values);
+
+    console.log('Data saved successfully:', values);
+  } catch (error) {
+    console.error('Error saving data to Firestore:', error);
+  }
+};
 
   /**
    * Navigate to the next onboarding question.
