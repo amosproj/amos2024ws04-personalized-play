@@ -38,6 +38,6 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - name: Install dependencies and run biome
         run: |
-          cd Backend
+          cd backend
           npm install
           npm run biome:check
