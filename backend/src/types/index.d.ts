@@ -27,4 +27,3 @@ export interface Activity {
   kids: string[];
   createdAt: Timestamp;
 }
-
