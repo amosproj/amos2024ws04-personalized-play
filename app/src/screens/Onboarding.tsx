@@ -6,6 +6,7 @@ import {
   ContextualQuestionEnergyLevel,
   ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
+  ContextualQuestionSkill,
   ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
@@ -22,7 +23,8 @@ const onboardingQuestions = [
   { key: 'kidsDetails', component: ContextualQuestionAgeKids },
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'time', component: ContextualQuestionPlayTime },
-  { key: 'activityType', component: ContextualQuestionActivityChoice }
+  { key: 'activityType', component: ContextualQuestionActivityChoice },
+  { key: 'skill', component: ContextualQuestionSkill }
 ];
 
 export const Onboarding: React.FC = () => {
