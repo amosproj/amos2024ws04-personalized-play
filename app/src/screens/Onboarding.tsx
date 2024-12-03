@@ -6,8 +6,8 @@ import {
   ContextualQuestionEnergyLevel,
   ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
-  ContextualQuestionUserName,
   ContextualQuestionSkill,
+  ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
 import type { OnboardingFormData } from '@src/types';
@@ -188,7 +188,7 @@ export const Onboarding: React.FC = () => {
             </View>
           </View>
         </>
-      </Formik> 
-         </View>
+      </Formik>
+    </View>
   );
 };

@@ -1,11 +1,11 @@
-import type React from 'react';
-import { View } from 'react-native';
-import { Text } from '@shadcn/components';
-import LottieView from 'lottie-react-native';
-import type { AppNavigation } from '@src/types';
 import { useNavigation } from '@react-navigation/native';
-import { useMemo, useState } from 'react';
+import { Text } from '@shadcn/components';
 import { Checkbox } from '@shadcn/components/ui/checkbox';
+import type { AppNavigation } from '@src/types';
+import LottieView from 'lottie-react-native';
+import type React from 'react';
+import { useMemo, useState } from 'react';
+import { View } from 'react-native';
 
 export const ContextualQuestionSkill: React.FC = () => {
   const { navigate } = useNavigation<AppNavigation>();
@@ -50,7 +50,7 @@ export const ContextualQuestionSkill: React.FC = () => {
             <View key={item} className='flex flex-row  gap-x-4'>
               <Checkbox
                 checked={checkedItems[item]}
-                onCheckedChange={(value) => handleCheckboxChange(item, value)}
+                onCheckedChange={(value: boolean) => handleCheckboxChange(item, value)}
               />
               <Text>{item}</Text>
             </View>
