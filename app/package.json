@@ -63,7 +63,8 @@
     "tailwindcss": "^3.4.14",
     "tailwindcss-animate": "^1.0.7",
     "yup": "^1.4.0",
-    "lottie-react-native": "6.7.0"
+    "lottie-react-native": "6.7.0",
+    "expo-image-picker": "~15.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
