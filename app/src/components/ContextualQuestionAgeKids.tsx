@@ -4,6 +4,7 @@ import {
   ToggleGroupIcon,
   ToggleGroupItem,
 } from "@shadcn/components/ui/toggle-group";
+import { RadioGroup, RadioGroupItem } from "@shadcn/components/ui/radio-group";
 import { iconWithClassName } from "@shadcn/icons/iconWithClassName";
 import type { ContextualQuestionProps, OnboardingFormData } from "@src/types";
 import {
@@ -117,29 +118,23 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (
                     </ToggleGroup>
                   </View>
                 </View>
-                <View className="mt-2">
-                  <Label>Are there any health considerations for your child that you'd like us to know?</Label>
-                  <View className="flex-row gap-x-2">
-                  <ToggleGroup
-                    value=""
-                    onValueChange={onChange}
-                    type="single"
-                    className="gap-x-4"
-                  >
-                    <ToggleGroupItem
-                      value="yes"
-                      className="native:h-20 native:w-20 rounded-xl"
-                    >
-                      <Text className="text-center text-xl mt-4">Yes</Text>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem
-                      value="no"
-                      className="native:h-20 native:w-20 rounded-xl"
-                    >
-                      <Text className="text-center text-xl mt-4">No</Text>
-                    </ToggleGroupItem>
-                  </ToggleGroup>
-                  </View>
+                <View className="mt-2 gap-3">
+                  <Label>Health Considerations</Label>
+                  <Text>
+                    Are there any health considerations for your child that
+                    you'd like us to know?
+                  </Text>
+
+                  <RadioGroup value="" onValueChange={() => {}}>
+                    <View className={"flex-row gap-2 items-center"}>
+                      <RadioGroupItem value="Yes" />
+                      <Label>Yes</Label>
+                    </View>
+                    <View className={"flex-row gap-2 items-center"}>
+                      <RadioGroupItem value="No" />
+                      <Label>No</Label>
+                    </View>
+                  </RadioGroup>
                 </View>
               </View>
             ))}
