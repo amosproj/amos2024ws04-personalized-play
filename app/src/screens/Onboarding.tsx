@@ -9,15 +9,15 @@ import {
   ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
-import { fireAuth, fireStore, Collections } from '@src/constants';
+import { Collections, fireAuth, fireStore } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
+import { doc, setDoc } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
-import { doc, setDoc } from 'firebase/firestore';
 
 const onboardingQuestions = [
   { key: 'name', component: ContextualQuestionUserName },
