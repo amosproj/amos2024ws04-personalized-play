@@ -13,6 +13,7 @@ export * from './ContextualQuestionUserName';
 export * from './ContextualQuestionEnergyLevel';
 export * from './ContextualQuestionNumberKids';
 export * from './ContextualQuestionPlayTime';
+export * from './ContextualQuestionSkill';
 export * from './ContextualQuestionAgeKids';
 export * from './AppLogo';
 export * from './UnAuthHeader';

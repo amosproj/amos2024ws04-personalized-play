@@ -7,6 +7,7 @@ import {
   ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
   ContextualQuestionUserName,
+  ContextualQuestionSkill,
   SubmitButton
 } from '@src/components';
 import type { OnboardingFormData } from '@src/types';
@@ -22,7 +23,8 @@ const onboardingQuestions = [
   { key: 'kidsDetails', component: ContextualQuestionAgeKids },
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'time', component: ContextualQuestionPlayTime },
-  { key: 'activityType', component: ContextualQuestionActivityChoice }
+  { key: 'activityType', component: ContextualQuestionActivityChoice },
+  { key: 'skill', component: ContextualQuestionSkill }
 ];
 
 export const Onboarding: React.FC = () => {
@@ -186,7 +188,7 @@ export const Onboarding: React.FC = () => {
             </View>
           </View>
         </>
-      </Formik>
-    </View>
+      </Formik> 
+         </View>
   );
 };
