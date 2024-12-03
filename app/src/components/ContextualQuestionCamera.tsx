@@ -5,11 +5,10 @@ import * as ImagePicker from 'expo-image-picker';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ onNext }) => {
   const { setFieldValue, values } = useFormikContext<{ camera: string }>();
-  //const [image, setImage] = useState<string>("");
 
   const takePhoto = async () => {
     // Request camera permissions
@@ -27,7 +26,6 @@ export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ on
     });
 
     if (!result.canceled) {
-      //setImage(result.assets[0].uri);
       setFieldValue('camera', result.assets[0].uri);
       onNext();
     }
@@ -58,32 +56,4 @@ export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ on
       </View>
     </View>
   );
-
-  /*
-  return (
-    <View style={styles.container}>
-      <Button title="Take Photo" onPress={takePhoto} />
-      {image &&
-        <Image
-          source={{ uri: image }}
-          style={styles.image}
-        />
-      }
-    </View>
-  );
-  */
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 20
-  },
-  image: {
-    width: 300,
-    height: 300,
-    borderRadius: 10
-  }
-});
