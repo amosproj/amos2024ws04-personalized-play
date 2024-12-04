@@ -35,5 +35,7 @@ export interface Kid {
   healthConsiderations: {
     isConsidered: boolean;
     considerations: Array<string>;
+    chronicIllness: string;
+    other:string;
   };
 }

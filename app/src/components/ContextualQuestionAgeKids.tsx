@@ -15,7 +15,7 @@ import {
 } from "@tabler/icons-react-native";
 import { useFormikContext } from "formik";
 import LottieView from "lottie-react-native";
-import { Baby, Cake, IdCard } from "lucide-react-native";
+import { Baby, Cake, IdCard, Stethoscope } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { ScrollView, View, Modal } from "react-native";
 import { TextInput } from "./FormikTextInput";
@@ -24,6 +24,19 @@ iconWithClassName(IdCard);
 iconWithClassName(Baby);
 iconWithClassName(Cake);
 iconWithClassName(IconGenderMale);
+iconWithClassName(Stethoscope);
+
+const healthConsiderationsOptions = [
+  "Developmental delays",
+  "Autism spectrum",
+  "ADHD",
+  "Speech or language challenges",
+  "Hearing impairment",
+  "Vision impairment",
+  "Motor skill challenges",
+  "Physical disabilities or limitations",
+  "Emotional or behavioral concerns",
+];
 
 export const ContextualQuestionAgeKids: React.FC<
   ContextualQuestionProps
@@ -32,6 +45,19 @@ export const ContextualQuestionAgeKids: React.FC<
 
   //New changes
   const [modalVisible, setModalVisible] = useState(false);
+  const [showChronic, setShowChronic] = useState(false);
+  const [selectedConsiderations, setSelectedConsiderations] = useState<
+    Array<string>
+  >([]);
+  const toggleConsideration = (consideration: string) => {
+    setSelectedConsiderations((prev) =>
+      prev.includes(consideration)
+        ? prev.filter((item) => item !== consideration)
+        : [...prev, consideration]
+    );
+  };
+
+  //
 
   useEffect(() => {
     if (values.numberOfKids === 0) return;
@@ -115,15 +141,23 @@ export const ContextualQuestionAgeKids: React.FC<
                   </View>
                 </View>
                 <View className="mt-2 gap-3">
-                  <Label>Health Considerations</Label>
-                  <Text>
+                  <View className="flex items-center flex-row mb-1">
+                    <Stethoscope
+                      className="text-secondary-foreground mr-2"
+                      size={20}
+                    />
+                    <Label>Health Considerations</Label>
+                  </View>
+
+                  <Text className="primary">
                     Are there any health considerations for your child that
                     you'd like us to know?
                   </Text>
                   <ToggleGroup
                     variant="outline"
                     value={
-                      values.kidsDetails[index]?.healthConsiderations.isConsidered
+                      values.kidsDetails[index]?.healthConsiderations
+                        ?.isConsidered ?? ""
                     }
                     onValueChange={(value) =>
                       setFieldValue(
@@ -132,7 +166,7 @@ export const ContextualQuestionAgeKids: React.FC<
                       )
                     }
                     type="single"
-                    className="flex flex-row gap-x-2"
+                    className="flex flex-row gap-x-2 justify-start items-center"
                   >
                     <ToggleGroupItem
                       onPress={() => setModalVisible(true)}
@@ -145,22 +179,6 @@ export const ContextualQuestionAgeKids: React.FC<
                       <Label>No</Label>
                     </ToggleGroupItem>
                   </ToggleGroup>
-
-                  {/* <RadioGroup value="" onValueChange={() => {}}>
-                    <View className={"flex-row gap-2 items-center"}>
-                      <RadioGroupItem
-                        value="Yes"
-                        onPress={() => {
-                          setModalVisible(true);
-                        }}
-                      />
-                      <Label>Yes</Label>
-                    </View>
-                    <View className={"flex-row gap-2 items-center"}>
-                      <RadioGroupItem value="No" />
-                      <Label>No</Label>
-                    </View>
-                  </RadioGroup> */}
                   <Modal
                     visible={modalVisible}
                     transparent={true}
@@ -169,84 +187,55 @@ export const ContextualQuestionAgeKids: React.FC<
                   >
                     <View className="flex-1 bg-black/50 items-center justify-center">
                       <View className="w-11/12 bg-white p-6 rounded-lg gap-4">
-                        <Text className="text-xl font-bold mb-4 text-center">
-                          Select the one's that is related to you
+                        <Text className="text-xl   mb-4 text-center">
+                          Please select relevant health concerns
                         </Text>
                         <View className="gap-3">
-                          <View className="flex flex-row items-center gap-2 ">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>Developmental delays</Label>
-                          </View>
-                          <View className="flex flex-row items-center gap-2 ">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>Autism spectrum</Label>
-                          </View>
-                          <View className="flex flex-row items-center gap-2 ">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>ADHD</Label>
-                          </View>
+                          {healthConsiderationsOptions.map((label, index) => (
+                            <View
+                              key={`health-option-${index}`}
+                              className="flex flex-row items-center gap-2"
+                            >
+                              <Checkbox
+                                checked={selectedConsiderations.includes(label)}
+                                onCheckedChange={() =>
+                                  toggleConsideration(label)
+                                }
+                              />
+                              <Label>{label}</Label>
+                            </View>
+                          ))}
                           <View className="flex flex-row items-center gap-2">
                             <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>Speech or language challenges</Label>
-                          </View>
-                          <View className="flex flex-row items-center gap-2">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>Hearing impairment</Label>
-                          </View>
-                          <View className="flex flex-row items-center gap-2">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>Vision impairment</Label>
-                          </View>
-                          <View className="flex flex-row items-center gap-2">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>Motor skill challenges</Label>
-                          </View>
-                          <View className="flex flex-row items-center gap-2">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>Physical disabilities or limitations</Label>
-                          </View>
-                          <View className="flex flex-row items-center gap-2">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
+                              checked={selectedConsiderations.includes(
+                                "Chronic illness"
+                              )}
+                              onCheckedChange={() => {
+                                toggleConsideration("Chronic illness");
+                                setShowChronic(!showChronic);
+                              }}
                             />
                             <Label>Chronic illness</Label>
                           </View>
-                          <View className="flex flex-row items-center gap-2">
-                            <Checkbox
-                              checked={false}
-                              onCheckedChange={() => {}}
-                            />
-                            <Label>Emotional or behavioral concerns</Label>
-                          </View>
-                          <TextInput lable="Other" fieldName={`kidsDetails.${index}.healthConsiderations.considerations`}/>
+                          {showChronic && (
+                            <View className=" ">
+                              <TextInput
+                                lable="Enter Chronic Illness"
+                                fieldName={`kidsDetails.${index}.healthConsiderations.considerations.chronicIllness`}
+                              />
+                            </View>
+                          )}
+                          <TextInput
+                            lable="Other"
+                            fieldName={`kidsDetails.${index}.healthConsiderations.considerations.other`}
+                          />
                         </View>
-                        <Button 
+                        <Button
                           onPress={() => {
+                            setFieldValue(
+                              `kidsDetails.${index}.healthConsiderations.considerations`,
+                              selectedConsiderations
+                            );
                             setModalVisible(false);
                           }}
                         >
