@@ -8,6 +8,7 @@ import {
   ContextualQuestionPlayTime,
   ContextualQuestionSkill,
   ContextualQuestionUserName,
+  ContextualQuestionDisplayItemsIdentified,
   SubmitButton
 } from '@src/components';
 import type { OnboardingFormData } from '@src/types';
@@ -24,7 +25,9 @@ const onboardingQuestions = [
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'time', component: ContextualQuestionPlayTime },
   { key: 'activityType', component: ContextualQuestionActivityChoice },
-  { key: 'skill', component: ContextualQuestionSkill }
+  { key: 'displayItems', component: ContextualQuestionDisplayItemsIdentified },
+  { key: 'skill', component: ContextualQuestionSkill },
+  
 ];
 
 export const Onboarding: React.FC = () => {
@@ -92,7 +95,8 @@ export const Onboarding: React.FC = () => {
           kidsDetails: [],
           energyLevel: 1,
           time: 10,
-          activityType: 'chores'
+          activityType: 'chores',
+          displayItems: [],
         }}
         innerRef={formikRef}
         validationSchema={Yup.object({
@@ -118,7 +122,8 @@ export const Onboarding: React.FC = () => {
             .min(1, 'Minimum of 1 kid required'),
           energyLevel: Yup.number().required('Energy level is required'),
           time: Yup.number().required('Time is required'),
-          activityType: Yup.string().required('Activity type is required')
+          activityType: Yup.string().required('Activity type is required'),
+          displayItems: Yup.array().of(Yup.string()) 
         })}
         onSubmit={onDone}
         validateOnBlur={true}
@@ -164,7 +169,7 @@ export const Onboarding: React.FC = () => {
               <Button
                 variant={'outline'}
                 size={'icon'}
-                className='rounded-xl mr-4'
+                className='rounded-xl mr-2'
                 onPress={onPrevious}
                 disabled={index === 0}
               >

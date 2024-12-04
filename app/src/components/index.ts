@@ -15,5 +15,6 @@ export * from './ContextualQuestionNumberKids';
 export * from './ContextualQuestionPlayTime';
 export * from './ContextualQuestionSkill';
 export * from './ContextualQuestionAgeKids';
+export * from './ContextualQuestionDisplayItemsIdentified';
 export * from './AppLogo';
 export * from './UnAuthHeader';
