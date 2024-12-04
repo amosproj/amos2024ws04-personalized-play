@@ -12,7 +12,7 @@ export interface OnboardingFormData {
   name: string;
   numberOfKids: number;
   kidsDetails: Array<{ name: string; age: number; gender: string, healthConsiderations: {
-    isConsidered: boolean;
+    isConsidered: string;
     considerations: Array<string>;
   } }>;
   energyLevel: number;

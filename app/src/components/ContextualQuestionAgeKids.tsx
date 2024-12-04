@@ -1,10 +1,11 @@
-import { Label, Text } from "@shadcn/components";
+import { Label, Text, Button } from "@shadcn/components";
 import {
   ToggleGroup,
   ToggleGroupIcon,
   ToggleGroupItem,
 } from "@shadcn/components/ui/toggle-group";
-import { RadioGroup, RadioGroupItem } from "@shadcn/components/ui/radio-group";
+//import { RadioGroup, RadioGroupItem } from "@shadcn/components/ui/radio-group";
+import { Checkbox } from "@shadcn/components/ui/checkbox";
 import { iconWithClassName } from "@shadcn/icons/iconWithClassName";
 import type { ContextualQuestionProps, OnboardingFormData } from "@src/types";
 import {
@@ -15,8 +16,8 @@ import {
 import { useFormikContext } from "formik";
 import LottieView from "lottie-react-native";
 import { Baby, Cake, IdCard } from "lucide-react-native";
-import { useEffect } from "react";
-import { ScrollView, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ScrollView, View, Modal } from "react-native";
 import { TextInput } from "./FormikTextInput";
 
 iconWithClassName(IdCard);
@@ -24,18 +25,13 @@ iconWithClassName(Baby);
 iconWithClassName(Cake);
 iconWithClassName(IconGenderMale);
 
-export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (
-  props
-) => {
+export const ContextualQuestionAgeKids: React.FC<
+  ContextualQuestionProps
+> = () => {
   const { setFieldValue, values } = useFormikContext<OnboardingFormData>();
 
-  //
-  const { onNext } = props;
-  const onChange = (value: string | undefined) => {
-    if (!value) return;
-    setFieldValue("activityType", value);
-    onNext();
-  };
+  //New changes
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (values.numberOfKids === 0) return;
@@ -124,17 +120,141 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (
                     Are there any health considerations for your child that
                     you'd like us to know?
                   </Text>
+                  <ToggleGroup
+                    variant="outline"
+                    value={
+                      values.kidsDetails[index]?.healthConsiderations.isConsidered
+                    }
+                    onValueChange={(value) =>
+                      setFieldValue(
+                        `kidsDetails.${index}.healthConsiderations.isConsidered`,
+                        value
+                      )
+                    }
+                    type="single"
+                    className="flex flex-row gap-x-2"
+                  >
+                    <ToggleGroupItem
+                      onPress={() => setModalVisible(true)}
+                      value="Yes"
+                      className="rounded-xl"
+                    >
+                      <Label>Yes</Label>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="No" className="rounded-xl">
+                      <Label>No</Label>
+                    </ToggleGroupItem>
+                  </ToggleGroup>
 
-                  <RadioGroup value="" onValueChange={() => {}}>
+                  {/* <RadioGroup value="" onValueChange={() => {}}>
                     <View className={"flex-row gap-2 items-center"}>
-                      <RadioGroupItem value="Yes" />
+                      <RadioGroupItem
+                        value="Yes"
+                        onPress={() => {
+                          setModalVisible(true);
+                        }}
+                      />
                       <Label>Yes</Label>
                     </View>
                     <View className={"flex-row gap-2 items-center"}>
                       <RadioGroupItem value="No" />
                       <Label>No</Label>
                     </View>
-                  </RadioGroup>
+                  </RadioGroup> */}
+                  <Modal
+                    visible={modalVisible}
+                    transparent={true}
+                    animationType="slide"
+                    onRequestClose={() => setModalVisible(false)}
+                  >
+                    <View className="flex-1 bg-black/50 items-center justify-center">
+                      <View className="w-11/12 bg-white p-6 rounded-lg gap-4">
+                        <Text className="text-xl font-bold mb-4 text-center">
+                          Select the one's that is related to you
+                        </Text>
+                        <View className="gap-3">
+                          <View className="flex flex-row items-center gap-2 ">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Developmental delays</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2 ">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Autism spectrum</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2 ">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>ADHD</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Speech or language challenges</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Hearing impairment</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Vision impairment</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Motor skill challenges</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Physical disabilities or limitations</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Chronic illness</Label>
+                          </View>
+                          <View className="flex flex-row items-center gap-2">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() => {}}
+                            />
+                            <Label>Emotional or behavioral concerns</Label>
+                          </View>
+                          <TextInput lable="Other" fieldName={`kidsDetails.${index}.healthConsiderations.considerations`}/>
+                        </View>
+                        <Button 
+                          onPress={() => {
+                            setModalVisible(false);
+                          }}
+                        >
+                          <Text>Save</Text>
+                        </Button>
+                      </View>
+                    </View>
+                  </Modal>
                 </View>
               </View>
             ))}
