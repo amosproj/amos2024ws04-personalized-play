@@ -3,6 +3,8 @@ import { ChevronLeft } from '@shadcn/icons';
 import {
   ContextualQuestionActivityChoice,
   ContextualQuestionAgeKids,
+  ContextualQuestionCamera,
+  ContextualQuestionDetectedItems,
   ContextualQuestionEnergyLevel,
   ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
@@ -24,7 +26,9 @@ const onboardingQuestions = [
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'time', component: ContextualQuestionPlayTime },
   { key: 'activityType', component: ContextualQuestionActivityChoice },
-  { key: 'skill', component: ContextualQuestionSkill }
+  { key: 'skill', component: ContextualQuestionSkill },
+  { key: 'camera', component: ContextualQuestionCamera },
+  { key: 'detectedItems', component: ContextualQuestionDetectedItems }
 ];
 
 export const Onboarding: React.FC = () => {
@@ -118,7 +122,9 @@ export const Onboarding: React.FC = () => {
             .min(1, 'Minimum of 1 kid required'),
           energyLevel: Yup.number().required('Energy level is required'),
           time: Yup.number().required('Time is required'),
-          activityType: Yup.string().required('Activity type is required')
+          activityType: Yup.string().required('Activity type is required'),
+          camera: Yup.string().required('Picture is required.'),
+          detectedItems: Yup.string().required('test')
         })}
         onSubmit={onDone}
         validateOnBlur={true}
