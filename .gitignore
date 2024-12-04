@@ -75,3 +75,7 @@ GoogleService-Info.plist
 
 # add by shadcn
 !app/shadcn/lib
+
+.genkit
+
+.turbo

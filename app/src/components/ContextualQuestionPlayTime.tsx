@@ -26,8 +26,8 @@ export const ContextualQuestionPlayTime: React.FC<ContextualQuestionProps> = () 
         <LottieView
           autoPlay={true}
           loop={true}
-          source={require('../../assets/battery.json')}
-          style={{ width: 320, height: 320 }}
+          source={require('../../assets/time.json')}
+          style={{ width: 300, height: 300 }}
         />
       </View>
       <View className='flex flex-1 flex-col items-stretch'>

@@ -1,4 +1,4 @@
-import { Button } from '@shadcn/components';
+import { Button, Text } from '@shadcn/components';
 import { ChevronLeft } from '@shadcn/icons';
 import {
   ContextualQuestionActivityChoice,
@@ -6,22 +6,16 @@ import {
   ContextualQuestionEnergyLevel,
   ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
-  ContextualQuestionUserName
+  ContextualQuestionSkill,
+  ContextualQuestionUserName,
+  SubmitButton
 } from '@src/components';
+import type { OnboardingFormData } from '@src/types';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
-
-interface OnboardingFormData {
-  name: string;
-  numberOfKids: number;
-  kidsDetails: Array<{ name: string; age: number; gender: string }>;
-  energyLevel: number;
-  time: number;
-  activityType: string;
-}
 
 const onboardingQuestions = [
   { key: 'name', component: ContextualQuestionUserName },
@@ -29,7 +23,8 @@ const onboardingQuestions = [
   { key: 'kidsDetails', component: ContextualQuestionAgeKids },
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'time', component: ContextualQuestionPlayTime },
-  { key: 'activityType', component: ContextualQuestionActivityChoice }
+  { key: 'activityType', component: ContextualQuestionActivityChoice },
+  { key: 'skill', component: ContextualQuestionSkill }
 ];
 
 export const Onboarding: React.FC = () => {
@@ -37,7 +32,9 @@ export const Onboarding: React.FC = () => {
   const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
   const [index, setIndex] = useState(0);
 
-  const onDone = async (values: OnboardingFormData) => {};
+  const onDone = async (values: OnboardingFormData) => {
+    console.log(values);
+  };
 
   /**
    * Navigate to the next onboarding question.
@@ -100,14 +97,25 @@ export const Onboarding: React.FC = () => {
         innerRef={formikRef}
         validationSchema={Yup.object({
           name: Yup.string().required('Name is required'),
-          numberOfKids: Yup.number().integer().min(1).required('Number of kids is required'),
-          kidsDetails: Yup.array().of(
-            Yup.object({
-              name: Yup.string().required('Name is required'),
-              age: Yup.number().required('Age is required'),
-              gender: Yup.string().required('Gender is required')
-            })
-          ),
+          numberOfKids: Yup.number()
+            .integer('Number of kids must be an integer')
+            .typeError('Number of kids must be an integer')
+            .min(1, 'Minimum of 1 kid required')
+            .max(3, 'Maximum of 3 kids allowed')
+            .required('Number of kids is required'),
+          kidsDetails: Yup.array()
+            .of(
+              Yup.object({
+                name: Yup.string().required('Name is required'),
+                age: Yup.number()
+                  .typeError('Age must be a number')
+                  .required('Age is required')
+                  .min(1, 'Minimum age is 1 month')
+                  .max(60, 'Maximum age is 60 months')
+              })
+            )
+            .required('Kids details are required')
+            .min(1, 'Minimum of 1 kid required'),
           energyLevel: Yup.number().required('Energy level is required'),
           time: Yup.number().required('Time is required'),
           activityType: Yup.string().required('Activity type is required')
@@ -116,63 +124,71 @@ export const Onboarding: React.FC = () => {
         validateOnBlur={true}
         validateOnChange={true}
       >
-        <FlatList
-          className='flex-1'
-          ref={flatListRef}
-          data={onboardingQuestions}
-          horizontal={true}
-          pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={Dimensions.get('window').width}
-          decelerationRate='fast'
-          bounces={false}
-          pinchGestureEnabled={false}
-          keyExtractor={(item) => item.key}
-          scrollEnabled={false}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                width: Dimensions.get('window').width,
-                paddingHorizontal: 24,
-                paddingTop: 24
-              }}
-            >
-              <item.component onNext={onNext} />
+        <>
+          <FlatList
+            className='flex-1'
+            ref={flatListRef}
+            data={onboardingQuestions}
+            horizontal={true}
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            snapToInterval={Dimensions.get('window').width}
+            decelerationRate='fast'
+            bounces={false}
+            pinchGestureEnabled={false}
+            keyExtractor={(item) => item.key}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <View
+                style={{
+                  width: Dimensions.get('window').width,
+                  paddingHorizontal: 24,
+                  paddingTop: 24
+                }}
+              >
+                <item.component onNext={onNext} />
+              </View>
+            )}
+          />
+          <View className='flex flex-row items-center justify-end pt-4 pb-6 relative'>
+            <View className='flex flex-row justify-center items-center absolute left-1/2 -translate-x-1/2'>
+              {onboardingQuestions.map((_, i) => (
+                <View
+                  key={`dot-${i.toString()}`}
+                  style={{ opacity: i === index ? 1 : 0.12 }}
+                  className='h-3 w-3 rounded-full bg-primary mr-2'
+                />
+              ))}
             </View>
-          )}
-        />
+            <View className='flex flex-row items-center justify-center pr-6'>
+              <Button
+                variant={'outline'}
+                size={'icon'}
+                className='rounded-xl mr-4'
+                onPress={onPrevious}
+                disabled={index === 0}
+              >
+                <ChevronLeft size={24} className='text-primary' />
+              </Button>
+              {index === onboardingQuestions.length - 1 ? (
+                <SubmitButton size={'sm'} className='h-10'>
+                  <Text>Save</Text>
+                </SubmitButton>
+              ) : (
+                <Button
+                  variant={'default'}
+                  size={'icon'}
+                  className='rounded-xl'
+                  onPress={onNext}
+                  disabled={index === onboardingQuestions.length - 1}
+                >
+                  <ChevronLeft size={24} className='rotate-180 text-primary-foreground' />
+                </Button>
+              )}
+            </View>
+          </View>
+        </>
       </Formik>
-      <View className='flex flex-row items-center justify-end pt-4 pb-6 relative'>
-        <View className='flex flex-row justify-center items-center absolute left-1/2 -translate-x-1/2'>
-          {onboardingQuestions.map((_, i) => (
-            <View
-              key={`dot-${i.toString()}`}
-              style={{ opacity: i === index ? 1 : 0.12 }}
-              className='h-3 w-3 rounded-full bg-primary mr-2'
-            />
-          ))}
-        </View>
-        <View className='flex flex-row items-center justify-center pr-6'>
-          <Button
-            variant={'outline'}
-            size={'icon'}
-            className='rounded-xl mr-4'
-            onPress={onPrevious}
-            disabled={index === 0}
-          >
-            <ChevronLeft size={24} className='text-primary' />
-          </Button>
-          <Button
-            variant={'default'}
-            size={'icon'}
-            className='rounded-xl'
-            onPress={onNext}
-            disabled={index === onboardingQuestions.length - 1}
-          >
-            <ChevronLeft size={24} className='rotate-180 text-primary-foreground' />
-          </Button>
-        </View>
-      </View>
     </View>
   );
 };
