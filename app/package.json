@@ -27,6 +27,7 @@
     "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
+    "@rn-primitives/alert-dialog": "^1.1.0",
     "@rn-primitives/avatar": "^1.1.0",
     "@rn-primitives/checkbox": "^1.1.0",
     "@rn-primitives/label": "^1.1.0",

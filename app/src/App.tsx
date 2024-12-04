@@ -1,5 +1,6 @@
 import type React from 'react';
 import '../global.css'; // Import Tailwind CSS styles for NativeWind functionality. Do not remove.
+import { PortalHost } from '@rn-primitives/portal';
 import { useFonts } from 'expo-font';
 import { hideAsync, preventAutoHideAsync } from 'expo-splash-screen';
 import { useCallback, useEffect } from 'react';
@@ -38,6 +39,7 @@ export const App: React.FC = () => {
         <GestureHandlerRootView>
           <ThemeProvider>
             <AppRoutes />
+            <PortalHost />
           </ThemeProvider>
         </GestureHandlerRootView>
       </SafeAreaView>
