@@ -8,6 +8,7 @@ import {
   ContextualQuestionEnergyLevel,
   ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
+  ContextualQuestionSkill,
   ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
@@ -25,6 +26,7 @@ const onboardingQuestions = [
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'time', component: ContextualQuestionPlayTime },
   { key: 'activityType', component: ContextualQuestionActivityChoice },
+  { key: 'skill', component: ContextualQuestionSkill },
   { key: 'camera', component: ContextualQuestionCamera },
   { key: 'detectedItems', component: ContextualQuestionDetectedItems }
 ];

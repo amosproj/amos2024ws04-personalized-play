@@ -1,0 +1,27 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "auth": {
+      "port": 2000
+    },
+    "functions": {
+      "port": 2001
+    },
+    "firestore": {
+      "port": 2002
+    },
+    "ui": {
+      "enabled": true,
+      "port": 2003
+    },
+    "singleProjectMode": true
+  },
+  "functions": {
+    "source": ".",
+    "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"],
+    "runtime": "nodejs20"
+  }
+}
