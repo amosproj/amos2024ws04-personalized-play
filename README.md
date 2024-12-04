@@ -48,15 +48,10 @@ Below is the organized structure of the project files and directories with sorte
 |
 ├── 📁 .github                    # GitHub workflows, issue, and PR templates
 ├── 📁 app                        # React Native mobile app code
-├── 📁 flows                      # Firebase genkit flows
-├── 📁 functions                  # Firebase functions code
+├── 📁 backend                    # Firebase functions and genkit flows
 ├── 📁 media                      # README media
-├── 📄 .firebaserc                # Firebase configuration file
 ├── 📄 .gitignore                 
 ├── 📄 biome.json                 # Code lint and format config
-├── 📄 firebase.json              # Firebase service config
-├── 📄 firestore.indexes.json     # Firestore index definitions
-├── 📄 firestore.rules            # Firestore security rules
 ├── 📄 LICENSE                    
 ├── 📄 README.md                  # Project overview and setup
 |
@@ -156,13 +151,13 @@ Copy example environment files to configure your environment.
   
   ```
 
-  - Repeat this command in directories like `flows`, `functions`, and `app` if they have their own `.env.example` files.
+  - Repeat this command in directories like `backend` and `app` if they have their own `.env.example` files.
   - Customize each `.env` file as necessary for your local setup.
 
 
 ### Install Dependencies
 
-Navigate to each directory (`flows`, `functions`, and `app`) and install dependencies.
+Navigate to each directory (`backend` and `app`) and install dependencies.
 
 - **Command**:
   
@@ -182,9 +177,9 @@ To test the mobile interface, download the Expo Developer build from [Expo.dev](
 
 Each component has specific commands to start in development mode. Follow these steps:
 
-#### Start the Flows
+#### Start the backend
 
-- **Command** (from the `flows` directory):
+- **Command** (from the `backend` directory):
   
   ```bash
   
@@ -192,7 +187,12 @@ Each component has specific commands to start in development mode. Follow these 
   
   ```
 
-  This initiates real-time compilation for Firebase Genkit flows, ideal during active development.
+ This command starts all required processes, including:
+
+  - Real-time compilation for Firebase Genkit flows.
+  - Firebase functions in development mode with immediate application of code changes.
+  - Firebase emulators to test backend services locally.
+  - The Genkit Developer UI for managing and testing flows.
 
 - **Production Option**:
   
@@ -202,60 +202,7 @@ Each component has specific commands to start in development mode. Follow these 
   
   ```
 
-  Use this command to build flows without real-time updates if you’re not actively developing.
-
-
-#### Start the Functions
-
-- **Command** (from the `functions` directory):
-  
-  ```bash
-  
-  npm run dev
-  
-  ```
-
-  Runs Firebase functions in development mode, applying code changes immediately.
-
-- **Production Option**:
-  
-  ```bash
-  
-  npm run build
-  
-  ```
-
-  Use this command to build functions for a stable production environment.
-
-
-#### Start Firebase Emulators
-
-To emulate Firebase services locally, initiate the emulators.
-
-- **Command** (from the root directory):
-  
-  ```bash
-  
-  GENKIT_ENV=dev firebase emulators:start --inspect-functions
-  
-  ```
-
-  This command launches Firebase emulators, allowing you to test backend services locally without cloud deployment.
-
-
-#### Start the Genkit Developer UI
-
-From the `flows` directory, launch the Genkit Developer UI.
-
-- **Command**:
-  
-  ```bash
-  
-  npm run genkit:start
-  
-  ```
-
-  This provides a visual interface for managing and testing flows, ideal for quickly validating your configurations.
+  Use this command to build the backend without real-time updates if you’re not actively developing.
 
 
 #### Start the Expo Dev Server
