@@ -5,7 +5,7 @@ import type { AppNavigation } from '@src/types';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
 import { useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 export const ContextualQuestionSkill: React.FC = () => {
   const { navigate } = useNavigation<AppNavigation>();
@@ -23,6 +23,14 @@ export const ContextualQuestionSkill: React.FC = () => {
     );
   });
   const handleCheckboxChange = (item: string, value: boolean) => {
+    const selectedCount = Object.values(checkedItems).filter((isChecked) => isChecked).length;
+
+    // Prevent unchecking the last checkbox
+    if (!value && selectedCount <= 1) {
+      Alert.alert('Validation Error', 'At least one skill must be selected.');
+      return;
+    }
+
     setCheckedItems((prev) => ({
       ...prev,
       [item]: value

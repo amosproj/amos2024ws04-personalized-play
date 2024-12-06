@@ -96,7 +96,8 @@ export const Onboarding: React.FC = () => {
           kidsDetails: [],
           energyLevel: 1,
           time: 10,
-          activityType: 'chores'
+          activityType: 'chores',
+          skill: []
         }}
         innerRef={formikRef}
         validationSchema={Yup.object({
@@ -124,7 +125,8 @@ export const Onboarding: React.FC = () => {
           time: Yup.number().required('Time is required'),
           activityType: Yup.string().required('Activity type is required'),
           camera: Yup.string().required('Picture is required.'),
-          detectedItems: Yup.string().required('test')
+          detectedItems: Yup.string().required('test'),
+          skill: Yup.array().required('Skill is required')
         })}
         onSubmit={onDone}
         validateOnBlur={true}
