@@ -12,10 +12,13 @@ import {
   ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
+import { Collections, fireAuth, fireStore } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
+import { doc, setDoc, collection, } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
 
@@ -35,9 +38,62 @@ export const Onboarding: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
   const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(false); // Loading state
+
+  const [user] = useAuthState(fireAuth);
 
   const onDone = async (values: OnboardingFormData) => {
-    console.log(values);
+    setLoading(true); // Start loading
+    try {
+      if (!user) {
+        console.error('User not authenticated');
+        return;
+      }
+      const userId = user.uid;
+
+      // Reference to the user's document in Firestore
+      const userDocRef = doc(fireStore, Collections.Users, userId);
+
+      // Save the user's data (e.g., displayName)
+      await setDoc(userDocRef, { displayName: values.name }, { merge: true });
+
+      // Reference to the Activities subcollection
+      const activityCollectionRef = collection(
+        fireStore,
+        Collections.Users,
+        userId,
+        Collections.Activities
+      );
+
+      // Save the activities data (only once)
+      const activityDocRef = doc(activityCollectionRef); // Auto-generate an ID for the activity
+      await setDoc(activityDocRef, {
+        activityType: values.activityType,
+        energyLevel: values.energyLevel,
+        time: values.time,
+        createdAt: new Date().toISOString() // Optional: Add a timestamp
+      });
+      console.log('Activities data saved successfully.');
+
+      // Reference to the Kids subcollection
+      const kidsCollectionRef = collection(fireStore, Collections.Users, userId, Collections.Kids);
+
+      // Add each kid's data (loop only for kids)
+      for (const kid of values.kidsDetails) {
+        const kidDocRef = doc(kidsCollectionRef); // Auto-generate an ID
+        await setDoc(kidDocRef, {
+          name: kid.name,
+          age: kid.age,
+          biologicalSex: kid.gender,
+          createdAt: new Date().toISOString() // Optional: Add a timestamp
+        });
+        console.log(`Kid data saved successfully: ${kid.name}, ID: ${kidDocRef.id}`);
+      }
+    } catch (error) {
+      console.error('Error saving data to Firestore:', error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
   };
 
   /**
