@@ -18,6 +18,8 @@ export interface OnboardingFormData {
     healthConsiderations: {
       isConsidered: string;
       considerations: Array<string>;
+      chronicIllness: string;
+      other: string;
     };
   }>;
   energyLevel: number;
