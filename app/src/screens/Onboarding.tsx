@@ -43,21 +43,21 @@ export const Onboarding: React.FC = () => {
       }
       const userId = user.uid;
 
-      // Consolidate all the onboarding data into a single object
-      const userData = {
-        name: values.name,
-        numberOfKids: values.numberOfKids,
-        kidsDetails: values.kidsDetails,
-        energyLevel: values.energyLevel,
-        time: values.time,
-        activityType: values.activityType
-      };
+      // Consolidate all the onboarding data into an ordered array
+      const userData = [
+        { name: values.name },
+        { numberOfKids: values.numberOfKids },
+        { kidsDetails: values.kidsDetails },
+        { energyLevel: values.energyLevel },
+        { time: values.time },
+        { activityType: values.activityType }
+      ];
 
       // Reference to the user's document in Firestore
       const userDocRef = doc(fireStore, Collections.Users, userId);
 
-      // Save the consolidated data to the user's document
-      await setDoc(userDocRef, userData);
+      // Save the array to the user's document
+      await setDoc(userDocRef, { userData });
 
       console.log('Data saved successfully under user document:', userData);
     } catch (error) {
