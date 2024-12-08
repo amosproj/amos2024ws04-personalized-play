@@ -128,7 +128,7 @@ export const Onboarding: React.FC = () => {
           activityType: Yup.string().required('Activity type is required'),
           displayItems: Yup.array().of(Yup.string()) ,
           camera: Yup.string().required('Picture is required.'),
-          detectedItems: Yup.string(),
+          detectedItems: Yup.array(),
           skill: Yup.array().of(Yup.string()) 
         })}
         onSubmit={onDone}
@@ -157,7 +157,7 @@ export const Onboarding: React.FC = () => {
                   paddingTop: 24
                 }}
               >
-                <item.component onNext={onNext} />
+                <item.component onNext={onNext} component={onboardingQuestions[index].key} />
               </View>
             )}
           />

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
   View,
   Image,
@@ -7,37 +7,44 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
+import { Loading } from '@src/screens';
+import { httpsCallable } from 'firebase/functions';
 import { useFormikContext } from 'formik';
 import { Button, Text } from '@shadcn/components';
 import { X } from 'lucide-react-native';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import type { ContextualQuestionProps } from '@src/types';
+import { fireFunction } from '@src/constants';
+import RNFS from 'react-native-fs';
 
-export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuestionProps> = ({ onNext }) => {
-  const { setFieldValue, values } = useFormikContext<{ camera: string; detectedItems: string }>();
+export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuestionProps> = ({ onNext, component }) => {
+  // Get the formik context and values
+  const { setFieldValue, values } = useFormikContext<{ camera: string; detectedItems: any }>();
 
-  const base64Image = values.camera;
+  // State for loading and items
+  const [loading, setLoading] = useState(false);
 
-  const [items, setItems] = useState<string[]>([
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-    'Item 6',
-  ]);
-
+  // State for items and new item input
+  const [items, setItems] = useState<string[]>([]);
   const [newItem, setNewItem] = useState<string>('');
+
+  // Get the image URI from the form values
+  const image_uri = values.camera;
+  
+  // Ref for the bottom sheet
   const bottomSheetRef = useRef<BottomSheet>(null);
 
+  // Function to handle changes in the bottom sheet index
   const handleSheetChanges = useCallback((index: number) => {
     console.log('Bottom sheet index changed:', index);
   }, []);
 
+  // Function to open the bottom sheet
   const openBottomSheet = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);
 
+  // Function to add an item to the list
   const addItem = () => {
     if (newItem.trim()) {
       setItems((prevItems) => [...prevItems, newItem.trim()]);
@@ -45,15 +52,62 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
     }
   };
 
+  // Function to remove an item from the list
   const removeItem = (index: number) => {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
-  return (
+  // Function to get the list of items from the image using the Firebase function
+  const getItemsList = async () => {
+
+    // Set loading to true - show loading page
+    setLoading(true);
+    try {
+
+      // Read the image file as base64
+      const base64Image = await RNFS.readFile(image_uri, 'base64');
+
+      // Call the itemsInImage function from the Firebase function
+      const itemsInImage = httpsCallable(fireFunction, 'itemsInImage');
+      const result: any = await itemsInImage({ image: base64Image });
+
+      // Set the items in the state
+      setItems(result.data || []);
+
+    } catch (error) {
+      console.error('Error fetching items:', error);
+    } finally {
+      // Set loading to false - hide loading page
+      setLoading(false);
+    }
+  };
+
+  // Trigger an action whenever the index changes - Used to identify if the component is displayed
+  useEffect(() => {
+
+    // If the component is displayed, get the list of items
+    if (component === 'displayItems') {
+      getItemsList();
+    }
+  }, [component]); 
+
+  // Function to save the items to the formik and continue to the next
+  const saveItemsAndContinue = () => {
+    setFieldValue('detectedItems', items);
+    onNext();
+  }
+
+  return loading ? (
+    <Loading heading="Loading..." description="Fetching data, please wait." />
+  ) : (
     <View style={styles.container}>
       {/* Image and Title */}
       <View style={styles.imageContainer}>
-        <Image source={{ uri: base64Image }} style={styles.image} />
+        {image_uri ? (
+          <Image source={{ uri: image_uri }} style={styles.image} />
+        ) : (
+          <Text>No image available</Text> 
+        )}
         <Text style={styles.title}>Items Detected</Text>
       </View>
 
@@ -74,12 +128,12 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
       {/* Confirmation Question */}
       <View style={styles.confirmationContainer}>
         <Text style={styles.confirmationText}>Do these Items look right?</Text>
-        <Button className="w-full" size="lg" onPress={onNext}>
+        <Button className="w-full" size="lg" onPress={saveItemsAndContinue}>
           <Text>Good to go</Text>
         </Button>
       </View>
 
-      {/* Edit Items Button */}
+      {/* Edit Items Button  */}
       <Button
         className="w-full"
         size="lg"
