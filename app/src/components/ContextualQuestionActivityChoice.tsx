@@ -1,13 +1,12 @@
 import { Text } from '@shadcn/components';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
-import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
+
 import type { ContextualQuestionProps } from '@src/types';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
-import { CookingPot, Gamepad2, Info } from 'lucide-react-native';
+import { CookingPot, Gamepad2 } from 'lucide-react-native';
 import { View } from 'react-native';
-
-iconWithClassName(Info);
+import { InfoAlertIcon } from './InfoAlert';
 
 export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps> = (props) => {
   const { onNext } = props;
@@ -31,7 +30,15 @@ export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps>
       </View>
       <View className='flex flex-1 flex-col items-stretch gap-y-6'>
         <View className='flex flex-col items-center'>
-          <Text className='text-2xl text-center font-medium mb-4'>Select an activity type</Text>
+          <View className='flex flex-row gap-x-3 items-center justify-center mb-4'>
+            <Text className='text-2xl text-center font-medium'>Select an activity type</Text>
+            <InfoAlertIcon
+              title={'What does this mean?'}
+              description={
+                'Whether you are in the mood to tackle chores or enjoy some free play, select what suits you best!'
+              }
+            />
+          </View>
           <Text className='text-lg text-center'>
             Are you looking to do some chores or play today?
           </Text>

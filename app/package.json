@@ -28,6 +28,7 @@
     "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
+    "@rn-primitives/alert-dialog": "^1.1.0",
     "@rn-primitives/avatar": "^1.1.0",
     "@rn-primitives/checkbox": "^1.1.0",
     "@rn-primitives/label": "^1.1.0",
@@ -45,6 +46,7 @@
     "expo-dev-client": "~4.0.29",
     "expo-device": "~6.0.2",
     "expo-font": "~12.0.10",
+    "expo-image-picker": "~15.0.7",
     "expo-splash-screen": "~0.27.7",
     "expo-status-bar": "~1.12.1",
     "expo-updates": "~0.25.27",
@@ -70,7 +72,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "1.9.4",
     "@types/react": "~18.2.45",
     "dotenv": "^16.4.5",
     "typescript": "~5.3.3"
