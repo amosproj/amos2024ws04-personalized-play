@@ -19,17 +19,17 @@
     "biome:check": "biome check"
   },
   "dependencies": {
-    "@genkit-ai/firebase": "^0.9.6",
-    "@genkit-ai/vertexai": "^0.9.6",
+    "@genkit-ai/firebase": "^0.9.7",
+    "@genkit-ai/vertexai": "^0.9.7",
     "express": "^4.21.1",
     "firebase-admin": "^12.6.0",
     "firebase-functions": "^6.0.1",
-    "genkit": "^0.9.6"
+    "genkit": "^0.9.7"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "firebase-functions-test": "^3.1.0",
-    "genkit-cli": "^0.9.6",
+    "genkit-cli": "^0.9.7",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.19.2",
     "turbo": "^2.3.3",
