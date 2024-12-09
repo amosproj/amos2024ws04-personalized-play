@@ -96,7 +96,6 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
     if (component === 'displayItems') {
       getItemsList();
     }
-
   }, [component]);
 
   // Function to save the items to the formik and continue to the next
