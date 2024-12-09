@@ -11,7 +11,7 @@ import {
 } from '@src/components';
 import { Collections, fireAuth, fireStore } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
-import { doc, setDoc, collection, } from 'firebase/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
