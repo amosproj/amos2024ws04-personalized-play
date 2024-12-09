@@ -12,10 +12,13 @@ import {
   ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
+import { Collections, fireAuth, fireStore } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
+import { Timestamp, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
 
@@ -35,9 +38,61 @@ export const Onboarding: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
   const [index, setIndex] = useState(0);
+  const [user] = useAuthState(fireAuth);
 
+  /**
+   * Called when the user is done with the onboarding flow.
+   * @param values - The form values containing the user's input.
+   * @returns A promise that resolves when the data is saved to Firestore.
+   * @throws An error if any of the operations fail.
+   */
   const onDone = async (values: OnboardingFormData) => {
-    console.log(values);
+    const { name, kidsDetails, activityType, energyLevel, time } = values;
+    try {
+      if (!user) {
+        console.error('User not authenticated');
+        return;
+      }
+      const userId = user.uid;
+      // Update the user's data (e.g., displayName)
+      const userDocRef = doc(fireStore, Collections.Users, userId);
+      await updateDoc(userDocRef, { displayName: name });
+      // Add each kid's data (loop only for kids)
+      const kidsCollectionRef = collection(fireStore, Collections.Users, userId, Collections.Kids);
+      const kidDocs = kidsDetails.map((kid) => {
+        const { name, age, gender } = kid;
+        return {
+          name: name,
+          age: age,
+          biologicalSex: gender,
+          createdAt: Timestamp.now()
+        };
+      });
+      // Save the activities data (only once)
+      const activityCollectionRef = collection(
+        fireStore,
+        Collections.Users,
+        userId,
+        Collections.Activities
+      );
+      const activityDocRef = doc(activityCollectionRef);
+      const activityDoc = {
+        activityType: activityType,
+        energyLevel: energyLevel,
+        time: time,
+        createdAt: Timestamp.now()
+      };
+      // Use batch to save all data at once
+      const batch = writeBatch(fireStore);
+      batch.set(activityDocRef, activityDoc);
+      for (const kidDoc of kidDocs) {
+        const kidDocRef = doc(kidsCollectionRef);
+        batch.set(kidDocRef, kidDoc);
+      }
+      await batch.commit();
+    } catch (error) {
+      console.error('Error saving data to Firestore:', error);
+    }
   };
 
   /**
