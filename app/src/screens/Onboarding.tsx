@@ -11,7 +11,7 @@ import {
 } from '@src/components';
 import { Collections, fireAuth, fireStore } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { Timestamp, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -32,61 +32,60 @@ export const Onboarding: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
   const [index, setIndex] = useState(0);
-  const [loading, setLoading] = useState(false); // Loading state
-
   const [user] = useAuthState(fireAuth);
 
+  /**
+   * Called when the user is done with the onboarding flow.
+   * @param values - The form values containing the user's input.
+   * @returns A promise that resolves when the data is saved to Firestore.
+   * @throws An error if any of the operations fail.
+   */
   const onDone = async (values: OnboardingFormData) => {
-    setLoading(true); // Start loading
+    const { name, kidsDetails, activityType, energyLevel, time } = values;
     try {
       if (!user) {
         console.error('User not authenticated');
         return;
       }
       const userId = user.uid;
-
-      // Reference to the user's document in Firestore
+      // Update the user's data (e.g., displayName)
       const userDocRef = doc(fireStore, Collections.Users, userId);
-
-      // Save the user's data (e.g., displayName)
-      await setDoc(userDocRef, { displayName: values.name }, { merge: true });
-
-      // Reference to the Activities subcollection
+      await updateDoc(userDocRef, { displayName: name });
+      // Add each kid's data (loop only for kids)
+      const kidsCollectionRef = collection(fireStore, Collections.Users, userId, Collections.Kids);
+      const kidDocs = kidsDetails.map((kid) => {
+        const { name, age, gender } = kid;
+        return {
+          name: name,
+          age: age,
+          biologicalSex: gender,
+          createdAt: Timestamp.now()
+        };
+      });
+      // Save the activities data (only once)
       const activityCollectionRef = collection(
         fireStore,
         Collections.Users,
         userId,
         Collections.Activities
       );
-
-      // Save the activities data (only once)
-      const activityDocRef = doc(activityCollectionRef); // Auto-generate an ID for the activity
-      await setDoc(activityDocRef, {
-        activityType: values.activityType,
-        energyLevel: values.energyLevel,
-        time: values.time,
-        createdAt: new Date().toISOString() // Optional: Add a timestamp
-      });
-      console.log('Activities data saved successfully.');
-
-      // Reference to the Kids subcollection
-      const kidsCollectionRef = collection(fireStore, Collections.Users, userId, Collections.Kids);
-
-      // Add each kid's data (loop only for kids)
-      for (const kid of values.kidsDetails) {
-        const kidDocRef = doc(kidsCollectionRef); // Auto-generate an ID
-        await setDoc(kidDocRef, {
-          name: kid.name,
-          age: kid.age,
-          biologicalSex: kid.gender,
-          createdAt: new Date().toISOString() // Optional: Add a timestamp
-        });
-        console.log(`Kid data saved successfully: ${kid.name}, ID: ${kidDocRef.id}`);
+      const activityDocRef = doc(activityCollectionRef);
+      const activityDoc = {
+        activityType: activityType,
+        energyLevel: energyLevel,
+        time: time,
+        createdAt: Timestamp.now()
+      };
+      // Use batch to save all data at once
+      const batch = writeBatch(fireStore);
+      batch.set(activityDocRef, activityDoc);
+      for (const kidDoc of kidDocs) {
+        const kidDocRef = doc(kidsCollectionRef);
+        batch.set(kidDocRef, kidDoc);
       }
+      await batch.commit();
     } catch (error) {
       console.error('Error saving data to Firestore:', error);
-    } finally {
-      setLoading(false); // Stop loading
     }
   };
 
