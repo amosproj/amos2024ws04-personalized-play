@@ -23,6 +23,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
 
+export let activityID: string;
+
 const onboardingQuestions = [
   { key: 'name', component: ContextualQuestionUserName },
   { key: 'numberOfKids', component: ContextualQuestionNumberKids },
@@ -84,6 +86,11 @@ export const Onboarding: React.FC = () => {
         time: time,
         createdAt: Timestamp.now()
       };
+
+      //Kubra Changes
+      activityID=activityDocRef.id;;
+
+      
       // Use batch to save all data at once
       const batch = writeBatch(fireStore);
       batch.set(activityDocRef, activityDoc);
