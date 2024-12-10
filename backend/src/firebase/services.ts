@@ -7,7 +7,8 @@ import { genkit } from 'genkit';
 // firebase services
 const fireApp = initializeApp();
 const fireAuth = getAuth(fireApp);
-const fireStore = getFirestore(fireApp).settings({ ignoreUndefinedProperties: true });
+const fireStore = getFirestore(fireApp);
+fireStore.settings({ ignoreUndefinedProperties: true });
 
 // firebase ai services
 const fireGenkit = genkit({

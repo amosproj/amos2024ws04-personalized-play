@@ -11,13 +11,13 @@ export interface Kid {
   id?: string;
   name: string;
   age: number;
-  biologicalSex: string;
+  biologicalSex: 'male' | 'female' | 'other';
   healthConsiderations: string[];
 }
 
 export interface Activity {
   id?: string;
-  energyLevel: string;
+  energyLevel: 'low' | 'medium' | 'high';
   time: number;
   type: string;
   objects: string[];
