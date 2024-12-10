@@ -1,13 +1,11 @@
-import { Button, Text, Input } from '@shadcn/components';
-import { View, TextInput } from 'react-native';
-import { ThumbsUp, ThumbsDown, Brain, Home, Heart } from '@shadcn/icons';
-import React, { useState } from 'react';
+import { Button, Text } from '@shadcn/components';
+import { Brain, Heart, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
 import LottieView from 'lottie-react-native';
+import type React from 'react';
+import { useState } from 'react';
+import { TextInput, View } from 'react-native';
 
-interface FeedbackProps {
-}
-
-export const Feedback: React.FC<FeedbackProps> = () => {
+export const Feedback: React.FC = () => {
   const [favourite, setFavourite] = useState<boolean>(false);
   const [message, setMessage] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
@@ -50,7 +48,7 @@ export const Feedback: React.FC<FeedbackProps> = () => {
               <View className='flex flex-row w-full gap-x-5'>
                 <Button
                   className='flex flex-row gap-x-5 flex-1'
-                  variant={"default"}
+                  variant={'default'}
                   onPress={() => handleFeedback('positive')}
                 >
                   <ThumbsUp size={24} className='text-primary-foreground' />
@@ -59,7 +57,7 @@ export const Feedback: React.FC<FeedbackProps> = () => {
 
                 <Button
                   className='flex flex-row gap-x-5 flex-1'
-                  variant={"outline"}
+                  variant={'outline'}
                   onPress={() => handleFeedback('negative')}
                 >
                   <ThumbsDown size={24} className='text-secondary-foreground' />
@@ -86,18 +84,15 @@ export const Feedback: React.FC<FeedbackProps> = () => {
               <>
                 <TextInput
                   className='w-full p-4 border border-primary rounded-lg min-h-[120px]'
-                  multiline
+                  multiline={true}
                   numberOfLines={4}
-                  placeholder="Write your feedback here..."
+                  placeholder='Write your feedback here...'
                   value={message}
                   onChangeText={setMessage}
                 />
 
                 <View className='flex flex-row justify-end mt-4'>
-                  <Button
-                    className=''
-                    onPress={handleSubmit}
-                  >
+                  <Button className='' onPress={handleSubmit}>
                     <Text className='text-primary-foreground'>Submit</Text>
                   </Button>
                 </View>
@@ -113,18 +108,10 @@ export const Feedback: React.FC<FeedbackProps> = () => {
         </View>
 
         <View className='w-full flex flex-row justify-around'>
-          <Button
-            variant={'outline'}
-            size={'icon'}
-            className='rounded-full p-10'
-          >
+          <Button variant={'outline'} size={'icon'} className='rounded-full p-10'>
             <Brain size={24} className='text-secondary-foreground' />
           </Button>
-          <Button
-            variant={'outline'}
-            size={'icon'}
-            className='rounded-full p-10'
-          >
+          <Button variant={'outline'} size={'icon'} className='rounded-full p-10'>
             <Home size={24} className='text-secondary-foreground' />
           </Button>
           <Button
@@ -133,7 +120,10 @@ export const Feedback: React.FC<FeedbackProps> = () => {
             className='rounded-full p-10'
             onPress={() => setFavourite(!favourite)}
           >
-            <Heart size={24} className={favourite ? 'text-primary-foreground' : 'text-secondary-foreground'} />
+            <Heart
+              size={24}
+              className={favourite ? 'text-primary-foreground' : 'text-secondary-foreground'}
+            />
           </Button>
         </View>
       </View>
