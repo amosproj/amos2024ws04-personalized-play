@@ -79,3 +79,5 @@ GoogleService-Info.plist
 .genkit
 
 .turbo
+
+backend/firebase
