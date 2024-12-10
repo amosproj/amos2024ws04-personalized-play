@@ -11,7 +11,7 @@
     "build": "tsc & tsc-alias",
     "ts:watch": "tsc -w",
     "ts-alias:watch": "tsc-alias -w",
-    "firebase": "npx genkit start -- firebase emulators:start --inspect-functions",
+    "firebase": "npx genkit start -- firebase emulators:start --inspect-functions --import firebase --export-on-exit firebase",
     "dev": "turbo run ts:watch ts-alias:watch firebase --parallel --ui tui",
     "deploy": "firebase deploy --only functions",
     "biome:lint": "biome lint --write .",
