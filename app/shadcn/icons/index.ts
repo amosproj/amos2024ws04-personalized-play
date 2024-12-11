@@ -10,3 +10,8 @@ export * from "./Frown";
 export * from "./Angry";
 export * from './ChevronLeft';
 export * from './Camera';
+export * from './ThumbsUp';
+export * from './ThumbsDown';
+export * from './Brain';
+export * from './Home';
+export * from './Heart';
