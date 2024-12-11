@@ -88,9 +88,8 @@ export const Onboarding: React.FC = () => {
       };
 
       //Kubra Changes
-      activityID=activityDocRef.id;;
+      activityID = activityDocRef.id;
 
-      
       // Use batch to save all data at once
       const batch = writeBatch(fireStore);
       batch.set(activityDocRef, activityDoc);
