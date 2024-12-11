@@ -3,6 +3,9 @@ import { ChevronLeft } from '@shadcn/icons';
 import {
   ContextualQuestionActivityChoice,
   ContextualQuestionAgeKids,
+  ContextualQuestionCamera,
+  ContextualQuestionDetectedItems,
+  ContextualQuestionDisplayItemsIdentified,
   ContextualQuestionEnergyLevel,
   ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
@@ -10,10 +13,13 @@ import {
   ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
+import { Collections, fireAuth, fireStore } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
+import { Timestamp, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
 
@@ -24,6 +30,9 @@ const onboardingQuestions = [
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'time', component: ContextualQuestionPlayTime },
   { key: 'activityType', component: ContextualQuestionActivityChoice },
+  { key: 'camera', component: ContextualQuestionCamera },
+  { key: 'detectedItems', component: ContextualQuestionDetectedItems },
+  { key: 'displayItems', component: ContextualQuestionDisplayItemsIdentified },
   { key: 'skill', component: ContextualQuestionSkill }
 ];
 
@@ -31,9 +40,61 @@ export const Onboarding: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
   const [index, setIndex] = useState(0);
+  const [user] = useAuthState(fireAuth);
 
+  /**
+   * Called when the user is done with the onboarding flow.
+   * @param values - The form values containing the user's input.
+   * @returns A promise that resolves when the data is saved to Firestore.
+   * @throws An error if any of the operations fail.
+   */
   const onDone = async (values: OnboardingFormData) => {
-    console.log(values);
+    const { name, kidsDetails, activityType, energyLevel, time } = values;
+    try {
+      if (!user) {
+        console.error('User not authenticated');
+        return;
+      }
+      const userId = user.uid;
+      // Update the user's data (e.g., displayName)
+      const userDocRef = doc(fireStore, Collections.Users, userId);
+      await updateDoc(userDocRef, { displayName: name });
+      // Add each kid's data (loop only for kids)
+      const kidsCollectionRef = collection(fireStore, Collections.Users, userId, Collections.Kids);
+      const kidDocs = kidsDetails.map((kid) => {
+        const { name, age, gender } = kid;
+        return {
+          name: name,
+          age: age,
+          biologicalSex: gender,
+          createdAt: Timestamp.now()
+        };
+      });
+      // Save the activities data (only once)
+      const activityCollectionRef = collection(
+        fireStore,
+        Collections.Users,
+        userId,
+        Collections.Activities
+      );
+      const activityDocRef = doc(activityCollectionRef);
+      const activityDoc = {
+        activityType: activityType,
+        energyLevel: energyLevel,
+        time: time,
+        createdAt: Timestamp.now()
+      };
+      // Use batch to save all data at once
+      const batch = writeBatch(fireStore);
+      batch.set(activityDocRef, activityDoc);
+      for (const kidDoc of kidDocs) {
+        const kidDocRef = doc(kidsCollectionRef);
+        batch.set(kidDocRef, kidDoc);
+      }
+      await batch.commit();
+    } catch (error) {
+      console.error('Error saving data to Firestore:', error);
+    }
   };
 
   /**
@@ -53,7 +114,10 @@ export const Onboarding: React.FC = () => {
         // Get the error message for the current field
         const { error } = formikRef.current.getFieldMeta(onboardingQuestions[index].key);
         // If the field is invalid, do not move to the next question
-        if (error) return;
+        if (error) {
+          console.log(error);
+          return;
+        }
         // Scroll to the next question
         flatListRef.current.scrollToIndex({ index: index + 1, animated: true });
         // Update the current index
@@ -92,7 +156,8 @@ export const Onboarding: React.FC = () => {
           kidsDetails: [],
           energyLevel: 1,
           time: 10,
-          activityType: 'chores'
+          activityType: 'chores',
+          displayItems: []
         }}
         innerRef={formikRef}
         validationSchema={Yup.object({
@@ -118,7 +183,11 @@ export const Onboarding: React.FC = () => {
             .min(1, 'Minimum of 1 kid required'),
           energyLevel: Yup.number().required('Energy level is required'),
           time: Yup.number().required('Time is required'),
-          activityType: Yup.string().required('Activity type is required')
+          activityType: Yup.string().required('Activity type is required'),
+          displayItems: Yup.array().of(Yup.string()),
+          camera: Yup.string().required('Picture is required.'),
+          detectedItems: Yup.array(),
+          skill: Yup.array().of(Yup.string())
         })}
         onSubmit={onDone}
         validateOnBlur={true}
@@ -146,7 +215,7 @@ export const Onboarding: React.FC = () => {
                   paddingTop: 24
                 }}
               >
-                <item.component onNext={onNext} />
+                <item.component onNext={onNext} component={onboardingQuestions[index].key} />
               </View>
             )}
           />
@@ -164,7 +233,7 @@ export const Onboarding: React.FC = () => {
               <Button
                 variant={'outline'}
                 size={'icon'}
-                className='rounded-xl mr-4'
+                className='rounded-xl mr-2'
                 onPress={onPrevious}
                 disabled={index === 0}
               >
