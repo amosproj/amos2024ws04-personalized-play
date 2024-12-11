@@ -1,4 +1,6 @@
-import { Label, Text } from '@shadcn/components';
+import { Button, Label, Text } from '@shadcn/components';
+//import { RadioGroup, RadioGroupItem } from "@shadcn/components/ui/radio-group";
+import { Checkbox } from '@shadcn/components/ui/checkbox';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import type { ContextualQuestionProps, OnboardingFormData } from '@src/types';
@@ -9,18 +11,45 @@ import {
 } from '@tabler/icons-react-native';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
-import { Baby, Cake, IdCard } from 'lucide-react-native';
-import { useEffect } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Baby, Cake, IdCard, Stethoscope } from 'lucide-react-native';
+import { useEffect, useState } from 'react';
+import { Modal, ScrollView, View } from 'react-native';
 import { TextInput } from './FormikTextInput';
 
 iconWithClassName(IdCard);
 iconWithClassName(Baby);
 iconWithClassName(Cake);
 iconWithClassName(IconGenderMale);
+iconWithClassName(Stethoscope);
 
-export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (props) => {
+const healthConsiderationsOptions = [
+  'Developmental delays',
+  'Autism spectrum',
+  'ADHD',
+  'Speech or language challenges',
+  'Hearing impairment',
+  'Vision impairment',
+  'Motor skill challenges',
+  'Physical disabilities or limitations',
+  'Emotional or behavioral concerns'
+];
+
+export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = () => {
   const { setFieldValue, values } = useFormikContext<OnboardingFormData>();
+
+  //New changes
+  const [modalVisible, setModalVisible] = useState(false);
+  const [showChronic, setShowChronic] = useState(false);
+  const [selectedConsiderations, setSelectedConsiderations] = useState<Array<string>>([]);
+  const toggleConsideration = (consideration: string) => {
+    setSelectedConsiderations((prev) =>
+      prev.includes(consideration)
+        ? prev.filter((item) => item !== consideration)
+        : [...prev, consideration]
+    );
+  };
+
+  //
 
   useEffect(() => {
     if (values.numberOfKids === 0) return;
@@ -85,6 +114,102 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = (pro
                       </ToggleGroupItem>
                     </ToggleGroup>
                   </View>
+                </View>
+                <View className='mt-2 gap-3'>
+                  <View className='flex items-center flex-row mb-1'>
+                    <Stethoscope className='text-secondary-foreground mr-2' size={20} />
+                    <Label>Health Considerations</Label>
+                  </View>
+
+                  <Text className='primary'>
+                    Are there any health considerations for your child that you'd like us to know?
+                  </Text>
+                  <ToggleGroup
+                    variant='outline'
+                    value={values.kidsDetails[index]?.healthConsiderations?.isConsidered ?? ''}
+                    onValueChange={(value) =>
+                      setFieldValue(`kidsDetails.${index}.healthConsiderations.isConsidered`, value)
+                    }
+                    type='single'
+                    className='flex flex-row gap-x-2 justify-start items-center'
+                  >
+                    <ToggleGroupItem
+                      onPress={() => setModalVisible(true)}
+                      value='Yes'
+                      className='rounded-xl'
+                    >
+                      <Label>Yes</Label>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value='No' className='rounded-xl'>
+                      <Label>No</Label>
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                  <Modal
+                    visible={modalVisible}
+                    transparent={true}
+                    animationType='slide'
+                    onRequestClose={() => setModalVisible(false)}
+                  >
+                    <View className='flex-1 bg-black/50 items-center justify-center'>
+                      <View className='w-11/12 bg-white p-6 rounded-lg gap-4'>
+                        <Text className='text-xl   mb-4 text-center'>
+                          Please select relevant health concerns
+                        </Text>
+                        <View className='gap-3'>
+                          {healthConsiderationsOptions.map((label, index) => (
+                            <View
+                              key={`health-option-${
+                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                                index
+                              }`}
+                              className='flex flex-row items-center gap-2'
+                            >
+                              <Checkbox
+                                checked={selectedConsiderations.includes(label)}
+                                onCheckedChange={() => toggleConsideration(label)}
+                              />
+                              <Label>{label}</Label>
+                            </View>
+                          ))}
+                          <View className='flex flex-row items-center gap-2'>
+                            <Checkbox
+                              checked={selectedConsiderations.includes('Chronic illness')}
+                              onCheckedChange={() => {
+                                toggleConsideration('Chronic illness');
+                                setShowChronic(!showChronic);
+                              }}
+                            />
+                            <Label>Chronic illness</Label>
+                          </View>
+                          {showChronic && (
+                            <View className=' '>
+                              <TextInput
+                                lable='Enter Chronic Illness'
+                                fieldName={`kidsDetails.${index}.healthConsiderations.chronicIllness`}
+                              />
+                            </View>
+                          )}
+
+                          <TextInput
+                            lable='Other'
+                            fieldName={`kidsDetails.${index}.healthConsiderations.other`}
+                          />
+                        </View>
+                        <Button
+                          onPress={() => {
+                            setFieldValue(
+                              `kidsDetails.${index}.healthConsiderations.considerations`,
+                              [...selectedConsiderations]
+                            );
+
+                            setModalVisible(false);
+                          }}
+                        >
+                          <Text>Save</Text>
+                        </Button>
+                      </View>
+                    </View>
+                  </Modal>
                 </View>
               </View>
             ))}
