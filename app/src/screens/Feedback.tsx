@@ -1,5 +1,6 @@
 import { Button, Text } from '@shadcn/components';
-import { Brain, Heart, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
+import { Brain, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
+import { FavouriteButton } from '@src/components/FavouriteButton';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
 import { useState } from 'react';
@@ -114,17 +115,12 @@ export const Feedback: React.FC = () => {
           <Button variant={'outline'} size={'icon'} className='rounded-full p-10'>
             <Home size={24} className='text-secondary-foreground' />
           </Button>
-          <Button
-            variant={favourite ? 'default' : 'outline'}
-            size={'icon'}
-            className='rounded-full p-10'
+          <FavouriteButton
+            title={'Activity saved to favorites!'}
+            description={'You can view and replay this activity from your favorites!'}
+            active={favourite}
             onPress={() => setFavourite(!favourite)}
-          >
-            <Heart
-              size={24}
-              className={favourite ? 'text-primary-foreground' : 'text-secondary-foreground'}
-            />
-          </Button>
+          />
         </View>
       </View>
     </View>
