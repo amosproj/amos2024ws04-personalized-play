@@ -1,12 +1,16 @@
+import { useNavigation } from '@react-navigation/native';
 import { Button, Text } from '@shadcn/components';
 import { Brain, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
 import { FavouriteButton } from '@src/components/FavouriteButton';
+import { Screens, Stacks } from '@src/constants';
+import type { AppNavigation } from '@src/types';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
 import { useState } from 'react';
 import { TextInput, View } from 'react-native';
 
 export const Feedback: React.FC = () => {
+  const { reset } = useNavigation<AppNavigation>();
   const [favourite, setFavourite] = useState<boolean>(false);
   const [message, setMessage] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
@@ -22,6 +26,18 @@ export const Feedback: React.FC = () => {
     // Here you would typically send the feedback to your backend
     console.log(`Feedback submitted: ${type}`);
     setFeedbackSubmitted(true);
+  };
+
+  const onHomeButtonPress = () => {
+    reset({
+      index: 0,
+      routes: [
+        {
+          name: Stacks.Auth,
+          params: { screen: Screens.Home }
+        }
+      ]
+    });
   };
 
   return (
@@ -112,7 +128,12 @@ export const Feedback: React.FC = () => {
           <Button variant={'outline'} size={'icon'} className='rounded-full p-10'>
             <Brain size={24} className='text-secondary-foreground' />
           </Button>
-          <Button variant={'outline'} size={'icon'} className='rounded-full p-10'>
+          <Button
+            onPress={() => onHomeButtonPress()}
+            variant={'outline'}
+            size={'icon'}
+            className='rounded-full p-10'
+          >
             <Home size={24} className='text-secondary-foreground' />
           </Button>
           <FavouriteButton
