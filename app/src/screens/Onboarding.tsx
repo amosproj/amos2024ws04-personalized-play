@@ -23,6 +23,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
 
+export let activityDocRefId: string;
+
 const onboardingQuestions = [
   { key: 'name', component: ContextualQuestionUserName },
   { key: 'numberOfKids', component: ContextualQuestionNumberKids },
@@ -78,6 +80,7 @@ export const Onboarding: React.FC = () => {
         Collections.Activities
       );
       const activityDocRef = doc(activityCollectionRef);
+      activityDocRefId = activityDocRef.id;
       const activityDoc = {
         activityType: activityType,
         energyLevel: energyLevel,

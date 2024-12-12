@@ -1,25 +1,52 @@
 import { Button, Text } from '@shadcn/components';
 import { Brain, Heart, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
+import { Collections, fireAuth, fireStore } from '@src/constants';
+import { doc, updateDoc } from 'firebase/firestore';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
 import { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { TextInput, View } from 'react-native';
+import { activityDocRefId } from './Onboarding';
 
 export const Feedback: React.FC = () => {
   const [favourite, setFavourite] = useState<boolean>(false);
   const [message, setMessage] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [messageSubmitted, setMessageSubmitted] = useState(false);
+  const [user] = useAuthState(fireAuth);
 
-  const handleSubmit = () => {
+  const saveInFirestore = async (data: object) => {
+    if (!user) {
+      console.error('User not authenticated');
+      return;
+    }
+    const userId = user.uid;
+    try {
+      const activityDocRef = doc(
+        fireStore,
+        Collections.Users,
+        userId,
+        Collections.Activities,
+        activityDocRefId
+      );
+      await updateDoc(activityDocRef, data);
+    } catch (error) {
+      console.error('Error saving the feedback to Firestore:', error);
+    }
+  };
+
+  const handleSubmit = async () => {
     // Here you would typically send the message to your backend
     console.log('Message submitted:', message);
+    saveInFirestore({ feedback_message: message });
     setMessageSubmitted(true);
   };
 
-  const handleFeedback = (type: 'positive' | 'negative') => {
+  const handleFeedback = async (type: 'positive' | 'negative') => {
     // Here you would typically send the feedback to your backend
     console.log(`Feedback submitted: ${type}`);
+    saveInFirestore({ feedback_type: type });
     setFeedbackSubmitted(true);
   };
 
