@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Text } from '@shadcn/components';
-import { Brain, Heart, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
+import { Brain, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
 import { FavouriteButton } from '@src/components/FavouriteButton';
 import { Screens, Stacks } from '@src/constants';
-import type { AppNavigation } from '@src/types';
 import { Collections, fireAuth, fireStore } from '@src/constants';
+import type { AppNavigation } from '@src/types';
 import { doc, updateDoc } from 'firebase/firestore';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
