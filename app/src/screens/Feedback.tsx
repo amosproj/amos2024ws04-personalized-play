@@ -1,5 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import { Button, Text } from '@shadcn/components';
 import { Brain, Heart, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
+import { FavouriteButton } from '@src/components/FavouriteButton';
+import { Screens, Stacks } from '@src/constants';
+import type { AppNavigation } from '@src/types';
 import { Collections, fireAuth, fireStore } from '@src/constants';
 import { doc, updateDoc } from 'firebase/firestore';
 import LottieView from 'lottie-react-native';
@@ -10,6 +14,7 @@ import { TextInput, View } from 'react-native';
 import { activityDocRefId } from './Onboarding';
 
 export const Feedback: React.FC = () => {
+  const { reset } = useNavigation<AppNavigation>();
   const [favourite, setFavourite] = useState<boolean>(false);
   const [message, setMessage] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
@@ -48,6 +53,18 @@ export const Feedback: React.FC = () => {
     console.log(`Feedback submitted: ${type}`);
     saveInFirestore({ feedback_type: type });
     setFeedbackSubmitted(true);
+  };
+
+  const onHomeButtonPress = () => {
+    reset({
+      index: 0,
+      routes: [
+        {
+          name: Stacks.Auth,
+          params: { screen: Screens.Home }
+        }
+      ]
+    });
   };
 
   return (
@@ -138,20 +155,20 @@ export const Feedback: React.FC = () => {
           <Button variant={'outline'} size={'icon'} className='rounded-full p-10'>
             <Brain size={24} className='text-secondary-foreground' />
           </Button>
-          <Button variant={'outline'} size={'icon'} className='rounded-full p-10'>
-            <Home size={24} className='text-secondary-foreground' />
-          </Button>
           <Button
-            variant={favourite ? 'default' : 'outline'}
+            onPress={() => onHomeButtonPress()}
+            variant={'outline'}
             size={'icon'}
             className='rounded-full p-10'
-            onPress={() => setFavourite(!favourite)}
           >
-            <Heart
-              size={24}
-              className={favourite ? 'text-primary-foreground' : 'text-secondary-foreground'}
-            />
+            <Home size={24} className='text-secondary-foreground' />
           </Button>
+          <FavouriteButton
+            title={'Activity saved to favorites!'}
+            description={'You can view and replay this activity from your favorites!'}
+            active={favourite}
+            onPress={() => setFavourite(!favourite)}
+          />
         </View>
       </View>
     </View>
