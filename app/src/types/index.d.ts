@@ -12,7 +12,17 @@ export interface ContextualQuestionProps {
 export interface OnboardingFormData {
   name: string;
   numberOfKids: number;
-  kidsDetails: Array<{ name: string; age: number; gender: string }>;
+  kidsDetails: Array<{
+    name: string;
+    age: number;
+    gender: string;
+    healthConsiderations: {
+      isConsidered: string;
+      considerations: Array<string>;
+      chronicIllness: string;
+      other: string;
+    };
+  }>;
   energyLevel: number;
   time: number;
   activityType: string;
@@ -33,5 +43,7 @@ export interface Kid {
   healthConsiderations: {
     isConsidered: boolean;
     considerations: Array<string>;
+    chronicIllness: string;
+    other: string;
   };
 }
