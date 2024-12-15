@@ -35,7 +35,7 @@ export const Favorite: React.FC = () => {
         return;
       }
 
-      console.log('User Info:', user); // Log user details
+      // console.log('User Info:', user); // Log user details
 
       try {
         const userId = user.uid;
@@ -52,7 +52,7 @@ export const Favorite: React.FC = () => {
         const activities: Activity[] = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          console.log('Document Data:', data); // Log each document's data
+          // console.log('Document Data:', data); // Log each document's data
 
           // Push activityType into the array if favorite is true
           if (data.activityType && doc.id && data.favorite) {
@@ -64,7 +64,7 @@ export const Favorite: React.FC = () => {
           }
         });
 
-        console.log('Favorite Activities:', activities); // Verify filtered activities
+        // console.log('Favorite Activities:', activities); // Verify filtered activities
         setFavoriteActivities(activities);
       } catch (error) {
         console.error('Error fetching activities:', error);
@@ -119,8 +119,11 @@ export const Favorite: React.FC = () => {
             <UserIcon className="text-gray-500 w-6 h-6" />
           </View>
         )}
-        <Text className="text-l font-bold">Welcome {user?.displayName || user?.email}!</Text>
+        <Text className="text-l font-bold">
+          Welcome {user?.displayName || user?.email || 'Guest'}!
+        </Text>
       </View>
+
 
       {/* Loading Indicator */}
       {loading ? (
