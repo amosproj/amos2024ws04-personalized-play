@@ -1,5 +1,3 @@
-
-
 export enum Screens {
   SignIn = 'SignIn',
   SignUp = 'SignUp',

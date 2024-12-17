@@ -9,6 +9,12 @@ export interface ContextualQuestionProps {
   component: string;
 }
 
+export interface EditAcivityFromData {
+  name: string;
+  duration: number;
+  energy: number;
+}
+
 export interface OnboardingFormData {
   name: string;
   numberOfKids: number;
