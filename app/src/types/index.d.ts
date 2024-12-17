@@ -47,3 +47,10 @@ export interface Kid {
     other: string;
   };
 }
+
+export interface NewPlayFormData {
+  selectKids: Array;
+  energyLevel: number;
+  time: number;
+  activityType: string;
+}
