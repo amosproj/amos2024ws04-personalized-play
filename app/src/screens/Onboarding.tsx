@@ -15,6 +15,7 @@ import {
 } from '@src/components';
 import { Collections, fireAuth, fireStore } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
+import { updateProfile } from 'firebase/auth';
 import { Timestamp, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
@@ -22,7 +23,6 @@ import { useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
-import { updateProfile } from 'firebase/auth';
 
 export let activityDocRefId: string;
 
@@ -62,7 +62,7 @@ export const Onboarding: React.FC = () => {
       // Update Firebase Auth user profile
       await updateProfile(user, { displayName: name });
       console.log('Firebase Auth displayName updated:', user.displayName);
-  
+
       // Update Firestore user document
       const userDocRef = doc(fireStore, Collections.Users, userId);
       await updateDoc(userDocRef, { displayName: name });
@@ -74,7 +74,7 @@ export const Onboarding: React.FC = () => {
           name: name,
           age: age,
           biologicalSex: gender,
-        createdAt: Timestamp.now()
+          createdAt: Timestamp.now()
         };
       });
       // Save the activities data (only once)
