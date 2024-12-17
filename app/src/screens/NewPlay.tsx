@@ -21,8 +21,6 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
 
-export let activityDocRefId: string;
-
 //add export
 export const onboardingQuestions = [
   { key: 'selectKids', component: ContextualQuestionSelectKids },
@@ -64,7 +62,7 @@ export const NewPlay: React.FC = () => {
         Collections.Activities
       );
       const activityDocRef = doc(activityCollectionRef);
-      activityDocRefId = activityDocRef.id;
+
       const activityDoc = {
         activityType: activityType,
         energyLevel: energyLevel,
