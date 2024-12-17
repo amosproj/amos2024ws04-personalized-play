@@ -197,7 +197,7 @@ export function EditActivityButton({ activity, updateActivity }: AlertIconDialog
               <AlertDialogFooter>
                 <AlertDialogAction asChild={true}>
                   <Button onPress={onSubmit}>
-                    <Text>Save</Text>
+                    <Text>Update</Text>
                   </Button>
                 </AlertDialogAction>
               </AlertDialogFooter>
