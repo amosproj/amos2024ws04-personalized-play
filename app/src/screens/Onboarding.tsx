@@ -22,6 +22,7 @@ import { useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
+import { updateProfile } from 'firebase/auth';
 
 export let activityDocRefId: string;
 
@@ -58,7 +59,11 @@ export const Onboarding: React.FC = () => {
         return;
       }
       const userId = user.uid;
-      // Update the user's data (e.g., displayName)
+      // Update Firebase Auth user profile
+      await updateProfile(user, { displayName: name });
+      console.log('Firebase Auth displayName updated:', user.displayName);
+  
+      // Update Firestore user document
       const userDocRef = doc(fireStore, Collections.Users, userId);
       await updateDoc(userDocRef, { displayName: name });
       // Add each kid's data (loop only for kids)
@@ -69,7 +74,7 @@ export const Onboarding: React.FC = () => {
           name: name,
           age: age,
           biologicalSex: gender,
-          createdAt: Timestamp.now()
+        createdAt: Timestamp.now()
         };
       });
       // Save the activities data (only once)
