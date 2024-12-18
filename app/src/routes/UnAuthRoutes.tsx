@@ -15,6 +15,7 @@ export type UnAuthRoutesParams = {
   [Screens.ForgotPassword]: undefined;
   [Screens.Loading]: undefined;
   [Screens.ResetPassword]: { oobCode: string };
+  [Screens.ScienceInfo]: undefined;
 };
 
 // Create a stack navigator for unauthenticated routes
