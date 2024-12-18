@@ -7,7 +7,8 @@ export enum Screens {
   Home = 'Home',
   Profile = 'Profile',
   Welcome = 'Welcome',
-  Onboarding = 'Onboarding'
+  Onboarding = 'Onboarding',
+  Favorite = 'Favorite'
 }
 
 export enum Stacks {

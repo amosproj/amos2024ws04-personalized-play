@@ -20,3 +20,4 @@ export * from './ContextualQuestionDetectedItems';
 export * from './ContextualQuestionDisplayItemsIdentified';
 export * from './AppLogo';
 export * from './UnAuthHeader';
+export * from './EditActivityButton';
