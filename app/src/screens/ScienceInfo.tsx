@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Text } from '@shadcn/components';
+import { Button, Text } from '@shadcn/components';
 import { Screens, Stacks } from '@src/constants';
 import { fireAuth } from '@src/constants';
 import type { AppNavigation } from '@src/types';
@@ -78,7 +78,15 @@ export const ScienceInfo: React.FC = () => {
               )}
             </View>
           ))}
+          <Button 
+            className='w-full mt-3'
+            size={'lg'}
+            onPress={() => onHomeButtonPress()}
+          >
+            <Text>Done</Text>
+          </Button>
         </ScrollView>
+
       </View>
     </View>
   );
