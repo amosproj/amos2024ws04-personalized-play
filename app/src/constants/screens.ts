@@ -8,8 +8,7 @@ export enum Screens {
   Profile = 'Profile',
   Welcome = 'Welcome',
   Onboarding = 'Onboarding',
-  ScienceInfo = 'ScienceInfo',
-
+  ScienceInfo = 'ScienceInfo'
 }
 
 export enum Stacks {
