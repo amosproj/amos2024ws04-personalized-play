@@ -1,10 +1,11 @@
 import { Button, Text } from '@shadcn/components';
-import { useEffect, useState } from 'react';
-import { Collections, fireAuth, fireStore } from '@src/constants';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { View } from 'react-native';
 import { Input } from '@shadcn/components';
+import { Collections, fireAuth, fireStore } from '@src/constants';
 import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
+import { Edit3 } from 'lucide-react-native'; // Lucide edit icon
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { ScrollView, View } from 'react-native';
 
 interface Kid {
   id: string; // Added to track Firestore document ID
@@ -117,6 +118,7 @@ export const Profile: React.FC = () => {
     }
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const onChangeKid = (index: number, field: keyof Kid, value: any) => {
     setKids((prevKids) =>
       prevKids.map((kid, idx) => (idx === index ? { ...kid, [field]: value } : kid))
@@ -124,61 +126,62 @@ export const Profile: React.FC = () => {
   };
 
   return (
-    <View className='flex flex-1 items-center justify-center'>
+    <ScrollView className='flex-1'>
       {/* User Details Section */}
       <View>
-        <Text>User Details</Text>
-        {!isUserEditable ? (
-          <Button
-            onPress={() => {
-              setUserEditable(true);
-            }}
-          >
-            <Text>Edit</Text>
-          </Button>
-        ) : null}
+        <View className='flex flex-row items-center justify-between mb-4'>
+          <Text className='text-xl font-bold'>User Details</Text>
+          <Edit3
+            size={20}
+            color='#000'
+            onPress={() => setUserEditable(!isUserEditable)}
+            className='ml-2'
+          />
+        </View>
         <Input
-          placeholder='your email'
+          placeholder='Your email'
           value={email}
           readOnly={true}
           aria-labelledby='inputLabel'
           aria-errormessage='inputError'
+          className='w-full mb-4'
         />
         <Input
-          placeholder='your username'
+          placeholder='Your username'
           value={username}
-          onChangeText={onChangeUsername}
+          onChangeText={setUsername}
           readOnly={!isUserEditable}
           aria-labelledby='inputLabel'
           aria-errormessage='inputError'
+          className='w-full mb-4'
         />
-        {isUserEditable ? (
-          <Button onPress={saveUser}>
+        {isUserEditable && (
+          <Button onPress={saveUser} className='self-end'>
             <Text>Save</Text>
           </Button>
-        ) : null}
+        )}
       </View>
 
       {/* Kids Details Section */}
       <View>
-        <Text>Kids Details</Text>
-        {!isKidsEditable ? (
-          <Button
-            onPress={() => {
-              setKidsEditable(true);
-            }}
-          >
-            <Text>Edit</Text>
-          </Button>
-        ) : null}
+        <View className='flex flex-row items-center justify-between mb-4'>
+          <Text className='text-xl font-bold'>Kids Details</Text>
+          <Edit3
+            size={20}
+            color='#000'
+            onPress={() => setKidsEditable(!isKidsEditable)}
+            className='ml-2'
+          />
+        </View>
         <View className='flex-col gap-y-4'>
           {kids.map((kid, index) => (
-            <View key={kid.id} className='flex flex-col items-start'>
+            <View key={kid.id} className='border border-gray-300 p-4 rounded-lg mb-4'>
               <Input
                 placeholder='Name'
                 value={kid.name}
                 onChangeText={(text) => onChangeKid(index, 'name', text)}
                 readOnly={!isKidsEditable}
+                className='w-full mb-2'
               />
               <Input
                 placeholder='Age'
@@ -186,12 +189,14 @@ export const Profile: React.FC = () => {
                 onChangeText={(text) => onChangeKid(index, 'age', Number(text))}
                 keyboardType='numeric'
                 readOnly={!isKidsEditable}
+                className='w-[48%]'
               />
               <Input
                 placeholder='Biological Sex'
                 value={kid.biologicalSex}
                 onChangeText={(text) => onChangeKid(index, 'biologicalSex', text)}
                 readOnly={!isKidsEditable}
+                className='w-[48%]'
               />
               <Input
                 placeholder='Health Considerations'
@@ -204,16 +209,17 @@ export const Profile: React.FC = () => {
                   )
                 }
                 readOnly={!isKidsEditable}
+                className='w-full'
               />
             </View>
           ))}
         </View>
         {isKidsEditable ? (
-          <Button onPress={saveKids}>
+          <Button onPress={saveKids} className='self-end'>
             <Text>Save</Text>
           </Button>
         ) : null}
       </View>
-    </View>
+    </ScrollView>
   );
 };
