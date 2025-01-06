@@ -64,6 +64,7 @@ export const NewPlay: React.FC = () => {
       const activityDocRef = doc(activityCollectionRef);
 
       const activityDoc = {
+        selectedKids: selectKids,
         activityType: activityType,
         energyLevel: energyLevel,
         time: time,
