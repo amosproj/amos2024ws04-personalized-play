@@ -2,12 +2,12 @@ import { Text } from '@shadcn/components';
 import { Checkbox } from '@shadcn/components/ui/checkbox';
 import { Collections, fireAuth, fireStore } from '@src/constants';
 import { collection, getDocs } from 'firebase/firestore';
+import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { View } from 'react-native';
-import { useFormikContext } from 'formik';
 
 export const ContextualQuestionSelectKids: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<{ selectKids: string[] }>();
@@ -73,8 +73,8 @@ export const ContextualQuestionSelectKids: React.FC = () => {
     <View className='flex flex-1 items-stretch justify-center'>
       <View className='flex flex-1 flex-col items-center justify-center'>
         <LottieView
-          autoPlay
-          loop
+          autoPlay={true}
+          loop={true}
           source={require('../../assets/activity.json')}
           style={{ width: 320, height: 320 }}
         />
