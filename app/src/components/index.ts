@@ -18,5 +18,7 @@ export * from './ContextualQuestionAgeKids';
 export * from './ContextualQuestionCamera';
 export * from './ContextualQuestionDetectedItems';
 export * from './ContextualQuestionDisplayItemsIdentified';
+export * from './ChoresButtonModal';
+export * from './ChoreTypeSelector';
 export * from './AppLogo';
 export * from './UnAuthHeader';

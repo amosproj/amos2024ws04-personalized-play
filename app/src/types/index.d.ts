@@ -26,6 +26,7 @@ export interface OnboardingFormData {
   energyLevel: number;
   time: number;
   activityType: string;
+  choreType: string;
 }
 
 export interface User {

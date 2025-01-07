@@ -51,7 +51,7 @@ export const Onboarding: React.FC = () => {
    * @throws An error if any of the operations fail.
    */
   const onDone = async (values: OnboardingFormData) => {
-    const { name, kidsDetails, activityType, energyLevel, time } = values;
+    const { name, kidsDetails, activityType, energyLevel, time, choreType } = values;
     try {
       if (!user) {
         console.error('User not authenticated');
@@ -83,6 +83,7 @@ export const Onboarding: React.FC = () => {
       activityDocRefId = activityDocRef.id;
       const activityDoc = {
         activityType: activityType,
+        choreType: choreType,
         energyLevel: energyLevel,
         time: time,
         createdAt: Timestamp.now()
@@ -160,6 +161,7 @@ export const Onboarding: React.FC = () => {
           energyLevel: 1,
           time: 10,
           activityType: 'chores',
+          choreType: '',
           displayItems: []
         }}
         innerRef={formikRef}
@@ -187,6 +189,7 @@ export const Onboarding: React.FC = () => {
           energyLevel: Yup.number().required('Energy level is required'),
           time: Yup.number().required('Time is required'),
           activityType: Yup.string().required('Activity type is required'),
+          choreType: Yup.string(),
           displayItems: Yup.array().of(Yup.string()),
           camera: Yup.string().required('Picture is required.'),
           detectedItems: Yup.array(),
