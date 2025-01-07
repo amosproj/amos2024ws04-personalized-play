@@ -1,6 +1,12 @@
-import { Button, Text } from '@shadcn/components';
+import { Button, Label, Text } from '@shadcn/components';
 import { Input } from '@shadcn/components';
+import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 import { Collections, fireAuth, fireStore } from '@src/constants';
+import {
+  IconGenderFemale,
+  IconGenderMale,
+  IconGenderTransgender
+} from '@tabler/icons-react-native';
 import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
 import { Edit3 } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
@@ -68,10 +74,6 @@ export const Profile: React.FC = () => {
     fetchData();
   }, [user]);
 
-  const onChangeUsername = (data: string) => {
-    setUsername(data);
-  };
-
   const saveUser = async () => {
     try {
       if (!user) {
@@ -128,33 +130,42 @@ export const Profile: React.FC = () => {
   return (
     <ScrollView className='flex-1'>
       {/* User Details Section */}
-      <View>
+      <View className='w-10/12 m-auto'>
         <View className='flex flex-row items-center justify-between mb-4'>
           <Text className='text-xl font-bold'>User Details</Text>
-          <Edit3
-            size={20}
-            color='#000'
-            onPress={() => setUserEditable(!isUserEditable)}
-            className='ml-2'
+          {!isUserEditable ? (
+            <Edit3
+              size={20}
+              color='#000'
+              onPress={() => setUserEditable(!isUserEditable)}
+              className='ml-2'
+            />
+          ) : null}
+        </View>
+
+        <View className='w-full flex mb-4'>
+          <Label className='mb-4'>Email</Label>
+          <Input
+            placeholder='Your email'
+            value={email}
+            readOnly={true}
+            aria-labelledby='inputLabel'
+            aria-errormessage='inputError'
           />
         </View>
-        <Input
-          placeholder='Your email'
-          value={email}
-          readOnly={true}
-          aria-labelledby='inputLabel'
-          aria-errormessage='inputError'
-          className='w-full mb-4'
-        />
-        <Input
-          placeholder='Your username'
-          value={username}
-          onChangeText={setUsername}
-          readOnly={!isUserEditable}
-          aria-labelledby='inputLabel'
-          aria-errormessage='inputError'
-          className='w-full mb-4'
-        />
+
+        <View className='w-full flex mb-4'>
+          <Label className='mb-4'>Username</Label>
+          <Input
+            placeholder='Your username'
+            value={username}
+            onChangeText={setUsername}
+            readOnly={!isUserEditable}
+            aria-labelledby='inputLabel'
+            aria-errormessage='inputError'
+            className='w-full mb-4'
+          />
+        </View>
         {isUserEditable && (
           <Button onPress={saveUser} className='self-end'>
             <Text>Save</Text>
@@ -163,54 +174,125 @@ export const Profile: React.FC = () => {
       </View>
 
       {/* Kids Details Section */}
-      <View>
+      <View className='w-10/12 m-auto'>
         <View className='flex flex-row items-center justify-between mb-4'>
           <Text className='text-xl font-bold'>Kids Details</Text>
-          <Edit3
-            size={20}
-            color='#000'
-            onPress={() => setKidsEditable(!isKidsEditable)}
-            className='ml-2'
-          />
+          {!isKidsEditable ? (
+            <Edit3 size={20} color='#000' onPress={() => setKidsEditable(true)} className='ml-2' />
+          ) : null}
         </View>
         <View className='flex-col gap-y-4'>
           {kids.map((kid, index) => (
             <View key={kid.id} className='border border-gray-300 p-4 rounded-lg mb-4'>
-              <Input
-                placeholder='Name'
-                value={kid.name}
-                onChangeText={(text) => onChangeKid(index, 'name', text)}
-                readOnly={!isKidsEditable}
-                className='w-full mb-2'
-              />
-              <Input
-                placeholder='Age'
-                value={String(kid.age)}
-                onChangeText={(text) => onChangeKid(index, 'age', Number(text))}
-                keyboardType='numeric'
-                readOnly={!isKidsEditable}
-                className='w-[48%]'
-              />
-              <Input
-                placeholder='Biological Sex'
-                value={kid.biologicalSex}
-                onChangeText={(text) => onChangeKid(index, 'biologicalSex', text)}
-                readOnly={!isKidsEditable}
-                className='w-[48%]'
-              />
-              <Input
-                placeholder='Health Considerations'
-                value={kid.healthConsiderations.join(', ')}
-                onChangeText={(text) =>
-                  onChangeKid(
-                    index,
-                    'healthConsiderations',
-                    text.split(',').map((t) => t.trim())
-                  )
-                }
-                readOnly={!isKidsEditable}
-                className='w-full'
-              />
+              {isKidsEditable ? (
+                <View>
+                  <View className='mx-1 mb-4'>
+                    <Label className='mb-2'>
+                      <Text>Name</Text>
+                    </Label>
+                    <Input
+                      placeholder='Name'
+                      value={kid.name}
+                      onChangeText={(text) => onChangeKid(index, 'name', text)}
+                      readOnly={!isKidsEditable}
+                      className='w-full'
+                    />
+                  </View>
+
+                  <View className='flex flex-row mx-1 mb-4'>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text>Age</Text>
+                      </Label>
+                      <Input
+                        placeholder='Age'
+                        value={String(kid.age)}
+                        onChangeText={(text) => onChangeKid(index, 'age', Number(text))}
+                        keyboardType='numeric'
+                        readOnly={!isKidsEditable}
+                      />
+                    </View>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text>Gender</Text>
+                      </Label>
+                      <ToggleGroup
+                        disabled={!isKidsEditable}
+                        value={kid.biologicalSex}
+                        onValueChange={(value) => onChangeKid(index, 'biologicalSex', value)}
+                        type='single'
+                        className='flex flex-row gap-x-2'
+                      >
+                        <ToggleGroupItem value='male' className='rounded-xl'>
+                          <ToggleGroupIcon icon={IconGenderMale} size={18} />
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value='female' className='rounded-xl'>
+                          <ToggleGroupIcon icon={IconGenderFemale} size={18} />
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value='transgender' className='rounded-xl'>
+                          <ToggleGroupIcon icon={IconGenderTransgender} size={18} />
+                        </ToggleGroupItem>
+                      </ToggleGroup>
+                    </View>
+                  </View>
+
+                  <View className='mx-1 mb-4'>
+                    <Label className='mb-2'>Health Considerations</Label>
+                    <Input
+                      placeholder='Health Considerations'
+                      value={kid.healthConsiderations.join(', ')}
+                      onChangeText={(text) =>
+                        onChangeKid(
+                          index,
+                          'healthConsiderations',
+                          text.split(',').map((t) => t.trim())
+                        )
+                      }
+                      readOnly={!isKidsEditable}
+                      className='w-full'
+                    />
+                  </View>
+                </View>
+              ) : (
+                <View>
+                  <Text className='text-2xl mb-4'>{kid.name}</Text>
+                  <View className='flex flex-row mx-1 mb-4'>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text>Age</Text>
+                      </Label>
+                      <Text className='text-l'>{kid.age}</Text>
+                    </View>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text>Gender</Text>
+                      </Label>
+                      {kid.biologicalSex === 'male' ? (
+                        <ToggleGroupIcon icon={IconGenderMale} size={18} />
+                      ) : null}
+                      {kid.biologicalSex === 'female' ? (
+                        <ToggleGroupIcon icon={IconGenderFemale} size={18} />
+                      ) : null}
+                      {kid.biologicalSex === 'transgender' ? (
+                        <ToggleGroupIcon icon={IconGenderTransgender} size={18} />
+                      ) : null}
+                    </View>
+                  </View>
+
+                  <View className='flex flex-row mx-1 mb-4'>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text>Health Considerations</Text>
+                      </Label>
+                      <Text className='text-l'>
+                        {kid.healthConsiderations.length === 0
+                          ? 'None.'
+                          : kid.healthConsiderations.join(', ')}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              )}
             </View>
           ))}
         </View>
