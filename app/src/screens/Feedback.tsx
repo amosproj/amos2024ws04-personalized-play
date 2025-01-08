@@ -8,7 +8,7 @@ import type { AppNavigation } from '@src/types';
 import { doc, updateDoc } from 'firebase/firestore';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { TextInput, View } from 'react-native';
 import { activityDocRefId } from './Onboarding';
@@ -66,6 +66,17 @@ export const Feedback: React.FC = () => {
       ]
     });
   };
+
+  //update favorite, whenever favorite status changes
+  useEffect(() => {
+    const updateFavorite = async () => {
+      //save in firestore
+      saveInFirestore({
+        favorite: favourite
+      });
+    };
+    updateFavorite();
+  }, [favourite]);
 
   return (
     <View className='flex flex-1 items-stretch px-4'>

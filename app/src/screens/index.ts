@@ -13,3 +13,4 @@ export * from './Welcome';
 export * from './Onboarding';
 export * from './Feedback';
 export * from './Favorite';
+export * from './NewPlay';
