@@ -8,6 +8,7 @@ export * from './FormikTextInput';
 export * from './Header';
 export * from './GoogleSignInButton';
 export * from './ThemeProvider';
+export * from './ContextualQuestionSelectKids';
 export * from './ContextualQuestionActivityChoice';
 export * from './ContextualQuestionUserName';
 export * from './ContextualQuestionEnergyLevel';
