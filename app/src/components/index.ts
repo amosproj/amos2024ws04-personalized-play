@@ -23,3 +23,4 @@ export * from './ChoresButtonModal';
 export * from './ChoreTypeSelector';
 export * from './AppLogo';
 export * from './UnAuthHeader';
+export * from './EditActivityButton';

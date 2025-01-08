@@ -5,7 +5,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Drawer } from '@src/components';
 import { Collections, Screens, fireAuth, fireStore } from '@src/constants';
-import { Home, Loading, NewPlay, Onboarding, Profile, Welcome } from '@src/screens';
+import { Favorite, Home, Loading, NewPlay, Onboarding, Profile, Welcome } from '@src/screens';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -16,6 +16,7 @@ export type AuthRoutesParams = {
   [Screens.Profile]: undefined;
   [Screens.Welcome]: undefined;
   [Screens.Onboarding]: undefined;
+  [Screens.Favorite]: undefined;
   [Screens.NewPlay]: undefined;
 };
 
@@ -49,7 +50,7 @@ export const AuthRoutes: React.FC = () => {
   }, []);
 
   if (isLoading) {
-    return <Loading heading='Loading...' description='Please wait while we load the content.' />;
+    return <Loading heading="Loading..." description="Please wait while we load the content." />;
   }
 
   return (
@@ -67,6 +68,11 @@ export const AuthRoutes: React.FC = () => {
       <AuthDrawer.Screen
         name={Screens.Onboarding}
         component={Onboarding}
+        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.Favorite}
+        component={Favorite}
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
       <AuthDrawer.Screen

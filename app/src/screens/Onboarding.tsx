@@ -15,6 +15,7 @@ import {
 } from '@src/components';
 import { Collections, fireAuth, fireStore } from '@src/constants';
 import type { OnboardingFormData } from '@src/types';
+import { updateProfile } from 'firebase/auth';
 import { Timestamp, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
@@ -58,7 +59,11 @@ export const Onboarding: React.FC = () => {
         return;
       }
       const userId = user.uid;
-      // Update the user's data (e.g., displayName)
+      // Update Firebase Auth user profile
+      await updateProfile(user, { displayName: name });
+      console.log('Firebase Auth displayName updated:', user.displayName);
+
+      // Update Firestore user document
       const userDocRef = doc(fireStore, Collections.Users, userId);
       await updateDoc(userDocRef, { displayName: name });
       // Add each kid's data (loop only for kids)

@@ -8,6 +8,7 @@ export enum Screens {
   Profile = 'Profile',
   Welcome = 'Welcome',
   Onboarding = 'Onboarding',
+  Favorite = 'Favorite',
   NewPlay = 'NewPlay'
 }
 
