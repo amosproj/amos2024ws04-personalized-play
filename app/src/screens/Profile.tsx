@@ -1,6 +1,7 @@
 import { Button, Label, Text } from '@shadcn/components';
 import { Input } from '@shadcn/components';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
+import { DeleteAlertIcon } from '@src/components/DeleteAlert';
 import { Collections, fireAuth, fireStore } from '@src/constants';
 import {
   IconGenderFemale,
@@ -8,6 +9,7 @@ import {
   IconGenderTransgender
 } from '@tabler/icons-react-native';
 import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
+import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
 import { Edit3 } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -120,6 +122,23 @@ export const Profile: React.FC = () => {
     }
   };
 
+  const deleteKid = async (kidId: string) => {
+    try {
+      if (!user) {
+        console.error('User not authenticated');
+        return;
+      }
+      const userId = user.uid;
+      const kidDocRef = doc(fireStore, Collections.Users, userId, Collections.Kids, kidId);
+      await deleteDoc(kidDocRef);
+
+      // Remove kid from local state
+      setKids((prevKids) => prevKids.filter((kid) => kid.id !== kidId));
+    } catch (error) {
+      console.error('Error deleting kid:', error);
+    }
+  };
+
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const onChangeKid = (index: number, field: keyof Kid, value: any) => {
     setKids((prevKids) =>
@@ -187,9 +206,18 @@ export const Profile: React.FC = () => {
               {isKidsEditable ? (
                 <View>
                   <View className='mx-1 mb-4'>
-                    <Label className='mb-2'>
-                      <Text>Name</Text>
-                    </Label>
+                    <View className='flex flex-row items-center justify-between mb-2'>
+                      <Label>
+                        <Text>Name</Text>
+                      </Label>
+                      <DeleteAlertIcon
+                        title={'Confirm Deletion'}
+                        description={
+                          "Are you sure you want to delete this child's information? This action cannot be undone."
+                        }
+                        onDelete={() => deleteKid(kid.id)}
+                      />
+                    </View>
                     <Input
                       placeholder='Name'
                       value={kid.name}
