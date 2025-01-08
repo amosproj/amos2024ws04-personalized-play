@@ -1,13 +1,16 @@
+import { useNavigation } from '@react-navigation/native';
 import { Button, Label, Text } from '@shadcn/components';
 import { Input } from '@shadcn/components';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 import { DeleteAlertIcon } from '@src/components/DeleteAlert';
-import { Collections, fireAuth, fireStore } from '@src/constants';
+import { Collections, Screens, Stacks, fireAuth, fireStore } from '@src/constants';
+import type { AppNavigation } from '@src/types';
 import {
   IconGenderFemale,
   IconGenderMale,
   IconGenderTransgender
 } from '@tabler/icons-react-native';
+import { getAuth, signOut } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
 import { Edit3 } from 'lucide-react-native'; // Lucide edit icon
@@ -30,6 +33,8 @@ export const Profile: React.FC = () => {
   const [kids, setKids] = useState<Kid[]>([]);
   const [isUserEditable, setUserEditable] = useState<boolean>(false);
   const [isKidsEditable, setKidsEditable] = useState<boolean>(false);
+  const { navigate, reset } = useNavigation<AppNavigation>();
+  const auth = getAuth();
 
   const fetchData = async () => {
     try {
@@ -137,6 +142,25 @@ export const Profile: React.FC = () => {
     } catch (error) {
       console.error('Error deleting kid:', error);
     }
+  };
+
+  //Log out functionality
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        reset({
+          index: 0,
+          routes: [
+            {
+              name: Stacks.UnAuth,
+              params: { screen: Screens.SignIn }
+            }
+          ]
+        });
+      })
+      .catch((error) => {
+        console.error('Logout error:', error);
+      });
   };
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -329,6 +353,9 @@ export const Profile: React.FC = () => {
             <Text>Save</Text>
           </Button>
         ) : null}
+        <Button onPress={handleLogout}>
+          <Text>Log Out</Text>
+        </Button>
       </View>
     </ScrollView>
   );
