@@ -41,7 +41,7 @@ export function DeleteAlertIcon({ title, description, onDelete }: AlertIconDialo
 
         <AlertDialogFooter className='flex flex-row justify-between'>
           {/* Cancel Button */}
-          <AlertDialogCancel className='border border-gray-300 rounded-lg px-4 py-2'>
+          <AlertDialogCancel className='rounded-lg px-4 py-2'>
             <Text className='text-base text-gray-600'>Cancel</Text>
           </AlertDialogCancel>
 

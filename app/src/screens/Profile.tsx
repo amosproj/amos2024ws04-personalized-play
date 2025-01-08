@@ -353,9 +353,12 @@ export const Profile: React.FC = () => {
             <Text>Save</Text>
           </Button>
         ) : null}
-        <Button onPress={handleLogout}>
-          <Text>Log Out</Text>
-        </Button>
+
+        <View className='flex w-full justify-center mt-6 mb-2'>
+          <Button className='w-1/3' onPress={handleLogout}>
+            <Text>Log Out</Text>
+          </Button>
+        </View>
       </View>
     </ScrollView>
   );
