@@ -74,20 +74,18 @@ export const TextInput: React.FC<TextInputProps> = ({
 
   return (
     <View className={clsx('my-2', textFieldClassName)}>
-      <Label className={clsx('pb-2', meta.touched && meta.error && 'text-destructive')}>
-        {lable}
-      </Label>
+      <Label className={clsx('pb-2', meta.error && 'text-destructive')}>{lable}</Label>
       <View
         className={clsx(
           'flex flex-row justify-center items-center rounded-xl border bg-background px-4 py-2',
-          meta.touched && meta.error ? 'border-destructive' : 'border-input'
+          meta.error ? 'border-destructive' : 'border-input'
         )}
       >
         {LeadingIcon && (
           <LeadingIcon
             key={fieldName}
             strokeWidth={2}
-            className={clsx(meta.touched && meta.error ? 'text-destructive' : 'text-primary')}
+            className={clsx(meta.error ? 'text-destructive' : 'text-primary')}
           />
         )}
         <Input
@@ -106,18 +104,18 @@ export const TextInput: React.FC<TextInputProps> = ({
             {isTextVisible ? (
               <EyeClosed
                 strokeWidth={2}
-                className={clsx(meta.touched && meta.error ? 'text-destructive' : 'text-primary')}
+                className={clsx(meta.error ? 'text-destructive' : 'text-primary')}
               />
             ) : (
               <Eye
                 strokeWidth={2}
-                className={clsx(meta.touched && meta.error ? 'text-destructive' : 'text-primary')}
+                className={clsx(meta.error ? 'text-destructive' : 'text-primary')}
               />
             )}
           </Pressable>
         )}
       </View>
-      {meta.touched && meta.error && <Label className='py-2 text-destructive'>{meta.error}</Label>}
+      {meta.error && <Label className='py-2 text-destructive'>{meta.error}</Label>}
     </View>
   );
 };
