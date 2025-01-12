@@ -3,9 +3,9 @@
 // It sets up a drawer navigator with routes for various authenticated screens such as Home and Profile.
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Drawer } from '@src/components';
+import { Drawer, Loading } from '@src/components';
 import { Collections, Screens, fireAuth, fireStore } from '@src/constants';
-import { Home, Loading, Onboarding, Profile, Welcome } from '@src/screens';
+import { ActivityPlayer, Home, Onboarding, Profile, Welcome } from '@src/screens';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -16,6 +16,7 @@ export type AuthRoutesParams = {
   [Screens.Profile]: undefined;
   [Screens.Welcome]: undefined;
   [Screens.Onboarding]: undefined;
+  [Screens.ActivityPlayer]: { activityId: string };
 };
 
 // Create a drawer navigator for authenticated routes
@@ -37,7 +38,7 @@ export const AuthRoutes: React.FC = () => {
         if (!user) return;
         const userDocRef = doc(fireStore, Collections.Users, user.uid);
         const docData = await getDoc(userDocRef);
-        setIsFirstTimeUser(!docData.exists() || !docData.get('kids'));
+        setIsFirstTimeUser(!docData.exists() || !docData.get('isOnboarded'));
       } catch (error) {
         console.log(error);
       } finally {
@@ -66,6 +67,11 @@ export const AuthRoutes: React.FC = () => {
       <AuthDrawer.Screen
         name={Screens.Onboarding}
         component={Onboarding}
+        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.ActivityPlayer}
+        component={ActivityPlayer}
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
     </AuthDrawer.Navigator>

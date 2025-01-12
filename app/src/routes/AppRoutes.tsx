@@ -5,8 +5,8 @@
 
 import type { NavigatorScreenParams } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Loading } from '@src/components';
 import { Stacks, fireAuth } from '@src/constants';
-import { Loading } from '@src/screens';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { AuthRoutes, type AuthRoutesParams } from './AuthRoutes';
 import { UnAuthRoutes, type UnAuthRoutesParams } from './UnAuthRoutes';
@@ -37,7 +37,9 @@ export const AppRoutes: React.FC = () => {
   const [user, loading] = useAuthState(fireAuth);
 
   // Show a loading screen while the authentication state is being determined
-  if (loading) return <Loading />;
+  if (loading) {
+    return <Loading heading='Loading...' description='Please wait while we load the content.' />;
+  }
 
   // Set up the stack navigator with the appropriate initial route based on the user's authentication state
   return (
