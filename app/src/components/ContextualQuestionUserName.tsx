@@ -21,7 +21,7 @@ export const ContextualQuestionUserName: React.FC<ContextualQuestionProps> = (pr
         <Text className='text-2xl text-center font-medium mb-6'>What is your name?</Text>
         <TextInput
           lable='Your Name'
-          fieldName='name'
+          fieldName='displayName'
           className='w-full'
           leadingIcon={User}
           onEnter={onNext}
