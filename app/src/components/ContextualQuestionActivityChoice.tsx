@@ -1,7 +1,7 @@
 import { Text } from '@shadcn/components';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 
-import type { ContextualQuestionProps } from '@src/types';
+import type { ContextualQuestionProps, OnboardingFormData } from '@src/types';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
 import { CookingPot, Gamepad2 } from 'lucide-react-native';
@@ -10,7 +10,7 @@ import { InfoAlertIcon } from './InfoAlert';
 
 export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps> = (props) => {
   const { onNext } = props;
-  const { setFieldValue, values } = useFormikContext<{ activityType: string }>();
+  const { setFieldValue, values } = useFormikContext<OnboardingFormData>();
 
   const onChange = (value: string | undefined) => {
     if (!value) return;
@@ -45,7 +45,7 @@ export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps>
         </View>
         <View className='flex-row items-center justify-center gap-x-4'>
           <ToggleGroup
-            value={values.activityType}
+            value={values.type}
             onValueChange={onChange}
             type='single'
             className='gap-x-4'
