@@ -1,6 +1,6 @@
 import { Button, Text } from '@shadcn/components';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
-import type { ContextualQuestionProps } from '@src/types';
+import type { ContextualQuestionProps, OnboardingFormData } from '@src/types';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
 import { BatteryCharging } from 'lucide-react-native';
@@ -12,12 +12,14 @@ import { useSharedValue } from 'react-native-reanimated';
 iconWithClassName(BatteryCharging);
 
 export const ContextualQuestionEnergyLevel: React.FC<ContextualQuestionProps> = () => {
-  const { setFieldValue, values } = useFormikContext<{ energyLevel: number }>();
-  const [sliderValue, setSliderValue] = useState(values.energyLevel);
+  const { setFieldValue, values } = useFormikContext<OnboardingFormData>();
+  const [sliderValue, setSliderValue] = useState(
+    ['low', 'medium', 'high'].indexOf(values.energyLevel)
+  );
 
   const onChange = (value: number) => {
     setSliderValue(value);
-    setFieldValue('energyLevel', value);
+    setFieldValue('energyLevel', ['low', 'medium', 'high'][value]);
   };
 
   const getLabel = (value: number) => {
