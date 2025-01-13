@@ -1,6 +1,6 @@
+import { Button, Input } from '@shadcn/components';
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -10,9 +10,8 @@ import {
   AlertDialogTrigger
 } from '@shadcn/components/ui/alert-dialog';
 import { Text } from '@shadcn/components/ui/text';
-import { Button, Input } from '@shadcn/components';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
-import { Plus, CheckCircle, X } from 'lucide-react-native';
+import { CheckCircle, Plus, X } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 

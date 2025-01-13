@@ -1,8 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Label, Text } from '@shadcn/components';
 import { Input } from '@shadcn/components';
+import { Badge } from '@shadcn/components/ui/badge';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { DeleteAlertIcon } from '@src/components/DeleteAlert';
+import { HealthConsiderationsAlert } from '@src/components/HealthConsiderationsDialog';
 import { Collections, Screens, Stacks, fireAuth, fireStore } from '@src/constants';
 import type { AppNavigation } from '@src/types';
 import {
@@ -13,13 +16,10 @@ import {
 import { getAuth, signOut } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
-import { Edit3, Baby } from 'lucide-react-native'; // Lucide edit icon
+import { Baby, Edit3 } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ScrollView, View } from 'react-native';
-import { HealthConsiderationsAlert } from '@src/components/HealthConsiderationsDialog';
-import { Badge } from '@shadcn/components/ui/badge';
-import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 
 iconWithClassName(Baby);
 
@@ -84,7 +84,7 @@ export const Profile: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [user]);
+  }, [user, isKidsEditable, isUserEditable]);
 
   const saveUser = async () => {
     try {
@@ -385,9 +385,19 @@ export const Profile: React.FC = () => {
           ))}
         </View>
         {isKidsEditable ? (
-          <Button onPress={saveKids} className='self-end'>
-            <Text>Save</Text>
-          </Button>
+          <View className='flex flex-row gap-2 justify-end'>
+            <Button
+              onPress={() => {
+                setKidsEditable(false);
+              }}
+              className='self-end bg-transparent border-primary border-[1px]'
+            >
+              <Text className='text-primary'>Cancel</Text>
+            </Button>
+            <Button onPress={saveKids} className='self-end'>
+              <Text>Save</Text>
+            </Button>
+          </View>
         ) : null}
 
         <View className='flex w-full justify-center mt-6 mb-2'>
