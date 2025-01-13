@@ -13,10 +13,15 @@ import {
 import { getAuth, signOut } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
-import { Edit3 } from 'lucide-react-native'; // Lucide edit icon
+import { Edit3, Baby } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ScrollView, View } from 'react-native';
+import { HealthConsiderationsAlert } from '@src/components/HealthConsiderationsDialog';
+import { Badge } from '@shadcn/components/ui/badge';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
+
+iconWithClassName(Baby);
 
 interface Kid {
   id: string; // Added to track Firestore document ID
@@ -187,7 +192,9 @@ export const Profile: React.FC = () => {
         </View>
 
         <View className='w-full flex mb-4'>
-          <Label className='mb-4'>Email</Label>
+          <Label className='mb-2'>
+            <Text className='text-sm'>Email</Text>
+          </Label>
           <Input
             placeholder='Your email'
             value={email}
@@ -198,7 +205,9 @@ export const Profile: React.FC = () => {
         </View>
 
         <View className='w-full flex mb-4'>
-          <Label className='mb-4'>Username</Label>
+          <Label className='mb-2 text-sm'>
+            <Text className='text-sm'>Username</Text>
+          </Label>
           <Input
             placeholder='Your username'
             value={username}
@@ -229,10 +238,10 @@ export const Profile: React.FC = () => {
             <View key={kid.id} className='border border-gray-300 p-4 rounded-lg mb-4'>
               {isKidsEditable ? (
                 <View>
-                  <View className='mx-1 mb-4'>
+                  <View className='mx-1 mb-6'>
                     <View className='flex flex-row items-center justify-between mb-2'>
                       <Label>
-                        <Text>Name</Text>
+                        <Text className='text-sm'>Name</Text>
                       </Label>
                       <DeleteAlertIcon
                         title={'Confirm Deletion'}
@@ -251,10 +260,10 @@ export const Profile: React.FC = () => {
                     />
                   </View>
 
-                  <View className='flex flex-row mx-1 mb-4'>
+                  <View className='flex flex-row mx-1 mb-6'>
                     <View className='w-1/2'>
                       <Label className='mb-2'>
-                        <Text>Age</Text>
+                        <Text className='text-sm'>Age in Months</Text>
                       </Label>
                       <Input
                         placeholder='Age'
@@ -266,7 +275,7 @@ export const Profile: React.FC = () => {
                     </View>
                     <View className='w-1/2'>
                       <Label className='mb-2'>
-                        <Text>Gender</Text>
+                        <Text className='text-sm'>Biological Sex</Text>
                       </Label>
                       <ToggleGroup
                         disabled={!isKidsEditable}
@@ -289,35 +298,51 @@ export const Profile: React.FC = () => {
                   </View>
 
                   <View className='mx-1 mb-4'>
-                    <Label className='mb-2'>Health Considerations</Label>
-                    <Input
-                      placeholder='Health Considerations'
-                      value={kid.healthConsiderations.join(', ')}
-                      onChangeText={(text) =>
-                        onChangeKid(
-                          index,
-                          'healthConsiderations',
-                          text.split(',').map((t) => t.trim())
-                        )
-                      }
-                      readOnly={!isKidsEditable}
-                      className='w-full'
-                    />
+                    <View className='flex flex-row justify-between mb-2'>
+                      <Label className='mb-2'>
+                        <Text className='text-sm'>Health Considerations</Text>
+                      </Label>
+                      <HealthConsiderationsAlert
+                        title='Health Considerations'
+                        currentOptions={kid.healthConsiderations}
+                        onSave={(selected, custom) => {
+                          custom === ''
+                            ? onChangeKid(index, 'healthConsiderations', selected)
+                            : onChangeKid(index, 'healthConsiderations', [...selected, custom]);
+                        }}
+                      />
+                    </View>
+                    <View className='flex flex-row flex-wrap gap-2'>
+                      {kid.healthConsiderations.map((consideration, index) => (
+                        <Badge
+                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                          key={index}
+                          variant='outline'
+                          className='px-2 py-1 text-sm min-w-12'
+                        >
+                          <Text>{consideration}</Text>
+                        </Badge>
+                      ))}
+                    </View>
                   </View>
                 </View>
               ) : (
                 <View>
-                  <Text className='text-2xl mb-4'>{kid.name}</Text>
-                  <View className='flex flex-row mx-1 mb-4'>
+                  <View className='flex flex-row gap-2 items-center mb-6'>
+                    <Baby strokeWidth={2} className='text-primary' />
+                    <Text className='text-2xl text-primary'>{kid.name}</Text>
+                  </View>
+
+                  <View className='flex flex-row mx-1 mb-6'>
                     <View className='w-1/2'>
                       <Label className='mb-2'>
-                        <Text>Age</Text>
+                        <Text className='text-sm'>Age in Months</Text>
                       </Label>
-                      <Text className='text-l'>{kid.age}</Text>
+                      <Text className='text-l'>{kid.age} Months</Text>
                     </View>
                     <View className='w-1/2'>
                       <Label className='mb-2'>
-                        <Text>Gender</Text>
+                        <Text className='text-sm'>Biological Sex</Text>
                       </Label>
                       {kid.biologicalSex === 'male' ? (
                         <ToggleGroupIcon icon={IconGenderMale} size={18} />
@@ -331,16 +356,27 @@ export const Profile: React.FC = () => {
                     </View>
                   </View>
 
-                  <View className='flex flex-row mx-1 mb-4'>
-                    <View className='w-1/2'>
-                      <Label className='mb-2'>
-                        <Text>Health Considerations</Text>
+                  <View className='flex flex-row mx-1 mb-6'>
+                    <View>
+                      <Label className='mb-4'>
+                        <Text className='text-sm'>Health Considerations</Text>
                       </Label>
-                      <Text className='text-l'>
-                        {kid.healthConsiderations.length === 0
-                          ? 'None.'
-                          : kid.healthConsiderations.join(', ')}
-                      </Text>
+                      {kid.healthConsiderations.length === 0 ? (
+                        <Text className='text-l'>'None.'</Text>
+                      ) : (
+                        <View className='flex flex-row flex-wrap gap-2'>
+                          {kid.healthConsiderations.map((consideration, index) => (
+                            <Badge
+                              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                              key={index}
+                              variant='outline'
+                              className='px-2 py-1 text-sm min-w-12'
+                            >
+                              <Text>{consideration}</Text>
+                            </Badge>
+                          ))}
+                        </View>
+                      )}
                     </View>
                   </View>
                 </View>
