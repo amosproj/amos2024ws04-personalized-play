@@ -8,6 +8,7 @@ import { View } from "react-native";
 import { Slider } from "react-native-awesome-slider";
 import { useSharedValue } from "react-native-reanimated";
 import { InfoAlertIcon } from "./InfoAlert";
+import { TimerIcon } from "lucide-react-native";
 
 iconWithClassName(TimerIcon);
 
