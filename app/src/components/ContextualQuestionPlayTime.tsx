@@ -1,19 +1,8 @@
 import { Button, Text } from "@shadcn/components";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@shadcn/components/ui/alert-dialog";
 import { iconWithClassName } from "@shadcn/icons/iconWithClassName";
 import type { ContextualQuestionProps } from "@src/types";
 import { useFormikContext } from "formik";
 import LottieView from "lottie-react-native";
-import { HelpCircle, TimerIcon, X } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { Slider } from "react-native-awesome-slider";
