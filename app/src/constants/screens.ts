@@ -10,7 +10,7 @@ export enum Screens {
   Onboarding = 'Onboarding',
   Favorite = 'Favorite',
   NewPlay = 'NewPlay',
-  History = 'History',
+  History = 'History'
 }
 
 export enum Stacks {
