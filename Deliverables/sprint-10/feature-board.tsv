@@ -1,0 +1,125 @@
+Title	URL	Sprint	Estimated	Real	Linked pull requests	Priority	Labels
+[Testing] Complete testing of the playtime session flow	https://github.com/amosproj/amos2024ws04-personalized-play/issues/145	Sprint-11				3 (low priority)	playtime-session, testing
+[Playtime Session] Implement DaVoice input functionality for hot keywords	https://github.com/amosproj/amos2024ws04-personalized-play/issues/95	Sprint-11				3 (low priority)	dev-work, playtime-session, wontfix
+Create robots.txt file to hide source code from search engines	https://github.com/amosproj/amos2024ws04-personalized-play/issues/147	Sprint-11				3 (low priority)	dev-work
+Update SBoM with the latest dependencies	https://github.com/amosproj/amos2024ws04-personalized-play/issues/148	Sprint-12				3 (low priority)	deliverables
+Update user documentation (user manual) in the project's wiki	https://github.com/amosproj/amos2024ws04-personalized-play/issues/149	Sprint-12	⏰ Est. 3			3 (low priority)	deliverables, documentation, PO-work
+[Testing] Complete testing of the feedback flow after session	https://github.com/amosproj/amos2024ws04-personalized-play/issues/151						testing
+[Testing] Complete testing of the home screen (including start play from home screen)	https://github.com/amosproj/amos2024ws04-personalized-play/issues/152						testing
+[Testing] Complete testing of the profile screen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/154						testing
+[Testing] Complete testing of the history + favorites screen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/153						testing
+Update technical documentation in the project's wiki	https://github.com/amosproj/amos2024ws04-personalized-play/issues/150	Sprint-12				3 (low priority)	deliverables, documentation, PO-work
+[Profile screen] Add new child info through the profile screen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/132	Sprint-10	⏰ Est. 3			1 (high priority)	dev-work
+[Playtime session] Add button in UI to re-generate an activity	https://github.com/amosproj/amos2024ws04-personalized-play/issues/146	Sprint-10				1 (high priority)	dev-work, playtime-session
+[Refactor] Improvements to the playtime session suggestion	https://github.com/amosproj/amos2024ws04-personalized-play/issues/144	Sprint-10				2 (medium priority)	playtime-session, refactor
+[Refactor] Remove 'Good to go' button from the UI	https://github.com/amosproj/amos2024ws04-personalized-play/issues/142	Sprint-10				2 (medium priority)	onboarding-user, refactor
+[Refactor] Display info popup when setting the slider of Duration to max	https://github.com/amosproj/amos2024ws04-personalized-play/issues/143	Sprint-10				2 (medium priority)	onboarding-user, refactor
+[Testing] Complete testing of authentication flow	https://github.com/amosproj/amos2024ws04-personalized-play/issues/138	Sprint-10				2 (medium priority)	authentication, testing
+[Testing] Complete testing of onboarding flow	https://github.com/amosproj/amos2024ws04-personalized-play/issues/141	Sprint-10				2 (medium priority)	onboarding-user, testing
+[Refactor] Fixes in the 'Take a picture' step in the Onboarding	https://github.com/amosproj/amos2024ws04-personalized-play/issues/140	Sprint-10				1 (high priority)	onboarding-user, refactor
+[Refactor]  General fixes of the Onboarding component	https://github.com/amosproj/amos2024ws04-personalized-play/issues/139	Sprint-10				1 (high priority)	onboarding-user, refactor
+[Home Screen] Create the UI for home screen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/92	Sprint-7	⏰ Est. 5			1 (high priority)	dev-work, home-screen
+[Profile screen] Create screen for user profile	https://github.com/amosproj/amos2024ws04-personalized-play/issues/105	Sprint-9	⏰ Est. 5			1 (high priority)	dev-work
+[Research] Explore how can we implement real-time voice input functionality	https://github.com/amosproj/amos2024ws04-personalized-play/issues/119	Sprint-9				2 (medium priority)	dev-work
+[Playtime Ends] Save feedback for each activity in the database	https://github.com/amosproj/amos2024ws04-personalized-play/issues/108	Sprint-7	⏰ Est. 3	🕒 RL. 2		2 (medium priority)	dev-work, playtime-session
+[Playtime ends] Create UI for the user to explore more science-backed info related to activity 	https://github.com/amosproj/amos2024ws04-personalized-play/issues/106	Sprint-8	⏰ Est. 3	🕒 RL. 2		1 (high priority)	dev-work
+[Favorites] Create UI to show all saved/added to favorites activities	https://github.com/amosproj/amos2024ws04-personalized-play/issues/93	Sprint-7	⏰ Est. 3			3 (low priority)	dev-work
+[Playtime Session] Start a favourite activity by clicking 'Replay'	https://github.com/amosproj/amos2024ws04-personalized-play/issues/109	Sprint-8	⏰ Est. 3			3 (low priority)	dev-work
+[playtime Session] select kids for new playtime session	https://github.com/amosproj/amos2024ws04-personalized-play/issues/118	Sprint-8	⏰ Est. 3			2 (medium priority)	
+[Playtime session] Implement 'Stop' button functionality	https://github.com/amosproj/amos2024ws04-personalized-play/issues/98	Sprint-7	⏰ Est. 3	🕒 RL. 1		1 (high priority)	dev-work, playtime-session
+[Playtime session] Implement action buttons in the playtime session	https://github.com/amosproj/amos2024ws04-personalized-play/issues/129	Sprint-9				1 (high priority)	dev-work
+Implement screen to display the history of playtime sessions	https://github.com/amosproj/amos2024ws04-personalized-play/issues/130	Sprint-9	⏰ Est. 3			2 (medium priority)	dev-work
+ [Profile screen] Setup user logout	https://github.com/amosproj/amos2024ws04-personalized-play/issues/10	Sprint-9	⏰ Est. 2	🕒 RL. 0		1 (high priority)	authentication, dev-work
+[Onboarding flow] Add dropdown to select type of chore	https://github.com/amosproj/amos2024ws04-personalized-play/issues/78	Sprint-9	⏰ Est. 3			3 (low priority)	dev-work, onboarding-user
+[Playtime session]  Create UI for Playtime session screeen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/90	Sprint-7	⏰ Est. 2			1 (high priority)	dev-work, playtime-session
+[Playtime session] Integrate Generative AI agent for activity instructions	https://github.com/amosproj/amos2024ws04-personalized-play/issues/97	Sprint-8	⏰ Est. 13			1 (high priority)	dev-work, playtime-session
+[Playtime Session] Start new play from the home screen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/104	Sprint-8	⏰ Est. 5	🕒 RL. 5		2 (medium priority)	dev-work, playtime-session
+[Favorites] Update details for saved/added to favorites playtime activities	https://github.com/amosproj/amos2024ws04-personalized-play/issues/111	Sprint-8	⏰ Est. 5	🕒 RL. 8		2 (medium priority)	dev-work
+[Playtime Ends] 'Add to favorites' functionality after an activity session ends	https://github.com/amosproj/amos2024ws04-personalized-play/issues/110	Sprint-7	⏰ Est. 5	🕒 RL. 3		2 (medium priority)	dev-work
+[Playtime Session] Set-up multi-agent models with Genkit	https://github.com/amosproj/amos2024ws04-personalized-play/issues/96	Sprint-7	⏰ Est. 8	🕒 RL. 8		1 (high priority)	dev-work, playtime-session, Reviewed by Vivek Rudani
+Improve UI for [energy level] question	https://github.com/amosproj/amos2024ws04-personalized-play/issues/57	Sprint-5	⏰ Est. 3	🕒 RL. 2			design-ui-ux, dev-work, enhancement
+Improve UI for [type of play] question	https://github.com/amosproj/amos2024ws04-personalized-play/issues/59	Sprint-5	⏰ Est. 2	🕒 RL. 2			design-ui-ux, dev-work, enhancement
+Clean-up and finish mid-project release plan	https://github.com/amosproj/amos2024ws04-personalized-play/issues/63	Sprint-6	⏰ Est. 2	🕒 RL. 2			deliverables, PO-work
+[Onboarding flow] Display items identified when taking a picture	https://github.com/amosproj/amos2024ws04-personalized-play/issues/89	Sprint-6	⏰ Est. 8	🕒 RL. 8		1 (high priority)	dev-work, onboarding-user, Reviewed by Preet Vadaliya
+Save the user data in the Firebase database	https://github.com/amosproj/amos2024ws04-personalized-play/issues/77	Sprint-6	⏰ Est. 3	🕒 RL. 5		1 (high priority)	dev-work, Reviewed by Preet Vadaliya
+[Onboarding flow] Create UI [health consideration] question in the onboarding flow	https://github.com/amosproj/amos2024ws04-personalized-play/issues/80	Sprint-6	⏰ Est. 5	🕒 RL. 5		1 (high priority)	dev-work, onboarding-user
+[Onboarding flow] Create UI for [items at hand] question of the onboarding flow	https://github.com/amosproj/amos2024ws04-personalized-play/issues/24	Sprint-6	⏰ Est. 5	🕒 RL. 5		1 (high priority)	dev-work, onboarding-user
+Improve UI for ‘Sign in’ screen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/33	Sprint-5	⏰ Est. 3	🕒 RL. 2			design-ui-ux, dev-work, enhancement
+Improve UI for 'Sign up' screen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/52	Sprint-5	⏰ Est. 3	🕒 RL. 2			design-ui-ux, dev-work, enhancement
+Display 'Welcome' screen only for first-time users	https://github.com/amosproj/amos2024ws04-personalized-play/issues/61	Sprint-5	⏰ Est. 5	🕒 RL. 3			dev-work, enhancement
+[Deliverables] Tag code with mid-project-release	https://github.com/amosproj/amos2024ws04-personalized-play/issues/65	Sprint-5	⏰ Est. 1	🕒 RL. 1			deliverables, dev-work
+Update primary and secondary colors in the global configuration	https://github.com/amosproj/amos2024ws04-personalized-play/issues/45	Sprint-4	⏰ Est. 2	🕒 RL. 2			design-ui-ux, dev-work
+Improve UI for [duration] question	https://github.com/amosproj/amos2024ws04-personalized-play/issues/58	Sprint-5	⏰ Est. 2	🕒 RL. 2			design-ui-ux, dev-work, enhancement
+Improve UI for [nr of kids] question	https://github.com/amosproj/amos2024ws04-personalized-play/issues/54	Sprint-5	⏰ Est. 2	🕒 RL. 2			design-ui-ux, dev-work, enhancement
+Improve UI for 'Welcome' screen	https://github.com/amosproj/amos2024ws04-personalized-play/issues/53	Sprint-5	⏰ Est. 2	🕒 RL. 2			design-ui-ux, dev-work, enhancement
+Technical refactor of the Onboarding flow	https://github.com/amosproj/amos2024ws04-personalized-play/issues/46	Sprint-5		🕒 RL. 3			dev-work, enhancement
+Create and improve UI for new screen [name of the user]	https://github.com/amosproj/amos2024ws04-personalized-play/issues/79	Sprint-6	⏰ Est. 3	🕒 RL. 2			dev-work, onboarding-user
+Use Gemini API to identify the items on the picture taken	https://github.com/amosproj/amos2024ws04-personalized-play/issues/81	Sprint-6	⏰ Est. 8	🕒 RL. 8		1 (high priority)	dev-work, onboarding-user
+Improve UI for [age of kids] question	https://github.com/amosproj/amos2024ws04-personalized-play/issues/55	Sprint-5	⏰ Est. 2	🕒 RL. 5			design-ui-ux, dev-work, enhancement
+Set the global font of the app to Inter	https://github.com/amosproj/amos2024ws04-personalized-play/issues/70	Sprint-5	⏰ Est. 5	🕒 RL. 2			design-ui-ux, dev-work, enhancement
+Create project documentation	https://github.com/amosproj/amos2024ws04-personalized-play/issues/62	Sprint-5	⏰ Est. 3	🕒 RL. 3			dev-work, documentation, PO-work
+[Onboarding Flow] Find Lottie animations/pictures	https://github.com/amosproj/amos2024ws04-personalized-play/issues/34	Sprint-4	⏰ Est. 3	🕒 RL. 5			enhancement, PO-work
+Design team T-shirt and upload in GitHub	https://github.com/amosproj/amos2024ws04-personalized-play/issues/68	Sprint-1	⏰ Est. 2	🕒 RL. 1			deliverables, PO-work
+Initialize Software Bills of Materials (SBoM)	https://github.com/amosproj/amos2024ws04-personalized-play/issues/8	Sprint-1	⏰ Est. 2	🕒 RL. 1			deliverables, dev-work, documentation
+Design team logo and upload in GitHub	https://github.com/amosproj/amos2024ws04-personalized-play/issues/67	Sprint-1	⏰ Est. 2	🕒 RL. 2			deliverables, PO-work
+[Playtime Ends] Create UI after playtime activity ends	https://github.com/amosproj/amos2024ws04-personalized-play/issues/91	Sprint-7	⏰ Est. 5	🕒 RL. 5		2 (medium priority)	dev-work, playtime-session
+Host first meeting with MUMBI (industry partner)	https://github.com/amosproj/amos2024ws04-personalized-play/issues/66	Sprint-0	⏰ Est. 1	🕒 RL. 1			deliverables, PO-work
+Improve and test UI for info modal to display additional information	https://github.com/amosproj/amos2024ws04-personalized-play/issues/60	Sprint-5	⏰ Est. 2	🕒 RL. 2			design-ui-ux, dev-work
+CI: Add CI/CD Workflows for `Release Drafter` and `Checkout Instructions`	https://github.com/amosproj/amos2024ws04-personalized-play/pull/11	Sprint-1					release: ci-cd
+[Software Architecture] Create a textual explanation of diagrams and choices	https://github.com/amosproj/amos2024ws04-personalized-play/issues/7	Sprint-1	⏰ Est. 2	🕒 RL. 2			deliverables, dev-work, documentation
+[Onboarding flow] Get contextual questions from user - {energy level}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/20	Sprint-4	⏰ Est. 3	🕒 RL. 3			dev-work, onboarding-user
+[Software Architecture] Create the diagram of runtime components	https://github.com/amosproj/amos2024ws04-personalized-play/issues/4	Sprint-1	⏰ Est. 3	🕒 RL. 3			deliverables, dev-work, documentation
+Setup Development Environment	https://github.com/amosproj/amos2024ws04-personalized-play/issues/9	Sprint-1	⏰ Est. 13	🕒 RL. 8	https://github.com/amosproj/amos2024ws04-personalized-play/pull/11, https://github.com/amosproj/amos2024ws04-personalized-play/pull/13		dev-work
+[Onboarding flow] Create welcome screen after first-time user authentication	https://github.com/amosproj/amos2024ws04-personalized-play/issues/22	Sprint-4	⏰ Est. 3	🕒 RL. 2			authentication, dev-work
+Setup User Login and Signup	https://github.com/amosproj/amos2024ws04-personalized-play/issues/17	Sprint-4	⏰ Est. 8	🕒 RL. 8			authentication, dev-work
+Create a video recording for the whole build process	https://github.com/amosproj/amos2024ws04-personalized-play/issues/43	Sprint-5	⏰ Est. 5	🕒 RL. 5			documentation
+[Onboarding flow] Get playtime related questions  - {type of play}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/23	Sprint-4	⏰ Est. 5	🕒 RL. 5			dev-work, onboarding-user
+[Onboarding flow] Get contextual questions from user - {age of kids}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/19	Sprint-4	⏰ Est. 3	🕒 RL. 5			dev-work, onboarding-user
+[Onboarding flow] Get contextual questions from user - {no. of kids}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/18	Sprint-4	⏰ Est. 3	🕒 RL. 3			dev-work, onboarding-user
+[Onboarding flow] Create loading screen before playtime activity suggestion	https://github.com/amosproj/amos2024ws04-personalized-play/issues/29	Sprint-5	⏰ Est. 3	🕒 RL. 2			dev-work, onboarding-user
+[Onboarding flow] Get playtime questions from user - {duration}	https://github.com/amosproj/amos2024ws04-personalized-play/issues/21	Sprint-5	⏰ Est. 5	🕒 RL. 5			dev-work, onboarding-user
+[Onboarding flow] Update the interactive labels (text)	https://github.com/amosproj/amos2024ws04-personalized-play/issues/35	Sprint-4	⏰ Est. 2	🕒 RL. 2			enhancement, PO-work
+[Software Architecture] Create the summary of underlying tech stack	https://github.com/amosproj/amos2024ws04-personalized-play/issues/6	Sprint-1	⏰ Est. 1	🕒 RL. 1			deliverables, dev-work, documentation
+[Software Architecture] Create the diagram of code components	https://github.com/amosproj/amos2024ws04-personalized-play/issues/5	Sprint-1	⏰ Est. 2	🕒 RL. 3			deliverables, dev-work, documentation
+[Onboarding flow] Create UI for [skills] question of the onboarding flow	https://github.com/amosproj/amos2024ws04-personalized-play/issues/28	Sprint-6	⏰ Est. 3	🕒 RL. 3		2 (medium priority)	dev-work, onboarding-user
+Add option for the user to add the age for multiple kids	https://github.com/amosproj/amos2024ws04-personalized-play/issues/56	Sprint-6	⏰ Est. 5	🕒 RL. 5			dev-work, enhancement, onboarding-user
+FEAT: Base App navigation and User Auth with custom Formik form component	https://github.com/amosproj/amos2024ws04-personalized-play/pull/31	Sprint-5					release: feature
+FIX: Rendering of default README and CI documentation	https://github.com/amosproj/amos2024ws04-personalized-play/pull/12	Sprint-1					release: bug-fix, release: documentation
+FEAT: SignUp page	https://github.com/amosproj/amos2024ws04-personalized-play/pull/32	Sprint-3					release: feature
+FEAT: Setting up Development Environment	https://github.com/amosproj/amos2024ws04-personalized-play/pull/13	Sprint-1					release: documentation, release: feature
+FEAT: Add Welcome Screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/39	Sprint-5	⏰ Est. 3	🕒 RL. 2			release: feature
+FEAT: Number Of Kids Question and Onboarding Screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/40	Sprint-5					release: feature
+FEAT: Energy Level Page	https://github.com/amosproj/amos2024ws04-personalized-play/pull/44	Sprint-5					release: feature
+FEAT: Add playtime onboarding question	https://github.com/amosproj/amos2024ws04-personalized-play/pull/48	Sprint-5					release: feature
+Feat/app auth flow user age	https://github.com/amosproj/amos2024ws04-personalized-play/pull/49	Sprint-5					release: feature
+FIX: Add missing dependency for slider	https://github.com/amosproj/amos2024ws04-personalized-play/pull/50	Sprint-5					release: bug-fix
+FIX: The next button in the onboarding screen is now disabled if the current question is not answered	https://github.com/amosproj/amos2024ws04-personalized-play/pull/51	Sprint-5					release: bug-fix
+FIX(energylevel): Adjust image container && Question font && margin	https://github.com/amosproj/amos2024ws04-personalized-play/pull/71						release: bug-fix
+CHORE: update expo and related dependencies to latest versions	https://github.com/amosproj/amos2024ws04-personalized-play/pull/72						release: chore
+FEAT: Loading screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/73						release: feature
+CI: Add Google services config and firebase config to EAS workflow	https://github.com/amosproj/amos2024ws04-personalized-play/pull/75						release: ci-cd
+Feat: Implement custom font loading and enhance loading screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/76						release: feature
+FEAT: Code refactoring + UI improvement	https://github.com/amosproj/amos2024ws04-personalized-play/pull/82						release: feature
+FEAT: Re-design Activity Choice screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/83						release: feature
+FEAT: Re-design energy level input screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/84						release: feature
+FEAT: Playtime Question Redesign and logic improve using Formik	https://github.com/amosproj/amos2024ws04-personalized-play/pull/86						release: feature
+FEAT: Re-design kids details input screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/87						release: feature
+feat(InfoAlert): Info Alert Comp	https://github.com/amosproj/amos2024ws04-personalized-play/pull/88						release: feature
+FEAT: Refactored backend & Genkit flow to list items from image	https://github.com/amosproj/amos2024ws04-personalized-play/pull/99						release: feature
+FEAT: Save user onboarding data to firestore	https://github.com/amosproj/amos2024ws04-personalized-play/pull/100						release: feature
+FEAT: Add Question To Take a Picture (Items In Hand)	https://github.com/amosproj/amos2024ws04-personalized-play/pull/101						release: feature
+feat: Added skill question screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/102						release: feature
+DOC(readme): update readme	https://github.com/amosproj/amos2024ws04-personalized-play/pull/103						release: documentation
+feat: Display items identified when taking a picture	https://github.com/amosproj/amos2024ws04-personalized-play/pull/112						release: feature
+CI: Version bump of `biome.js` from `^1.9.4` to `1.9.4`	https://github.com/amosproj/amos2024ws04-personalized-play/pull/113						release: ci-cd
+FEAT: Add health considerations field on the kid input page	https://github.com/amosproj/amos2024ws04-personalized-play/pull/114						release: feature
+Feat/display items identified	https://github.com/amosproj/amos2024ws04-personalized-play/pull/115						release: feature
+FEAT: Genkit Chors flow	https://github.com/amosproj/amos2024ws04-personalized-play/pull/117						release: feature
+FEAT: Add Feedback Screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/122						release: feature
+feat(screen):Add functionality to save favorite activity	https://github.com/amosproj/amos2024ws04-personalized-play/pull/126						release: feature
+Add favorite activity in firebase	https://github.com/amosproj/amos2024ws04-personalized-play/pull/127						
+FEAT: Add Favorite Activities Screen	https://github.com/amosproj/amos2024ws04-personalized-play/pull/128						release: feature
+Feat/start new play	https://github.com/amosproj/amos2024ws04-personalized-play/pull/131						release: feature
+feat: updated build script to build both dev build with single command	https://github.com/amosproj/amos2024ws04-personalized-play/pull/135						release: feature
+feat(selectKids): handle Formik	https://github.com/amosproj/amos2024ws04-personalized-play/pull/136						release: feature
+FEAT: Add chore type selection inside a modal	https://github.com/amosproj/amos2024ws04-personalized-play/pull/137						release: feature
