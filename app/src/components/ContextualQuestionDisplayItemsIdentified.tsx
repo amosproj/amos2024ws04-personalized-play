@@ -7,7 +7,7 @@ import { useFormikContext } from 'formik';
 import { X } from 'lucide-react-native';
 import type React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatList, Image, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, TextInput, TouchableOpacity, View, Keyboard } from 'react-native';
 import RNFS from 'react-native-fs';
 import { Loading } from './Loading';
 
@@ -132,6 +132,10 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
                   value={newItem}
                   onChangeText={setNewItem}
                   placeholder="Enter an item"
+                  onSubmitEditing={() => {
+                    Keyboard.dismiss();
+                    addItem();
+                  }}
                 />
                 <Button className="w-full mt-2" size="lg" onPress={addItem}>
                   <Text>Add Item</Text>
