@@ -256,7 +256,7 @@ export const Profile: React.FC = () => {
                       value={kid.name}
                       onChangeText={(text) => onChangeKid(index, 'name', text)}
                       readOnly={!isKidsEditable}
-                      className='w-full'
+                      className='w-full text-md'
                     />
                   </View>
 
@@ -266,6 +266,7 @@ export const Profile: React.FC = () => {
                         <Text className='text-sm'>Age in Months</Text>
                       </Label>
                       <Input
+                        className='text-md'
                         placeholder='Age'
                         value={String(kid.age)}
                         onChangeText={(text) => onChangeKid(index, 'age', Number(text))}
@@ -318,9 +319,9 @@ export const Profile: React.FC = () => {
                           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                           key={index}
                           variant='outline'
-                          className='px-2 py-1 text-sm min-w-12'
+                          className='px-2 py-1'
                         >
-                          <Text>{consideration}</Text>
+                          <Text className='text-md'>{consideration}</Text>
                         </Badge>
                       ))}
                     </View>
@@ -338,20 +339,20 @@ export const Profile: React.FC = () => {
                       <Label className='mb-2'>
                         <Text className='text-sm'>Age in Months</Text>
                       </Label>
-                      <Text className='text-l'>{kid.age} Months</Text>
+                      <Text className='text-md'>{kid.age} Months</Text>
                     </View>
                     <View className='w-1/2'>
                       <Label className='mb-2'>
                         <Text className='text-sm'>Biological Sex</Text>
                       </Label>
                       {kid.biologicalSex === 'male' ? (
-                        <ToggleGroupIcon icon={IconGenderMale} size={18} />
+                        <ToggleGroupIcon icon={IconGenderMale} size={20} />
                       ) : null}
                       {kid.biologicalSex === 'female' ? (
-                        <ToggleGroupIcon icon={IconGenderFemale} size={18} />
+                        <ToggleGroupIcon icon={IconGenderFemale} size={20} />
                       ) : null}
                       {kid.biologicalSex === 'transgender' ? (
-                        <ToggleGroupIcon icon={IconGenderTransgender} size={18} />
+                        <ToggleGroupIcon icon={IconGenderTransgender} size={20} />
                       ) : null}
                     </View>
                   </View>
@@ -372,7 +373,7 @@ export const Profile: React.FC = () => {
                               variant='outline'
                               className='px-2 py-1 text-sm min-w-12'
                             >
-                              <Text>{consideration}</Text>
+                              <Text className='text-md'>{consideration}</Text>
                             </Badge>
                           ))}
                         </View>
