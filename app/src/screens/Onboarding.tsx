@@ -4,7 +4,6 @@ import {
   ContextualQuestionActivityChoice,
   ContextualQuestionAgeKids,
   ContextualQuestionCamera,
-  ContextualQuestionDetectedItems,
   ContextualQuestionDisplayItemsIdentified,
   ContextualQuestionEnergyLevel,
   ContextualQuestionNumberKids,
@@ -19,7 +18,7 @@ import { updateProfile } from 'firebase/auth';
 import { Timestamp, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
@@ -34,7 +33,6 @@ const onboardingQuestions = [
   { key: 'time', component: ContextualQuestionPlayTime },
   { key: 'activityType', component: ContextualQuestionActivityChoice },
   { key: 'camera', component: ContextualQuestionCamera },
-  { key: 'detectedItems', component: ContextualQuestionDetectedItems },
   { key: 'displayItems', component: ContextualQuestionDisplayItemsIdentified },
   { key: 'skill', component: ContextualQuestionSkill }
 ];
@@ -44,7 +42,8 @@ export const Onboarding: React.FC = () => {
   const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
   const [index, setIndex] = useState(0);
   const [user] = useAuthState(fireAuth);
-
+  const [enableNext, setEnableNext] = useState(true);
+  const [loading, setLoading] = useState(false);
   /**
    * Called when the user is done with the onboarding flow.
    * @param values - The form values containing the user's input.
@@ -156,6 +155,17 @@ export const Onboarding: React.FC = () => {
     }
   };
 
+  // Disable the next button 
+  const nextDisabled= ['camera', 'displayItems'];
+  useEffect(() => {
+    if (nextDisabled.includes(onboardingQuestions[index].key)) {
+      setEnableNext(false);
+    }
+    else {
+      setEnableNext(true);
+    }
+  }, [index]);
+
   return (
     <View className='flex flex-col flex-1 justify-start items-stretch'>
       <Formik
@@ -226,7 +236,7 @@ export const Onboarding: React.FC = () => {
                   paddingTop: 24
                 }}
               >
-                <item.component onNext={onNext} component={onboardingQuestions[index].key} />
+                <item.component onNext={onNext} component={onboardingQuestions[index].key} toggleNext={setEnableNext} />
               </View>
             )}
           />
@@ -260,7 +270,7 @@ export const Onboarding: React.FC = () => {
                   size={'icon'}
                   className='rounded-xl'
                   onPress={onNext}
-                  disabled={index === onboardingQuestions.length - 1}
+                  disabled={index === onboardingQuestions.length - 1 || enableNext === false}
                 >
                   <ChevronLeft size={24} className='rotate-180 text-primary-foreground' />
                 </Button>

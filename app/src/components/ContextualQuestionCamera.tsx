@@ -7,7 +7,7 @@ import LottieView from 'lottie-react-native';
 import type React from 'react';
 import { View } from 'react-native';
 
-export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ onNext }) => {
+export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ onNext, component, toggleNext }) => {
   const { setFieldValue, values } = useFormikContext<{ camera: string }>();
 
   const takePhoto = async () => {
@@ -18,7 +18,7 @@ export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ on
       alert('Sorry, we need camera permissions to make this work!');
       return;
     }
-
+    
     // Launch camera
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,

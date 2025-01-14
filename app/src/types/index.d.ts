@@ -6,6 +6,7 @@ export type AppNavigation = NativeStackNavigationProp<AppRoutesParams>;
 
 export interface ContextualQuestionProps {
   onNext: () => void;
+  toggleNext: (enable) => void;
   component: string;
 }
 

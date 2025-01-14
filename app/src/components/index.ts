@@ -17,7 +17,6 @@ export * from './ContextualQuestionPlayTime';
 export * from './ContextualQuestionSkill';
 export * from './ContextualQuestionAgeKids';
 export * from './ContextualQuestionCamera';
-export * from './ContextualQuestionDetectedItems';
 export * from './ContextualQuestionDisplayItemsIdentified';
 export * from './ChoresButtonModal';
 export * from './ChoreTypeSelector';
