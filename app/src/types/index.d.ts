@@ -37,11 +37,10 @@ export interface User {
 
 export interface Kid {
   name: string;
-  birthdate: Timestamp;
-  gestationalAge: number;
-  gender: string;
+  age: number;
+  biologicalSex: 'male' | 'female' | 'transgender';
   healthConsiderations: {
-    isConsidered: boolean;
+    isConsidered: string;
     considerations: Array<string>;
     chronicIllness: string;
     other: string;
