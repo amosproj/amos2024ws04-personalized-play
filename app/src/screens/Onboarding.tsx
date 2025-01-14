@@ -126,8 +126,15 @@ export const Onboarding: React.FC = () => {
           console.log(error);
           return;
         }
+
+        const disableAnimation = ['camera'];
+        var animation = true;
+        if (disableAnimation.includes(onboardingQuestions[index].key)) {
+          animation = false;
+        }
+
         // Scroll to the next question
-        flatListRef.current.scrollToIndex({ index: index + 1, animated: true });
+        flatListRef.current.scrollToIndex({ index: index + 1, animated: animation });
         // Update the current index
         setIndex(index + 1);
       } catch (error) {
