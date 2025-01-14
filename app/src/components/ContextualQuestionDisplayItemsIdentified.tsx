@@ -11,8 +11,8 @@ import { FlatList, Image, TextInput, TouchableOpacity, View } from 'react-native
 import RNFS from 'react-native-fs';
 import { Loading } from './Loading';
 
-export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuestionProps> = ({component,}) => {
-  const { values } = useFormikContext<{
+export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuestionProps> = ({ component, toggleNext }) => {
+  const { setFieldValue, values } = useFormikContext<{
     camera: string;
     detectedItems: Array<string>;
   }>();
@@ -23,12 +23,10 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
   const image_uri = values.camera;
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  // Open the bottom sheet
   const openBottomSheet = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);
 
-  // Add an item to the list
   const addItem = () => {
     if (newItem.trim()) {
       setItems((prevItems) => [...prevItems, newItem.trim()]);
@@ -36,12 +34,10 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
     }
   };
 
-  // Remove an item from the list
   const removeItem = (index: number) => {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
-  // Fetch the list of items from the image
   const getItemsList = async () => {
     setLoading(true);
     try {
@@ -56,15 +52,26 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
     }
   };
 
-  // Fetch the list of items when the component is mounted
   useEffect(() => {
     if (component === 'displayItems') {
       getItemsList();
     }
   }, [component]);
 
+  // if item list is empty, disable next button
+  useEffect(() => {
+    if (items.length === 0) {
+      setFieldValue('detectedItems', []);
+      toggleNext(false);
+    }
+    else {
+      setFieldValue('detectedItems', items);
+      toggleNext(true);
+    }
+  }, [items]);
+
   return (
-    <View className="flex-1 p-4">
+    <View className="flex-1 p-4 bg-white">
       {loading ? (
         <Loading />
       ) : (
@@ -73,22 +80,22 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
             {image_uri ? (
               <Image
                 source={{ uri: image_uri }}
-                className="w-70 h-50 mb-2 mt-2 rounded-lg"
+                className="w-full h-48 mb-2 mt-2 rounded-lg object-cover"
               />
             ) : (
-              <Text>No image available</Text>
+              <Text className="text-center text-gray-500">No image available</Text>
             )}
-            <Text className="text-lg font-bold mt-3 text-center w-70">Items Detected</Text>
+            <Text className="text-lg font-bold mt-3 text-center">Items Detected</Text>
           </View>
 
-          <View className="flex-1 bg-gray-100 p-4 rounded-lg mb-4 w-70">
+          <View className="flex-1 bg-gray-100 p-4 rounded-lg mb-4">
             <FlatList
               data={items}
               keyExtractor={(item, index) => `${item}-${index}`}
               renderItem={({ item }) => (
                 <View className="flex-row items-center py-2 border-b border-gray-300">
                   <Text className="text-lg mr-2">•</Text>
-                  <Text className="text-base">{item}</Text>
+                  <Text className="text-base text-gray-800">{item}</Text>
                 </View>
               )}
             />
@@ -101,27 +108,27 @@ export const ContextualQuestionDisplayItemsIdentified: React.FC<ContextualQuesti
           <BottomSheet
             ref={bottomSheetRef}
             index={-1}
-            snapPoints={['100%']}
+            snapPoints={['50%', '90%']}
             enablePanDownToClose={true}
           >
-            <BottomSheetView className="flex-1 p-9 items-center">
-              <Text className="text-lg font-bold mb-4">Edit Items</Text>
+            <BottomSheetView className="flex-1 p-4">
+              <Text className="text-lg font-bold mb-4 text-center">Edit Items</Text>
               <FlatList
                 data={items}
                 keyExtractor={(item, index) => `${item}-${index}`}
                 renderItem={({ item, index }) => (
-                  <View className="flex-row justify-between items-center py-2 border-b border-gray-300 w-full">
-                    <Text className="text-base">{item}</Text>
+                  <View className="flex-row justify-between items-center py-2 border-b border-gray-300">
+                    <Text className="text-base text-gray-800">{item}</Text>
                     <TouchableOpacity onPress={() => removeItem(index)}>
                       <X size={24} color="red" />
                     </TouchableOpacity>
                   </View>
                 )}
               />
-              <View className="mt-4 w-full">
+              <View className="mt-4">
                 <Text className="text-sm font-bold mb-2">Enter Item</Text>
                 <TextInput
-                  className="border border-gray-300 rounded-lg p-2 text-base mb-2 w-full"
+                  className="border border-gray-300 rounded-lg p-2 text-base mb-2"
                   value={newItem}
                   onChangeText={setNewItem}
                   placeholder="Enter an item"
