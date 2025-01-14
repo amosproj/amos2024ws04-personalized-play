@@ -50,7 +50,7 @@ export const AuthRoutes: React.FC = () => {
   }, []);
 
   if (isLoading) {
-    return <Loading heading="Loading..." description="Please wait while we load the content." />;
+    return <Loading heading='Loading...' description='Please wait while we load the content.' />;
   }
 
   return (

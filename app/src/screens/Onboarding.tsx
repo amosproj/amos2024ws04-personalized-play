@@ -128,7 +128,7 @@ export const Onboarding: React.FC = () => {
         }
 
         const disableAnimation = ['camera'];
-        var animation = true;
+        let animation = true;
         if (disableAnimation.includes(onboardingQuestions[index].key)) {
           animation = false;
         }
@@ -162,13 +162,12 @@ export const Onboarding: React.FC = () => {
     }
   };
 
-  // Disable the next button 
-  const nextDisabled= ['camera', 'displayItems'];
+  // Disable the next button
+  const nextDisabled = ['camera', 'displayItems'];
   useEffect(() => {
     if (nextDisabled.includes(onboardingQuestions[index].key)) {
       setEnableNext(false);
-    }
-    else {
+    } else {
       setEnableNext(true);
     }
   }, [index]);
@@ -243,7 +242,11 @@ export const Onboarding: React.FC = () => {
                   paddingTop: 24
                 }}
               >
-                <item.component onNext={onNext} component={onboardingQuestions[index].key} toggleNext={setEnableNext} />
+                <item.component
+                  onNext={onNext}
+                  component={onboardingQuestions[index].key}
+                  toggleNext={setEnableNext}
+                />
               </View>
             )}
           />

@@ -9,7 +9,11 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { Loading } from './Loading';
 
-export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ onNext, component, toggleNext }) => {
+export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({
+  onNext,
+  component,
+  toggleNext
+}) => {
   const { setFieldValue, values } = useFormikContext<{ camera: string }>();
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +25,7 @@ export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ on
       alert('Sorry, we need camera permissions to make this work!');
       return;
     }
-    
+
     // Set loading state
     setLoading(true);
 
@@ -35,12 +39,11 @@ export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ on
       setLoading(false);
       setFieldValue('camera', result.assets[0].uri);
       onNext();
-
     }
   };
 
   return (
-    <View className="flex-1 p-4 bg-white">
+    <View className='flex-1 p-4 bg-white'>
       {loading ? (
         <Loading />
       ) : (
