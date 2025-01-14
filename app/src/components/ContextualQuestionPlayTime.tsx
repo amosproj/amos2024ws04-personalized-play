@@ -34,19 +34,21 @@ export const ContextualQuestionPlayTime: React.FC<
         />
       </View>
       <View className="flex flex-1 flex-col items-stretch">
-        <View className="items-center">
-          <Text className="text-2xl text-center font-medium mb-6">
-            How much time can you sneak in today?
+        <View className="mb-6">
+          <Text className="text-2xl text-center font-medium">
+            How much time can you sneak in
           </Text>
-          <InfoAlertIcon
-            title={"What does this mean?"}
-            description={
-              "When set to 30+ minutes, this tailors activities with additional steps or extensions to keep playtime engaging and meaningful for longer sessions."
-            }
-          />
+          <View className="flex flex-row items-center justify-center gap-1">
+            <Text className="text-2xl font-medium text-center">today?</Text>
+            <InfoAlertIcon
+              title={"What does this mean?"}
+              description={
+                "When set to 30+ minutes, this tailors activities with additional steps or extensions to keep playtime engaging and meaningful for longer sessions."
+              }
+            />
+          </View>
         </View>
 
-        <Text className="text-lg text-center" />
         <View className="items-stretch justify-center mt-12">
           <Slider
             style={{ width: "80%", alignSelf: "center" }}
