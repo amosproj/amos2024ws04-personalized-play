@@ -13,9 +13,18 @@ import {
   ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
-import { Collections, Screens, Skills, Stacks, fireAuth, fireStore } from '@src/constants';
+import {
+  Collections,
+  Screens,
+  Skills,
+  Stacks,
+  fireAuth,
+  fireFunction,
+  fireStore
+} from '@src/constants';
 import type { Activity, AppNavigation, Kid, OnboardingFormData, User } from '@src/types';
-import { addDoc, collection, doc, setDoc, writeBatch } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -62,11 +71,13 @@ export const Onboarding: React.FC = () => {
       const kColRef = collection(fireStore, Collections.Users, user.uid, Collections.Kids);
       const batch = writeBatch(fireStore);
       const [_, activity] = await Promise.all([
-        setDoc(uDocRef, uData, { merge: true }),
+        updateDoc(uDocRef, uData),
         addDoc(aColRef, aData),
         kData.map((kid) => addDoc(kColRef, kid))
       ]);
       batch.commit();
+      const generateActivity = httpsCallable(fireFunction, 'ChorsGeneratorFlow');
+      await generateActivity({ activityId: activity.id });
       navigate(Stacks.Auth, {
         screen: Screens.ActivityPlayer,
         params: { activityId: activity.id }
