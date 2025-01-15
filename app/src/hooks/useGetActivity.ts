@@ -8,6 +8,6 @@ export const useGetActivity = (activityId: string) => {
   const [user] = useAuthState(fireAuth);
   if (!user) return;
   const aDocRef = doc(fireStore, Collections.Users, user.uid, Collections.Activities, activityId);
-  const [value, loading, error] = useDocumentDataOnce(aDocRef);
-  return { data: value as Activity, isLoading: loading, error };
+  const [value, loading, error, reload] = useDocumentDataOnce(aDocRef);
+  return { data: value as Activity, isLoading: loading, error, reload };
 };
