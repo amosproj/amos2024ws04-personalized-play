@@ -49,6 +49,7 @@ export interface Activity {
   energyLevel: 'low' | 'medium' | 'high';
   time: number;
   type: string;
+  choreType: string;
   objects: string[];
   skillsToBeIntegrated: string[];
   name: string;

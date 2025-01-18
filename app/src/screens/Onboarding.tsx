@@ -63,7 +63,7 @@ export const Onboarding: React.FC = () => {
     const { displayName, kids, choreType, energyLevel, time, type, skillsToBeIntegrated, objects } = values;
     const uData: Partial<User> = { displayName, isOnboarded: true };
     const kData: Kid[] = kids;
-    const aData: Partial<Activity> = { energyLevel, time, type, objects, skillsToBeIntegrated };
+    const aData: Partial<Activity> = { choreType, energyLevel, time, type, objects, skillsToBeIntegrated };
     try {
       if (!user) throw new Error('User not found');
       const uDocRef = doc(fireStore, Collections.Users, user.uid);

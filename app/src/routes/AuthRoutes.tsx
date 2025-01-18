@@ -3,9 +3,9 @@
 // It sets up a drawer navigator with routes for various authenticated screens such as Home and Profile.
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Drawer } from '@src/components';
+import {Drawer, Loading} from '@src/components';
 import { Collections, Screens, fireAuth, fireStore } from '@src/constants';
-import { Favorite, ActivityPlayer, Home, Loading, NewPlay, Onboarding, Profile, Welcome } from '@src/screens';
+import { Favorite, ActivityPlayer, Home, NewPlay, Onboarding, Profile, Welcome } from '@src/screens';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';

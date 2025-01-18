@@ -1,5 +1,4 @@
 import { Text } from '@shadcn/components';
-import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 
 import type { ContextualQuestionProps, OnboardingFormData } from '@src/types';
 import { useFormikContext } from 'formik';
@@ -18,7 +17,7 @@ export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps>
   const onChange = (value: string | undefined) => {
     if (!value) return;
     setActivityType(value);
-    setFieldValue('activityType', value);
+    setFieldValue('type', value);
   };
 
   const onChangeAndNext = (value: string | undefined) => {
