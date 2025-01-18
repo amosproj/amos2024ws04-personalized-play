@@ -12,3 +12,5 @@ export * from './Welcome';
 export * from './Onboarding';
 export * from './Feedback';
 export * from './ActivityPlayer';
+export * from './Favorite';
+export * from './NewPlay';

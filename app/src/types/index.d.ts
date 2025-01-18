@@ -10,6 +10,12 @@ export interface ContextualQuestionProps {
   component: string;
 }
 
+export interface EditAcivityFromData {
+  name: string;
+  duration: number;
+  energy: number;
+}
+
 export interface OnboardingFormData {
   displayName: string;
   numberOfKids: number;
@@ -20,6 +26,7 @@ export interface OnboardingFormData {
   objects: string[];
   skillsToBeIntegrated: Skills[];
   image: string;
+  choreType: string;
 }
 
 export interface User {
@@ -60,4 +67,11 @@ export interface Activity {
       audioUrl: string;
     }[];
   };
+}
+
+export interface NewPlayFormData {
+  selectKids: Array;
+  energyLevel: number;
+  time: number;
+  activityType: string;
 }
