@@ -1,7 +1,7 @@
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { Skills } from "@src/constants";
-import type { AppRoutesParams } from "@src/routes";
-import type { Timestamp } from "firebase/firestore";
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { Skills } from '@src/constants';
+import type { AppRoutesParams } from '@src/routes';
+import type { Timestamp } from 'firebase/firestore';
 
 export type AppNavigation = NativeStackNavigationProp<AppRoutesParams>;
 
@@ -20,7 +20,7 @@ export interface OnboardingFormData {
   displayName: string;
   numberOfKids: number;
   kids: Kid[];
-  energyLevel: "low" | "medium" | "high";
+  energyLevel: 'low' | 'medium' | 'high';
   time: number;
   type: string;
   objects: string[];
@@ -45,13 +45,13 @@ export interface User {
 export interface Kid {
   name: string;
   age: number;
-  biologicalSex: "male" | "female" | "other";
+  biologicalSex: 'male' | 'female' | 'other';
   healthConsiderations: [];
 }
 
 export interface Activity {
   id?: string;
-  energyLevel: "low" | "medium" | "high";
+  energyLevel: 'low' | 'medium' | 'high';
   time: number;
   type: string;
   choreType: string;
