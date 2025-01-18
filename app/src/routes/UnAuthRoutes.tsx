@@ -3,9 +3,9 @@
 // It sets up a stack navigator with routes for various authentication-related screens such as SignIn, SignUp, ForgotPassword, etc.
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { UnAuthHeader } from '@src/components';
+import { Loading, UnAuthHeader } from '@src/components';
 import { Screens } from '@src/constants';
-import { ForgotPassword, Loading, ResetPassword, SignIn, SignUp } from '@src/screens';
+import { ForgotPassword, ResetPassword, SignIn, SignUp } from '@src/screens';
 import type React from 'react';
 
 // Define the parameter types for the UnAuthRoutes stack navigator
