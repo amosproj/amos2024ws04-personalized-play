@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from '@firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
 import { Fingerprint, Mail } from '@shadcn/icons';
@@ -7,7 +7,7 @@ import { Screens, Stacks, fireAuth } from '@src/constants';
 import type { AppNavigation } from '@src/types';
 import { Formik } from 'formik';
 import type React from 'react';
-import { Pressable, View } from 'react-native';
+import { Alert, Pressable, View } from 'react-native';
 import * as Yup from 'yup';
 
 interface SignUpFormData {
@@ -17,15 +17,17 @@ interface SignUpFormData {
 }
 
 export const SignUp: React.FC = () => {
-  const { navigate } = useNavigation<AppNavigation>();
+  const { navigate, reset } = useNavigation<AppNavigation>();
 
   const onSignUp = async (values: SignUpFormData) => {
     const { email, password } = values;
     try {
-      await createUserWithEmailAndPassword(fireAuth, email, password);
-      navigate(Stacks.UnAuth, { screen: Screens.SignIn });
+      await createUserWithEmailAndPassword(fireAuth, email.trim(), password.trim());
+      await signInWithEmailAndPassword(fireAuth, email.trim(), password.trim());
+      reset({ index: 0, routes: [{ name: Stacks.Auth }] });
     } catch (error) {
       console.error(error);
+      Alert.alert('Sign Up Error', (error as Error).message);
     }
   };
 
@@ -39,7 +41,9 @@ export const SignUp: React.FC = () => {
       <Formik
         initialValues={{ email: '', password: '', confirmPassword: '' }}
         validationSchema={Yup.object({
-          email: Yup.string().email('Invalid email').required('Required'),
+          email: Yup.string()
+            .matches(/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email')
+            .required('Required'),
           password: Yup.string().required('Required').min(8, 'Must be 8 characters or more'),
           confirmPassword: Yup.string()
             .required('Required')

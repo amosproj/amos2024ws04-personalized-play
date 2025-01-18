@@ -1,6 +1,7 @@
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { AppRoutesParams } from '@src/routes';
-import type { Timestamp } from 'firebase/firestore';
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { Skills } from "@src/constants";
+import type { AppRoutesParams } from "@src/routes";
+import type { Timestamp } from "firebase/firestore";
 
 export type AppNavigation = NativeStackNavigationProp<AppRoutesParams>;
 
@@ -9,40 +10,74 @@ export interface ContextualQuestionProps {
   component: string;
 }
 
-export interface OnboardingFormData {
+export interface EditAcivityFromData {
   name: string;
+  duration: number;
+  energy: number;
+}
+
+export interface OnboardingFormData {
+  displayName: string;
   numberOfKids: number;
-  kidsDetails: Array<{
-    name: string;
-    age: number;
-    gender: string;
-    healthConsiderations: {
-      isConsidered: string;
-      considerations: Array<string>;
-      chronicIllness: string;
-      other: string;
-    };
-  }>;
-  energyLevel: number;
+  kids: Kid[];
+  energyLevel: "low" | "medium" | "high";
   time: number;
-  activityType: string;
+  type: string;
+  objects: string[];
+  skillsToBeIntegrated: Skills[];
+  image: string;
+  choreType: string;
 }
 
 export interface User {
   displayName: string;
   email: string;
   lastSignIn: Timestamp;
-  relationship: string;
+  createdAt: Timestamp;
+  isOnboarded: boolean;
 }
 
 export interface Kid {
   name: string;
   age: number;
-  biologicalSex: 'male' | 'female' | 'transgender';
+  biologicalSex: "male" | "female" | "other";
   healthConsiderations: {
     isConsidered: string;
     considerations: Array<string>;
     chronicIllness: string;
     other: string;
   };
+}
+
+export interface Activity {
+  id?: string;
+  energyLevel: "low" | "medium" | "high";
+  time: number;
+  type: string;
+  choreType: string;
+  objects: string[];
+  skillsToBeIntegrated: string[];
+  name: string;
+  description: string;
+  kids: string[];
+  createdAt: Timestamp;
+  activity: {
+    name: string;
+    description: string;
+    totalDuration: number;
+    benefits: string;
+    scienceBehind: string;
+    steps: {
+      instructions: string;
+      duration: number;
+      audioUrl: string;
+    }[];
+  };
+}
+
+export interface NewPlayFormData {
+  selectKids: Array;
+  energyLevel: number;
+  time: number;
+  activityType: string;
 }

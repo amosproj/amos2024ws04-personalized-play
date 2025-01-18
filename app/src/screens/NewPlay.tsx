@@ -1,30 +1,19 @@
-import { useNavigation } from '@react-navigation/native';
 import { Button, Text } from '@shadcn/components';
 import { ChevronLeft } from '@shadcn/icons';
 import {
   ContextualQuestionActivityChoice,
-  ContextualQuestionAgeKids,
   ContextualQuestionCamera,
+  ContextualQuestionDetectedItems,
   ContextualQuestionDisplayItemsIdentified,
   ContextualQuestionEnergyLevel,
-  ContextualQuestionNumberKids,
   ContextualQuestionPlayTime,
+  ContextualQuestionSelectKids,
   ContextualQuestionSkill,
-  ContextualQuestionUserName,
   SubmitButton
 } from '@src/components';
-import {
-  Collections,
-  Screens,
-  Skills,
-  Stacks,
-  fireAuth,
-  fireFunction,
-  fireStore
-} from '@src/constants';
-import type { Activity, AppNavigation, Kid, OnboardingFormData, User } from '@src/types';
-import { addDoc, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
-import { httpsCallable } from 'firebase/functions';
+import { Collections, fireAuth, fireStore } from '@src/constants';
+import type { NewPlayFormData } from '@src/types';
+import { Timestamp, collection, doc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -32,26 +21,23 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
 
-export let activityDocRefId: string;
-
-const onboardingQuestions = [
-  { key: 'displayName', component: ContextualQuestionUserName },
-  { key: 'numberOfKids', component: ContextualQuestionNumberKids },
-  { key: 'kids', component: ContextualQuestionAgeKids },
-  { key: 'time', component: ContextualQuestionPlayTime },
+//add export
+export const onboardingQuestions = [
+  { key: 'selectKids', component: ContextualQuestionSelectKids },
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
-  { key: 'type', component: ContextualQuestionActivityChoice },
-  { key: 'skillsToBeIntegrated', component: ContextualQuestionSkill },
-  { key: 'image', component: ContextualQuestionCamera },
-  { key: 'objects', component: ContextualQuestionDisplayItemsIdentified }
+  { key: 'time', component: ContextualQuestionPlayTime },
+  { key: 'activityType', component: ContextualQuestionActivityChoice },
+  { key: 'camera', component: ContextualQuestionCamera },
+  { key: 'detectedItems', component: ContextualQuestionDetectedItems },
+  { key: 'displayItems', component: ContextualQuestionDisplayItemsIdentified },
+  { key: 'skill', component: ContextualQuestionSkill }
 ];
 
-export const Onboarding: React.FC = () => {
+export const NewPlay: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
-  const formikRef = useRef<FormikProps<OnboardingFormData>>(null);
+  const formikRef = useRef<FormikProps<NewPlayFormData>>(null);
   const [index, setIndex] = useState(0);
   const [user] = useAuthState(fireAuth);
-  const { navigate } = useNavigation<AppNavigation>();
 
   /**
    * Called when the user is done with the onboarding flow.
@@ -59,39 +45,37 @@ export const Onboarding: React.FC = () => {
    * @returns A promise that resolves when the data is saved to Firestore.
    * @throws An error if any of the operations fail.
    */
-  const onDone = async (values: OnboardingFormData) => {
-    const { displayName, kids, choreType, energyLevel, time, type, skillsToBeIntegrated, objects } =
-      values;
-    const uData: Partial<User> = { displayName, isOnboarded: true };
-    const kData: Kid[] = kids;
-    const aData: Partial<Activity> = {
-      choreType,
-      energyLevel,
-      time,
-      type,
-      objects,
-      skillsToBeIntegrated
-    };
+  const onDone = async (values: NewPlayFormData) => {
+    const { selectKids, activityType, energyLevel, time } = values;
     try {
-      if (!user) throw new Error('User not found');
-      const uDocRef = doc(fireStore, Collections.Users, user.uid);
-      const aColRef = collection(fireStore, Collections.Users, user.uid, Collections.Activities);
-      const kColRef = collection(fireStore, Collections.Users, user.uid, Collections.Kids);
+      if (!user) {
+        console.error('User not authenticated');
+        return;
+      }
+      const userId = user.uid;
+
+      // Save the activities data (only once)
+      const activityCollectionRef = collection(
+        fireStore,
+        Collections.Users,
+        userId,
+        Collections.Activities
+      );
+      const activityDocRef = doc(activityCollectionRef);
+
+      const activityDoc = {
+        selectedKids: selectKids,
+        activityType: activityType,
+        energyLevel: energyLevel,
+        time: time,
+        createdAt: Timestamp.now()
+      };
+      // Use batch to save all data at once
       const batch = writeBatch(fireStore);
-      const [_, activity] = await Promise.all([
-        updateDoc(uDocRef, uData),
-        addDoc(aColRef, aData),
-        kData.map((kid) => addDoc(kColRef, kid))
-      ]);
-      batch.commit();
-      const generateActivity = httpsCallable(fireFunction, 'ChorsGeneratorFlow');
-      await generateActivity({ activityId: activity.id });
-      navigate(Stacks.Auth, {
-        screen: Screens.ActivityPlayer,
-        params: { activityId: activity.id }
-      });
+      batch.set(activityDocRef, activityDoc);
+      await batch.commit();
     } catch (error) {
-      console.error('Error saving data:', error);
+      console.error('Error saving data to Firestore:', error);
     }
   };
 
@@ -149,48 +133,23 @@ export const Onboarding: React.FC = () => {
     <View className='flex flex-col flex-1 justify-start items-stretch'>
       <Formik
         initialValues={{
-          displayName: user?.displayName || '',
-          numberOfKids: 1,
-          kids: [],
-          energyLevel: 'medium',
-          time: 15,
-          type: 'chores',
-          objects: [],
-          image: '',
-          skillsToBeIntegrated: [Skills.COGNITIVE, Skills.MOTOR, Skills.SOCIAL, Skills.LANGUAGE],
-          choreType: ''
+          selectKids: [],
+          energyLevel: 1,
+          time: 10,
+          activityType: 'chores',
+          displayItems: []
         }}
-        validationSchema={Yup.object({
-          displayName: Yup.string().required('Required'),
-          numberOfKids: Yup.number()
-            .required('Required')
-            .min(1, 'Must have at least 1 kid')
-            .max(3, 'Cannot have more than 5 kids'),
-          kids: Yup.array().of(
-            Yup.object({
-              name: Yup.string().required('Required'),
-              biologicalSex: Yup.string().required('Required').oneOf(['male', 'female', 'other']),
-              age: Yup.number()
-                .required('Required')
-                .min(1, 'Must be at least 1 month')
-                .max(60, 'Cannot be more than 60 months'),
-              healthConsiderations: Yup.array().of(Yup.string()).notRequired()
-            })
-          ),
-          time: Yup.number()
-            .required('Required')
-            .min(5, 'Must be at least 5 minutes')
-            .max(30, 'Cannot be more than 30 minutes'),
-          energyLevel: Yup.string().required('Required').oneOf(['low', 'medium', 'high']),
-          type: Yup.string().required('Required').oneOf(['chores', 'play']),
-          skillsToBeIntegrated: Yup.array()
-            .of(Yup.string())
-            .required('Required')
-            .min(1, 'Required'),
-          image: Yup.string().required('Required'),
-          objects: Yup.array().of(Yup.string()).min(1, 'Required')
-        })}
         innerRef={formikRef}
+        validationSchema={Yup.object({
+          selectKids: Yup.array(),
+          energyLevel: Yup.number().required('Energy level is required'),
+          time: Yup.number().required('Time is required'),
+          activityType: Yup.string().required('Activity type is required'),
+          displayItems: Yup.array().of(Yup.string()),
+          camera: Yup.string().required('Picture is required.'),
+          detectedItems: Yup.array(),
+          skill: Yup.array().of(Yup.string())
+        })}
         onSubmit={onDone}
         validateOnBlur={true}
         validateOnChange={true}
@@ -221,8 +180,8 @@ export const Onboarding: React.FC = () => {
               </View>
             )}
           />
-          <View className='flex flex-row items-center justify-between pt-4 pb-6 px-6'>
-            <View className='flex flex-row justify-center items-center'>
+          <View className='flex flex-row items-center justify-end pt-4 pb-6 relative'>
+            <View className='flex flex-row justify-center items-center absolute left-1/2 -translate-x-1/2'>
               {onboardingQuestions.map((_, i) => (
                 <View
                   key={`dot-${i.toString()}`}
@@ -231,7 +190,7 @@ export const Onboarding: React.FC = () => {
                 />
               ))}
             </View>
-            <View className='flex flex-row items-center justify-center'>
+            <View className='flex flex-row items-center justify-center pr-6'>
               <Button
                 variant={'outline'}
                 size={'icon'}

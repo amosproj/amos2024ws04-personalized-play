@@ -1,22 +1,38 @@
 import { Text } from '@shadcn/components';
-import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 
-import type { ContextualQuestionProps } from '@src/types';
+import type { ContextualQuestionProps, OnboardingFormData } from '@src/types';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
-import { CookingPot, Gamepad2 } from 'lucide-react-native';
-import { View } from 'react-native';
+import { Gamepad2 } from 'lucide-react-native';
+import { type ReactNode, useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { ChoresButtonModal } from './ChoresButtonModal';
 import { InfoAlertIcon } from './InfoAlert';
 
 export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps> = (props) => {
   const { onNext } = props;
-  const { setFieldValue, values } = useFormikContext<{ activityType: string }>();
+  const { setFieldValue, values } = useFormikContext<OnboardingFormData>();
+  const [activityType, setActivityType] = useState('');
 
   const onChange = (value: string | undefined) => {
     if (!value) return;
-    setFieldValue('activityType', value);
+    setActivityType(value);
+    setFieldValue('type', value);
+  };
+
+  const onChangeAndNext = (value: string | undefined) => {
+    onChange(value);
     onNext();
   };
+
+  const onChoreSelectionComplete = (choreType: string) => {
+    setFieldValue('choreType', choreType);
+    onNext();
+  };
+
+  const IconWrapper = ({ children }: { children: ReactNode }) => (
+    <View className='flex items-center justify-center'>{children}</View>
+  );
 
   return (
     <View className='flex flex-1 items-stretch justify-center'>
@@ -43,22 +59,24 @@ export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps>
             Are you looking to do some chores or play today?
           </Text>
         </View>
-        <View className='flex-row items-center justify-center gap-x-4'>
-          <ToggleGroup
-            value={values.activityType}
-            onValueChange={onChange}
-            type='single'
-            className='gap-x-4'
+        <View className='flex items-center justify-center flex-row gap-4'>
+          <ChoresButtonModal
+            activityType={activityType}
+            onPress={() => onChange('chores')}
+            onFinish={(chore) => onChoreSelectionComplete(chore)}
+          />
+
+          <TouchableOpacity
+            onPress={() => onChangeAndNext('play')}
+            className={`h-28 w-28 rounded-xl flex items-center justify-center ${
+              activityType === 'play' ? 'bg-secondary' : 'bg-white'
+            }`}
           >
-            <ToggleGroupItem value='chores' className='native:h-28 native:w-28 rounded-xl'>
-              <ToggleGroupIcon icon={CookingPot} size={32} />
-              <Text className='text-center text-xl mt-4'>Chores</Text>
-            </ToggleGroupItem>
-            <ToggleGroupItem value='play' className='native:h-28 native:w-28 rounded-xl'>
-              <ToggleGroupIcon icon={Gamepad2} size={32} />
-              <Text className='text-center text-xl mt-4'>Play</Text>
-            </ToggleGroupItem>
-          </ToggleGroup>
+            <IconWrapper>
+              <Gamepad2 size={32} />
+            </IconWrapper>
+            <Text className='text-center text-md mt-4'>Play</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

@@ -1,33 +1,21 @@
-import { useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
 import { Checkbox } from '@shadcn/components/ui/checkbox';
-import type { AppNavigation } from '@src/types';
+import { Skills } from '@src/constants';
+import type { OnboardingFormData } from '@src/types';
+import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
 import type React from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 export const ContextualQuestionSkill: React.FC = () => {
-  const { navigate } = useNavigation<AppNavigation>();
+  const { values, setFieldValue } = useFormikContext<OnboardingFormData>();
+  const [selectedSkills, setSelectedSkills] = useState(values.skillsToBeIntegrated);
 
-  const skill = useMemo(() => {
-    return ['Cognitive skills', 'Motor skills', 'Social/Emotional skills', 'Language skills'];
-  }, []);
-  const [checkedItems, setCheckedItems] = useState(() => {
-    return skill.reduce(
-      (acc, skill) => {
-        acc[skill] = true; // All checkboxes are initially checked
-        return acc;
-      },
-      {} as { [key: string]: boolean }
-    );
-  });
-  const handleCheckboxChange = (item: string, value: boolean) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [item]: value
-    }));
-  };
+  useEffect(() => {
+    setFieldValue('skillsToBeIntegrated', selectedSkills);
+  }, [selectedSkills.length]);
+
   return (
     <View className='flex flex-1 items-stretch justify-center '>
       <View className='flex flex-1 flex-col items-center justify-center mb-4'>
@@ -38,24 +26,34 @@ export const ContextualQuestionSkill: React.FC = () => {
           style={{ width: 220, height: 220 }}
         />
       </View>
-      <View className='flex flex-col items-stretch'>
-        <Text className='text-2xl text-center font-bold mt-4 mb-2'>Skills to be integrated</Text>
-        <Text className='text-lg  mb-4 text-center font-medium'>
-          Want to help your little one grow a specific skill? Tell us, and we'll suggest activities!
+      <View className='flex flex-1 flex-col items-stretch'>
+        <Text className='text-2xl text-center font-medium mb-6'>Skills to be integrated</Text>
+        <Text className='text-lg text-center'>
+          Select the skills you would like to integrate into your activity.
         </Text>
-      </View>
-      <View className='flex flex-1 flex-col gap-y-4'>
-        {skill.map((item) => {
-          return (
-            <View key={item} className='flex flex-row  gap-x-4'>
-              <Checkbox
-                checked={checkedItems[item]}
-                onCheckedChange={(value: boolean) => handleCheckboxChange(item, value)}
-              />
-              <Text>{item}</Text>
-            </View>
-          );
-        })}
+        <View className='flex flex-1 flex-col gap-y-4 mt-12'>
+          {Object.values(Skills).map((item) => {
+            return (
+              <View key={item} className='flex flex-row gap-x-4'>
+                <Checkbox
+                  checked={values.skillsToBeIntegrated.includes(item)}
+                  disabled={
+                    values.skillsToBeIntegrated.length === 1 &&
+                    values.skillsToBeIntegrated.includes(item)
+                  }
+                  onCheckedChange={(value: boolean) => {
+                    if (value) {
+                      setSelectedSkills([...selectedSkills, item]);
+                    } else {
+                      setSelectedSkills(selectedSkills.filter((skill) => skill !== item));
+                    }
+                  }}
+                />
+                <Text>{item}</Text>
+              </View>
+            );
+          })}
+        </View>
       </View>
     </View>
   );

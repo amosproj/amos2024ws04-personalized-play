@@ -22,11 +22,12 @@ import { useCallback } from 'react';
 interface SubmitButtonProps extends ButtonProps {
   className?: string;
   children: React.ReactNode | ((props: { pressed: boolean }) => React.ReactNode);
+  shouldResetForm?: boolean;
 }
 
 export const SubmitButton: React.FC<SubmitButtonProps> = (props) => {
-  const { children, className, ...rest } = props;
-  const { submitForm, isSubmitting, setSubmitting } = useFormikContext();
+  const { children, className, shouldResetForm, ...rest } = props;
+  const { submitForm, isSubmitting, setSubmitting, resetForm } = useFormikContext();
 
   const onSubmit = useCallback(async () => {
     try {
@@ -36,6 +37,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = (props) => {
       console.error('Form submission error:', error);
     } finally {
       setSubmitting(false);
+      if (shouldResetForm) resetForm();
     }
   }, [setSubmitting, submitForm]);
 

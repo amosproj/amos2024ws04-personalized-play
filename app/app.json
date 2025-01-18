@@ -39,7 +39,8 @@
       "@react-native-google-signin/google-signin",
       ["expo-dev-launcher", { "launchMode": "most-recent" }],
       ["expo-font", { "fonts": [] }],
-      ["expo-asset"]
+      ["expo-asset"],
+      ["expo-av"]
     ],
     "extra": {
       "eas": {
