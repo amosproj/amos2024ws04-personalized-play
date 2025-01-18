@@ -29,6 +29,11 @@ export interface OnboardingFormData {
   choreType: string;
 }
 
+export interface NewKidFormData {
+  numberOfKids: number;
+  kids: Kid[];
+}
+
 export interface User {
   displayName: string;
   email: string;

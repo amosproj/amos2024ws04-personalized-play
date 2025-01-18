@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Button, Label, Text } from '@shadcn/components';
 import { Input } from '@shadcn/components';
 import { Badge } from '@shadcn/components/ui/badge';
+import { Card, CardHeader } from '@shadcn/components/ui/card';
 import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { DeleteAlertIcon } from '@src/components/DeleteAlert';
@@ -16,7 +17,7 @@ import {
 import { getAuth, signOut } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
-import { Baby, Edit3 } from 'lucide-react-native'; // Lucide edit icon
+import { Baby, CircleArrowRight, Edit3 } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ScrollView, View } from 'react-native';
@@ -399,6 +400,17 @@ export const Profile: React.FC = () => {
           </View>
         ) : null}
 
+        <View className='flex w-full justify-center mt-6 mb-2'>
+          <Card className='w-full max-w-sm h-20 bg-primary'>
+            <CardHeader className='flex-row  items-center justify-between'>
+              <Text className='text-primary-foreground'>Add a Kid</Text>
+              <CircleArrowRight
+                color='#ffffff'
+                onPress={() => navigate(Stacks.Auth, { screen: Screens.NewKid })}
+              />
+            </CardHeader>
+          </Card>
+        </View>
         <View className='flex w-full justify-center mt-6 mb-2'>
           <Button className='w-1/3' onPress={handleLogout}>
             <Text>Log Out</Text>

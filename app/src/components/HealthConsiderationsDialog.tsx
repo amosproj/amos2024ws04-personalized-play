@@ -1,4 +1,4 @@
-import { Button, Input } from '@shadcn/components';
+import { Button } from '@shadcn/components';
 import {
   AlertDialog,
   AlertDialogCancel,
