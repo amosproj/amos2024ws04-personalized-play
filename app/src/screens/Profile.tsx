@@ -306,15 +306,13 @@ export const Profile: React.FC = () => {
                       <HealthConsiderationsAlert
                         title='Health Considerations'
                         currentOptions={kid.healthConsiderations}
-                        onSave={(selected, custom) => {
-                          custom === ''
-                            ? onChangeKid(index, 'healthConsiderations', selected)
-                            : onChangeKid(index, 'healthConsiderations', [...selected, custom]);
+                        onSave={(selected) => {
+                          onChangeKid(index, 'healthConsiderations', selected);
                         }}
                       />
                     </View>
                     <View className='flex flex-row flex-wrap gap-2'>
-                      {kid.healthConsiderations.map((consideration, index) => (
+                      {kid.healthConsiderations?.map((consideration, index) => (
                         <Badge
                           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                           key={index}
@@ -366,7 +364,7 @@ export const Profile: React.FC = () => {
                         <Text className='text-l'>'None.'</Text>
                       ) : (
                         <View className='flex flex-row flex-wrap gap-2'>
-                          {kid.healthConsiderations.map((consideration, index) => (
+                          {kid.healthConsiderations?.map((consideration, index) => (
                             <Badge
                               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                               key={index}

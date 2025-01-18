@@ -22,7 +22,7 @@ iconWithClassName(X);
 interface HealthConsiderationsAlertProps {
   title: string;
   currentOptions: string[];
-  onSave: (selectedOptions: string[], customInput: string) => void;
+  onSave: (selectedOptions: string[]) => void;
 }
 
 export function HealthConsiderationsAlert({
@@ -31,7 +31,6 @@ export function HealthConsiderationsAlert({
   onSave
 }: HealthConsiderationsAlertProps) {
   const [selectedOptions, setSelectedOptions] = useState<string[]>(currentOptions);
-  const [customInput, setCustomInput] = useState('');
   const options: string[] = [
     'Developmental delays',
     'Autism spectrum',
@@ -51,9 +50,7 @@ export function HealthConsiderationsAlert({
   };
 
   const handleSave = () => {
-    onSave(selectedOptions, customInput);
-    setSelectedOptions([]);
-    setCustomInput('');
+    onSave(selectedOptions);
   };
 
   return (
@@ -93,12 +90,6 @@ export function HealthConsiderationsAlert({
               </Text>
             </Button>
           ))}
-          <Input
-            placeholder='Add a custom health consideration'
-            value={customInput}
-            onChangeText={setCustomInput}
-            className='w-full mb-2'
-          />
         </View>
 
         {/* Custom Input */}

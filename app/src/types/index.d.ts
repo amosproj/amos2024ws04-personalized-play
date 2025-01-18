@@ -41,12 +41,7 @@ export interface Kid {
   name: string;
   age: number;
   biologicalSex: "male" | "female" | "other";
-  healthConsiderations: {
-    isConsidered: string;
-    considerations: Array<string>;
-    chronicIllness: string;
-    other: string;
-  };
+  healthConsiderations: [];
 }
 
 export interface Activity {
