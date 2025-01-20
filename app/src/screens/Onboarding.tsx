@@ -188,7 +188,8 @@ export const Onboarding: React.FC = () => {
             .required('Required')
             .min(1, 'Required'),
           image: Yup.string().required('Required'),
-          objects: Yup.array().of(Yup.string()).min(1, 'Required')
+          objects: Yup.array().of(Yup.string()).min(1, 'Required'),
+          choreType: Yup.string()
         })}
         innerRef={formikRef}
         onSubmit={onDone}

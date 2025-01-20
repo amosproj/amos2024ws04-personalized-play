@@ -55,7 +55,8 @@ export const NewPlay: React.FC = () => {
    * @throws An error if any of the operations fail.
    */
   const onDone = async (values: NewPlayFormData) => {
-    const { selectKids, type, energyLevel, time, skillsToBeIntegrated, objects } = values;
+    const { selectKids, type, choreType, energyLevel, time, skillsToBeIntegrated, objects } =
+      values;
 
     try {
       if (!user) throw new Error('User not found');
@@ -64,6 +65,7 @@ export const NewPlay: React.FC = () => {
         type: type,
         energyLevel: energyLevel,
         kids: selectKids,
+        choreType: choreType,
         time: time,
         skillsToBeIntegrated: skillsToBeIntegrated,
         objects: objects,
@@ -148,6 +150,7 @@ export const NewPlay: React.FC = () => {
           energyLevel: 'medium',
           time: 10,
           type: '',
+          choreType: '',
           displayItems: [],
           image: '',
           objects: [],
@@ -165,7 +168,11 @@ export const NewPlay: React.FC = () => {
           displayItems: Yup.array().of(Yup.string()),
           image: Yup.string().required('Required'),
           objects: Yup.array().of(Yup.string()).min(1, 'Required'),
-          skillsToBeIntegrated: Yup.array().of(Yup.string()).required('Required').min(1, 'Required')
+          skillsToBeIntegrated: Yup.array()
+            .of(Yup.string())
+            .required('Required')
+            .min(1, 'Required'),
+          choreType: Yup.string()
         })}
         onSubmit={onDone}
         validateOnBlur={true}

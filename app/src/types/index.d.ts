@@ -75,6 +75,7 @@ export interface NewPlayFormData {
   energyLevel: 'low' | 'medium' | 'high';
   time: number;
   type: string;
+  choreType: string;
   skillsToBeIntegrated: string[];
   objects: string[];
 }
