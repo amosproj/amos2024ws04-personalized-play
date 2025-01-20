@@ -41,9 +41,9 @@ const onboardingQuestions = [
   { key: 'time', component: ContextualQuestionPlayTime },
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'type', component: ContextualQuestionActivityChoice },
-  { key: 'skillsToBeIntegrated', component: ContextualQuestionSkill },
   { key: 'image', component: ContextualQuestionCamera },
-  { key: 'objects', component: ContextualQuestionDisplayItemsIdentified }
+  { key: 'objects', component: ContextualQuestionDisplayItemsIdentified },
+  { key: 'skillsToBeIntegrated', component: ContextualQuestionSkill }
 ];
 
 export const Onboarding: React.FC = () => {
@@ -154,7 +154,7 @@ export const Onboarding: React.FC = () => {
           kids: [],
           energyLevel: 'medium',
           time: 15,
-          type: 'chores',
+          type: '',
           objects: [],
           image: '',
           skillsToBeIntegrated: [Skills.COGNITIVE, Skills.MOTOR, Skills.SOCIAL, Skills.LANGUAGE],
