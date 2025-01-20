@@ -71,8 +71,10 @@ export interface Activity {
 }
 
 export interface NewPlayFormData {
-  selectKids: Array;
-  energyLevel: number;
+  selectKids: string[];
+  energyLevel: 'low' | 'medium' | 'high';
   time: number;
-  activityType: string;
+  type: string;
+  skillsToBeIntegrated: string[];
+  objects: string[];
 }
