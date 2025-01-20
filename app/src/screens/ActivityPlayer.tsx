@@ -1,27 +1,27 @@
 import { Marquee } from '@animatereactnative/marquee';
-import { type RouteProp,useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Text } from '@shadcn/components';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { Loading } from '@src/components';
-import { fireFunction, Screens, Stacks } from '@src/constants';
+import { Screens, Stacks, fireFunction } from '@src/constants';
 import { useGetActivity } from '@src/hooks';
 import type { AuthRoutesParams } from '@src/routes';
+import type { AppNavigation } from '@src/types';
 import {
   IconBrain,
+  IconChevronCompactLeft,
   IconHelp,
   IconPlayerPause,
   IconPlayerPlay,
   IconPlayerTrackNext,
   IconPlayerTrackPrev,
-  IconRepeat,
   IconReload,
-  IconChevronCompactLeft
+  IconRepeat
 } from '@tabler/icons-react-native';
 import { Audio } from 'expo-av';
 import { httpsCallable } from 'firebase/functions';
 import LottieView from 'lottie-react-native';
 import { useMemo, useRef, useState } from 'react';
-import type { AppNavigation } from '@src/types';
 import { View } from 'react-native';
 
 iconWithClassName(IconBrain);
@@ -120,7 +120,7 @@ export const ActivityPlayer: React.FC = () => {
 
   const reloadActivity = async () => {
     try {
-      setIsReloading(true)
+      setIsReloading(true);
       const generateActivity = httpsCallable(fireFunction, 'ChorsGeneratorFlow');
       await generateActivity({ activityId: params?.activityId });
       await activity?.reload();
@@ -129,8 +129,8 @@ export const ActivityPlayer: React.FC = () => {
       setCurrentStep(0);
     } catch (error) {
       console.log(error);
-    }finally{
-      setIsReloading(false)
+    } finally {
+      setIsReloading(false);
     }
   };
 
@@ -148,12 +148,15 @@ export const ActivityPlayer: React.FC = () => {
   return (
     <View className='flex flex-col flex-1 items-stretch p-6 gap-y-6'>
       <View className='flex flex-row justify-between items-center gap-y-2'>
-        <Button variant={'outline'} size={'sm'} 
-                onPress={() => navigate(Stacks.Auth, { screen: Screens.Home })}>
-          <IconChevronCompactLeft className='text-base' size={16}/>
+        <Button
+          variant={'outline'}
+          size={'sm'}
+          onPress={() => navigate(Stacks.Auth, { screen: Screens.Home })}
+        >
+          <IconChevronCompactLeft className='text-base' size={16} />
         </Button>
         <Button variant={'outline'} size={'sm'} onPress={reloadActivity}>
-          <IconReload  className='text-base' size={16}/>
+          <IconReload className='text-base' size={16} />
         </Button>
       </View>
       <View className='flex flex-col flex-[3] items-center gap-y-4'>
