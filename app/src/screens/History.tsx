@@ -1,6 +1,8 @@
 import { Text } from '@shadcn/components';
-import { fireAuth } from '@src/constants';
-import React from 'react';
+import { fireAuth, Collections, fireStore  } from '@src/constants';
+import { HistoryActivity } from '@src/types';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
@@ -9,33 +11,57 @@ import MCIIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 export const History: React.FC = () => {
   const [user] = useAuthState(fireAuth);
   const [activeTab, setActiveTab] = React.useState<'all' | 'favorites'>('all');
-
-  const [items, setItems] = React.useState([
-    {
-      id: '1',
-      date: '20 Dec 2024, 13:10',
-      activity: 'Activity with cooking pasta',
-      isFavourite: true
-    },
-    {
-      id: '2',
-      date: '21 Dec 2024, 14:20',
-      activity: 'Activity with reading a book',
-      isFavourite: false
-    },
-    {
-      id: '3',
-      date: '18 Dec 2024, 12:00',
-      activity: 'Activity with toys',
-      isFavourite: true
-    },
-    {
-      id: '4',
-      date: '19 Dec 2024, 17:15',
-      activity: 'Activity with painting',
-      isFavourite: false
+  const [loading, setLoading] = useState<boolean>(true);
+  const [items, setItems] = React.useState([] as HistoryActivity[]);
+  
+  const fetchFavoriteActivities = async () => {
+    if (!user) {
+      console.log('No user found!');
+      setLoading(false);
+      return;
     }
-  ]);
+
+    try {
+      const userId = user.uid;
+
+      const activitiesRef = collection(
+        fireStore,
+        Collections.Users,
+        userId,
+        Collections.Activities
+      );
+
+      const querySnapshot = await getDocs(activitiesRef);
+
+      const activities: HistoryActivity[] = [];
+
+      // biome-ignore lint/complexity/noForEach: <explanation>
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        // Check if data is valid and has the necessary fields
+        activities.push({
+          id: doc.id,
+          activity: data.activity.name,
+          // set description length to 100 characters
+          description: data.activity.description.length > 100 ? data.activity.description.substring(0, 30) + '...' : data.activity.description,
+          isFavourite: data.favorite || false,
+        });
+      });
+
+      // Add fetched activities to state
+      setItems(activities);
+
+    } catch (error) {
+      console.error('Error fetching activities:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFavoriteActivities();
+  }, [user]);
 
   const handleToggleFavourite = (itemId: string) => {
     setItems((prevItems) =>
@@ -108,8 +134,8 @@ export const History: React.FC = () => {
           >
             {/* Item Info */}
             <View>
-              <Text className='text-sm text-primary/70'>{item.date}</Text>
               <Text className='text-base text-primary'>{item.activity}</Text>
+              <Text className='text-sm text-primary/70'>{item.description}</Text>
             </View>
 
             {/* Action Buttons in two rows (2x2) */}
