@@ -79,7 +79,7 @@ export interface NewPlayFormData {
 }
 
 export interface HistoryActivity { 
-  id?: string;
+  id: string;
   activity: string;
   description: string;
   isFavourite: boolean?;

@@ -1,7 +1,7 @@
 import { Text } from '@shadcn/components';
 import { fireAuth, Collections, fireStore  } from '@src/constants';
 import { HistoryActivity } from '@src/types';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
@@ -64,11 +64,27 @@ export const History: React.FC = () => {
   }, [user]);
 
   const handleToggleFavourite = (itemId: string) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === itemId ? { ...item, isFavourite: !item.isFavourite } : item
-      )
-    );
+
+    if (!user) {
+      console.log('No user found! ');
+      return;
+    }
+
+    // Update firebase activity favorite status
+    const activityRef = doc(fireStore, Collections.Users, user.uid, Collections.Activities, itemId);
+    const activity = items.find((item) => item.id === itemId);
+
+    if (!activity) {
+      console.log('No activity found!');
+      return;
+    }
+
+    // Update activity favorite status
+    activity.isFavourite = !activity.isFavourite;
+
+    // Update firebase
+    setItems([...items]);
+    updateDoc(activityRef, { favorite: activity.isFavourite });
   };
 
   // Decide which items to show based on activeTab
