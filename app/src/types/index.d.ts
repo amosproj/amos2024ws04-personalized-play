@@ -44,7 +44,7 @@ export interface Kid {
   healthConsiderations: string[];
 }
 
-export interface Activity { 
+export interface Activity {
   id?: string;
   energyLevel: 'low' | 'medium' | 'high';
   time: number;
@@ -56,7 +56,7 @@ export interface Activity {
   description: string;
   kids: string[];
   createdAt: Timestamp;
-  favorite: boolean?;
+  favorite?: boolean;
   activity: {
     name: string;
     description: string;
@@ -78,9 +78,9 @@ export interface NewPlayFormData {
   activityType: string;
 }
 
-export interface HistoryActivity { 
+export interface HistoryActivity {
   id: string;
   activity: string;
   description: string;
-  isFavourite: boolean?;
+  isFavourite: boolean;
 }

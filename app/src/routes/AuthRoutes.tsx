@@ -8,11 +8,11 @@ import { Collections, Screens, fireAuth, fireStore } from '@src/constants';
 import {
   ActivityPlayer,
   Favorite,
+  History,
   Home,
   NewPlay,
   Onboarding,
-  Profile,
-  History
+  Profile
 } from '@src/screens';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';

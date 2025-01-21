@@ -1,23 +1,24 @@
+import { useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
-import { fireAuth, Collections, fireStore  } from '@src/constants';
-import { HistoryActivity } from '@src/types';
+import { fireAuth, Collections, fireStore, Screens, Stacks } from '@src/constants';
+import type { HistoryActivity } from '@src/types';
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import type { AppNavigation } from '@src/types';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import MCIIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const History: React.FC = () => {
+  const { navigate } = useNavigation<AppNavigation>();
   const [user] = useAuthState(fireAuth);
   const [activeTab, setActiveTab] = React.useState<'all' | 'favorites'>('all');
-  const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = React.useState([] as HistoryActivity[]);
-  
+
   const fetchFavoriteActivities = async () => {
     if (!user) {
       console.log('No user found!');
-      setLoading(false);
       return;
     }
 
@@ -44,18 +45,18 @@ export const History: React.FC = () => {
           id: doc.id,
           activity: data.activity.name,
           // set description length to 100 characters
-          description: data.activity.description.length > 100 ? data.activity.description.substring(0, 30) + '...' : data.activity.description,
-          isFavourite: data.favorite || false,
+          description:
+            data.activity.description.length > 100
+              ? `${data.activity.description.substring(0, 30)}...`
+              : data.activity.description,
+          isFavourite: data.favorite || false
         });
       });
 
       // Add fetched activities to state
       setItems(activities);
-
     } catch (error) {
       console.error('Error fetching activities:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -64,7 +65,6 @@ export const History: React.FC = () => {
   }, [user]);
 
   const handleToggleFavourite = (itemId: string) => {
-
     if (!user) {
       console.log('No user found! ');
       return;
@@ -85,6 +85,13 @@ export const History: React.FC = () => {
     // Update firebase
     setItems([...items]);
     updateDoc(activityRef, { favorite: activity.isFavourite });
+  };
+
+  const replayActivity = (itemId: string) => {
+    navigate(Stacks.Auth, {
+      screen: Screens.ActivityPlayer,
+      params: { activityId: itemId }
+    });
   };
 
   // Decide which items to show based on activeTab
@@ -175,7 +182,7 @@ export const History: React.FC = () => {
                 <TouchableOpacity className='m-2'>
                   <FeatherIcon name='edit-3' size={20} color={iconColor} />
                 </TouchableOpacity>
-                <TouchableOpacity className='m-2'>
+                <TouchableOpacity className='m-2' onPress={() => replayActivity(item.id)}>
                   <FeatherIcon name='refresh-cw' size={20} color={iconColor} />
                 </TouchableOpacity>
               </View>
