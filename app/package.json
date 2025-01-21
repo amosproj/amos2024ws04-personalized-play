@@ -18,10 +18,11 @@
     "build:pre-android": "eas build --platform android --profile pre:physical",
     "build:pre-ios": "eas build --platform ios --profile pre:virtual",
     "biome:lint": "biome lint --write .",
-    "biome:format": "biome format --write .",
-    "biome:check": "biome check"
+    "biome:format": "biome format --write . --fix",
+    "biome:check": "biome check --fix"
   },
   "dependencies": {
+    "@animatereactnative/marquee": "^0.3.1",
     "@gorhom/bottom-sheet": "^5.0.6",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-google-signin/google-signin": "^13.1.0",
@@ -45,6 +46,7 @@
     "clsx": "^2.1.1",
     "expo": "~51.0.39",
     "expo-asset": "~10.0.10",
+    "expo-av": "~14.0.7",
     "expo-constants": "~16.0.2",
     "expo-dev-client": "~4.0.29",
     "expo-device": "~6.0.2",

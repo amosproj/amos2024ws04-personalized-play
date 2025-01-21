@@ -1,6 +1,6 @@
 import { Text } from '@shadcn/components';
 
-import type { ContextualQuestionProps } from '@src/types';
+import type { ContextualQuestionProps, OnboardingFormData } from '@src/types';
 import { useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
 import { Gamepad2 } from 'lucide-react-native';
@@ -11,13 +11,13 @@ import { InfoAlertIcon } from './InfoAlert';
 
 export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps> = (props) => {
   const { onNext } = props;
+  const { setFieldValue, values } = useFormikContext<OnboardingFormData>();
   const [activityType, setActivityType] = useState('');
-  const { setFieldValue, values } = useFormikContext<{ choreType: string }>();
 
   const onChange = (value: string | undefined) => {
     if (!value) return;
     setActivityType(value);
-    setFieldValue('activityType', value);
+    setFieldValue('type', value);
   };
 
   const onChangeAndNext = (value: string | undefined) => {
