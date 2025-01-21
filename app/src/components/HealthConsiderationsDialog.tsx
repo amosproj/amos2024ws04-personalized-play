@@ -13,7 +13,7 @@ import { Text } from '@shadcn/components/ui/text';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { CheckCircle, Plus, X } from 'lucide-react-native';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 iconWithClassName(Plus);
 iconWithClassName(CheckCircle);
@@ -60,7 +60,7 @@ export function HealthConsiderationsAlert({
         <Plus size={20} className='text-primary' />
       </AlertDialogTrigger>
 
-      <AlertDialogContent className='w-[90%] h-[95%]'>
+      <AlertDialogContent className='w-[90%] h-full'>
         <AlertDialogHeader className='flex flex-row items-center justify-between'>
           <CheckCircle size={28} className='text-primary' />
           <AlertDialogTitle className='text-xl text-primary font-medium'>
@@ -77,19 +77,21 @@ export function HealthConsiderationsAlert({
 
         {/* Options List */}
         <View className='mb-4'>
-          {options.map((option) => (
-            <Button
-              key={option}
-              className={`w-full mb-2 ${
-                selectedOptions.includes(option) ? 'bg-primary' : 'bg-white border'
-              }`}
-              onPress={() => toggleOption(option)}
-            >
-              <Text className={selectedOptions.includes(option) ? 'text-white' : 'text-primary'}>
-                {option}
-              </Text>
-            </Button>
-          ))}
+          <ScrollView scrollEnabled={true} persistentScrollbar={true}>
+            {options.map((option) => (
+              <Button
+                key={option}
+                className={`w-full mb-2 ${
+                  selectedOptions.includes(option) ? 'bg-primary' : 'bg-white border'
+                }`}
+                onPress={() => toggleOption(option)}
+              >
+                <Text className={selectedOptions.includes(option) ? 'text-white' : 'text-primary'}>
+                  {option}
+                </Text>
+              </Button>
+            ))}
+          </ScrollView>
         </View>
 
         {/* Custom Input */}
