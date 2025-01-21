@@ -117,7 +117,14 @@ export const Favorite: React.FC = () => {
       </Text>
       <View className='flex-row gap-x-2'>
         {/* Replay Button */}
-        <Button onPress={() => navigate(Stacks.Auth, { screen: Screens.NewPlay })}>
+        <Button
+          onPress={() =>
+            navigate(Stacks.Auth, {
+              screen: Screens.ActivityPlayer,
+              params: { activityId: item.id }
+            })
+          }
+        >
           <Text className='text-primary-foreground font-semibold'>Replay</Text>
         </Button>
 
