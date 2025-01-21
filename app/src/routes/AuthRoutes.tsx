@@ -8,11 +8,11 @@ import { Collections, Screens, fireAuth, fireStore } from '@src/constants';
 import {
   ActivityPlayer,
   Favorite,
-  History,
   Home,
   NewPlay,
   Onboarding,
-  Profile
+  Profile,
+  Welcome
 } from '@src/screens';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -70,7 +70,7 @@ export const AuthRoutes: React.FC = () => {
     >
       <AuthDrawer.Screen
         name={Screens.Welcome}
-        component={History}
+        component={Welcome}
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
       <AuthDrawer.Screen name={Screens.Home} component={Home} options={{ headerShown: false }} />
