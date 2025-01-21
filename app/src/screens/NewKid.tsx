@@ -7,8 +7,8 @@ import {
   SubmitButton
 } from '@src/components';
 import { Collections, Screens, Stacks, fireAuth, fireStore } from '@src/constants';
-import type { AppNavigation, Kid, NewKidFormData } from '@src/types';
-import { addDoc, collection, writeBatch } from 'firebase/firestore';
+import type { AppNavigation, NewKidFormData } from '@src/types';
+import { collection, doc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -36,17 +36,25 @@ export const NewKid: React.FC = () => {
    */
   const onDone = async (values: NewKidFormData) => {
     const { kids } = values;
-    const kData: Kid[] = kids;
-
     try {
       if (!user) throw new Error('User not found');
+
       const kColRef = collection(fireStore, Collections.Users, user.uid, Collections.Kids);
       const batch = writeBatch(fireStore);
-      const [_] = await Promise.all([kData.map((kid) => addDoc(kColRef, kid))]);
-      batch.commit();
+
+      // Add each kid document to the batch
+      for (const kid of kids) {
+        const newKidRef = doc(kColRef); // Generate a new document reference
+        batch.set(newKidRef, kid);
+      }
+
+      // Commit the batch
+      await batch.commit();
+
       navigate(Stacks.Auth, {
         screen: Screens.Profile
       });
+
       formikRef.current?.resetForm();
       setIndex(0);
       flatListRef.current?.scrollToIndex({ index: 0, animated: false });
