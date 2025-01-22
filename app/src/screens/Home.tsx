@@ -113,6 +113,15 @@ export const Home: React.FC = () => {
           />
         </CardHeader>
       </Card>
+      <Card className='w-full max-w-sm h-20 bg-primary'>
+        <CardHeader className='flex-row  items-center justify-between'>
+          <Text className='text-primary-foreground'>Profile</Text>
+          <CircleArrowRight
+              color='#ffffff'
+              onPress={() => navigate(Stacks.Auth, { screen: Screens.Profile })}
+          />
+        </CardHeader>
+      </Card>
 
       {/* Loading indicator */}
       {loading ? (

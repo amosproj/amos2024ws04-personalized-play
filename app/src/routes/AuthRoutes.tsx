@@ -9,6 +9,7 @@ import {
   ActivityPlayer,
   Favorite,
   Home,
+  NewKid,
   NewPlay,
   Onboarding,
   Profile,
@@ -27,6 +28,7 @@ export type AuthRoutesParams = {
   [Screens.ActivityPlayer]: { activityId: string };
   [Screens.Favorite]: undefined;
   [Screens.NewPlay]: undefined;
+  [Screens.NewKid]: undefined;
 };
 
 // Create a drawer navigator for authenticated routes
@@ -92,6 +94,11 @@ export const AuthRoutes: React.FC = () => {
       <AuthDrawer.Screen
         name={Screens.NewPlay}
         component={NewPlay}
+        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.NewKid}
+        component={NewKid}
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
     </AuthDrawer.Navigator>

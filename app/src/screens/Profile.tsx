@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { Button, Label, Text } from '@shadcn/components';
 import { Input } from '@shadcn/components';
 import { Badge } from '@shadcn/components/ui/badge';
@@ -16,12 +17,14 @@ import {
 import { getAuth, signOut } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
-import { Baby, Edit3 } from 'lucide-react-native'; // Lucide edit icon
-import { useEffect, useState } from 'react';
+import { Baby, DoorOpen, Edit3, Plus } from 'lucide-react-native'; // Lucide edit icon
+import { useCallback, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ScrollView, View } from 'react-native';
 
 iconWithClassName(Baby);
+iconWithClassName(Plus);
+iconWithClassName(DoorOpen);
 
 interface Kid {
   id: string; // Added to track Firestore document ID
@@ -82,9 +85,11 @@ export const Profile: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [user, isKidsEditable, isUserEditable]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [user, isKidsEditable, isUserEditable]) // Dependency on user ensures the data is refetched if the user changes
+  );
 
   const saveUser = async () => {
     try {
@@ -195,6 +200,7 @@ export const Profile: React.FC = () => {
           <Label className='mb-2'>
             <Text className='text-sm'>Email</Text>
           </Label>
+
           <Input
             placeholder='Your email'
             value={email}
@@ -306,15 +312,13 @@ export const Profile: React.FC = () => {
                       <HealthConsiderationsAlert
                         title='Health Considerations'
                         currentOptions={kid.healthConsiderations}
-                        onSave={(selected, custom) => {
-                          custom === ''
-                            ? onChangeKid(index, 'healthConsiderations', selected)
-                            : onChangeKid(index, 'healthConsiderations', [...selected, custom]);
+                        onSave={(selected) => {
+                          onChangeKid(index, 'healthConsiderations', selected);
                         }}
                       />
                     </View>
                     <View className='flex flex-row flex-wrap gap-2'>
-                      {kid.healthConsiderations.map((consideration, index) => (
+                      {kid.healthConsiderations?.map((consideration, index) => (
                         <Badge
                           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                           key={index}
@@ -366,7 +370,7 @@ export const Profile: React.FC = () => {
                         <Text className='text-l'>'None.'</Text>
                       ) : (
                         <View className='flex flex-row flex-wrap gap-2'>
-                          {kid.healthConsiderations.map((consideration, index) => (
+                          {kid.healthConsiderations?.map((consideration, index) => (
                             <Badge
                               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                               key={index}
@@ -401,9 +405,22 @@ export const Profile: React.FC = () => {
           </View>
         ) : null}
 
-        <View className='flex w-full justify-center mt-6 mb-2'>
-          <Button className='w-1/3' onPress={handleLogout}>
-            <Text>Log Out</Text>
+        <View className='w-full flex flex-row justify-start mt-6 mb-2'>
+          <Button
+            className='flex flex-row gap-x-3'
+            onPress={() => navigate(Stacks.Auth, { screen: Screens.NewKid })}
+          >
+            <Plus size={18} className='text-white' />
+            <Text>Add more kids</Text>
+          </Button>
+        </View>
+        <View className='w-full flex flex-row justify-start mt-6 mb-2'>
+          <Button
+            className='bg-white border border-primary flex flex-row gap-x-3'
+            onPress={handleLogout}
+          >
+            <DoorOpen size={18} className='text-primary' />
+            <Text className='text-primary'>Logout</Text>
           </Button>
         </View>
       </View>
