@@ -105,7 +105,7 @@ export const Home: React.FC = () => {
     }
     navigate(Stacks.Auth, { screen: Screens.Onboarding });
   };
-  
+
   useEffect(() => {
     fetchFavoriteActivities();
   }, [user]);
@@ -118,7 +118,7 @@ export const Home: React.FC = () => {
     };
     checkUserOnboarded();
   }, []);
-  
+
   const renderFavoriteActivity = ({ item }: { item: Activity }) => (
     <View className='w-full p-4 rounded-lg mb-4 flex flex-row justify-between bg-secondary'>
       <Text className='flex-1 text-lg font-semibold text-secondary-foreground'>{item.name}</Text>
@@ -161,8 +161,8 @@ export const Home: React.FC = () => {
         <CardHeader className='flex-row  items-center justify-between'>
           <Text className='text-primary-foreground'>Profile</Text>
           <CircleArrowRight
-              color='#ffffff'
-              onPress={() => navigate(Stacks.Auth, { screen: Screens.Profile })}
+            color='#ffffff'
+            onPress={() => navigate(Stacks.Auth, { screen: Screens.Profile })}
           />
         </CardHeader>
       </Card>
