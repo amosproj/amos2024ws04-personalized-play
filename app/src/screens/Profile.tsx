@@ -1,40 +1,25 @@
-import { useNavigation } from "@react-navigation/native";
-import { Button, Label, Text } from "@shadcn/components";
-import { Input } from "@shadcn/components";
-import { Badge } from "@shadcn/components/ui/badge";
-import {
-  ToggleGroup,
-  ToggleGroupIcon,
-  ToggleGroupItem,
-} from "@shadcn/components/ui/toggle-group";
-import { iconWithClassName } from "@shadcn/icons/iconWithClassName";
-import { DeleteAlertIcon } from "@src/components/DeleteAlert";
-import { HealthConsiderationsAlert } from "@src/components/HealthConsiderationsDialog";
-import {
-  Collections,
-  fireAuth,
-  fireStore,
-} from "@src/constants";
-import type { AppNavigation } from "@src/types";
+import { useNavigation } from '@react-navigation/native';
+import { Button, Label, Text } from '@shadcn/components';
+import { Input } from '@shadcn/components';
+import { Badge } from '@shadcn/components/ui/badge';
+import { ToggleGroup, ToggleGroupIcon, ToggleGroupItem } from '@shadcn/components/ui/toggle-group';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
+import { DeleteAlertIcon } from '@src/components/DeleteAlert';
+import { HealthConsiderationsAlert } from '@src/components/HealthConsiderationsDialog';
+import { SignOutButton } from '@src/components/SignOutButton';
+import { Collections, fireAuth, fireStore } from '@src/constants';
+import type { AppNavigation } from '@src/types';
 import {
   IconGenderFemale,
   IconGenderMale,
-  IconGenderTransgender,
-} from "@tabler/icons-react-native";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  writeBatch,
-} from "firebase/firestore";
-import { deleteDoc } from "firebase/firestore"; // Import deleteDoc
-import { Baby, Edit3 } from "lucide-react-native"; // Lucide edit icon
-import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { ScrollView, View } from "react-native";
-import { SignOutButton } from "@src/components/SignOutButton";
+  IconGenderTransgender
+} from '@tabler/icons-react-native';
+import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
+import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
+import { Baby, Edit3 } from 'lucide-react-native'; // Lucide edit icon
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { ScrollView, View } from 'react-native';
 
 iconWithClassName(Baby);
 
@@ -48,8 +33,8 @@ interface Kid {
 
 export const Profile: React.FC = () => {
   const [user] = useAuthState(fireAuth);
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [kids, setKids] = useState<Kid[]>([]);
   const [isUserEditable, setUserEditable] = useState<boolean>(false);
   const [isKidsEditable, setKidsEditable] = useState<boolean>(false);
@@ -58,7 +43,7 @@ export const Profile: React.FC = () => {
   const fetchData = async () => {
     try {
       if (!user) {
-        console.error("User not authenticated");
+        console.error('User not authenticated');
         return;
       }
 
@@ -84,15 +69,15 @@ export const Profile: React.FC = () => {
         const data = doc.data();
         return {
           id: doc.id, // Store Firestore document ID for updates
-          name: data?.name || "Unknown",
+          name: data?.name || 'Unknown',
           age: data?.age || 0,
-          biologicalSex: data?.biologicalSex || "",
-          healthConsiderations: data?.healthConsiderations || [],
+          biologicalSex: data?.biologicalSex || '',
+          healthConsiderations: data?.healthConsiderations || []
         };
       });
       setKids(kidsData);
     } catch (error) {
-      console.error("Error retrieving user data:", error);
+      console.error('Error retrieving user data:', error);
     }
   };
 
@@ -103,7 +88,7 @@ export const Profile: React.FC = () => {
   const saveUser = async () => {
     try {
       if (!user) {
-        console.error("User not authenticated");
+        console.error('User not authenticated');
         return;
       }
       const userId = user.uid;
@@ -114,14 +99,14 @@ export const Profile: React.FC = () => {
 
       setUserEditable(false);
     } catch (error) {
-      console.error("Error saving user data:", error);
+      console.error('Error saving user data:', error);
     }
   };
 
   const saveKids = async () => {
     try {
       if (!user) {
-        console.error("User not authenticated");
+        console.error('User not authenticated');
         return;
       }
       const userId = user.uid;
@@ -130,138 +115,116 @@ export const Profile: React.FC = () => {
 
       // biome-ignore lint/complexity/noForEach: <explanation>
       kids.forEach((kid) => {
-        const kidDocRef = doc(
-          fireStore,
-          Collections.Users,
-          userId,
-          Collections.Kids,
-          kid.id
-        );
+        const kidDocRef = doc(fireStore, Collections.Users, userId, Collections.Kids, kid.id);
         batch.update(kidDocRef, {
           name: kid.name,
           age: kid.age,
           biologicalSex: kid.biologicalSex,
-          healthConsiderations: kid.healthConsiderations,
+          healthConsiderations: kid.healthConsiderations
         });
       });
 
       await batch.commit();
       setKidsEditable(false);
     } catch (error) {
-      console.error("Error saving kids data:", error);
+      console.error('Error saving kids data:', error);
     }
   };
 
   const deleteKid = async (kidId: string) => {
     try {
       if (!user) {
-        console.error("User not authenticated");
+        console.error('User not authenticated');
         return;
       }
       const userId = user.uid;
-      const kidDocRef = doc(
-        fireStore,
-        Collections.Users,
-        userId,
-        Collections.Kids,
-        kidId
-      );
+      const kidDocRef = doc(fireStore, Collections.Users, userId, Collections.Kids, kidId);
       await deleteDoc(kidDocRef);
 
       // Remove kid from local state
       setKids((prevKids) => prevKids.filter((kid) => kid.id !== kidId));
     } catch (error) {
-      console.error("Error deleting kid:", error);
+      console.error('Error deleting kid:', error);
     }
   };
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const onChangeKid = (index: number, field: keyof Kid, value: any) => {
     setKids((prevKids) =>
-      prevKids.map((kid, idx) =>
-        idx === index ? { ...kid, [field]: value } : kid
-      )
+      prevKids.map((kid, idx) => (idx === index ? { ...kid, [field]: value } : kid))
     );
   };
 
   return (
-    <ScrollView className="flex-1">
+    <ScrollView className='flex-1'>
       {/* User Details Section */}
-      <View className="w-10/12 m-auto">
-        <View className="flex flex-row items-center justify-between mb-4">
-          <Text className="text-xl font-bold">User Details</Text>
+      <View className='w-10/12 m-auto'>
+        <View className='flex flex-row items-center justify-between mb-4'>
+          <Text className='text-xl font-bold'>User Details</Text>
           {!isUserEditable ? (
             <Edit3
               size={20}
-              color="#000"
+              color='#000'
               onPress={() => setUserEditable(!isUserEditable)}
-              className="ml-2"
+              className='ml-2'
             />
           ) : null}
         </View>
 
-        <View className="w-full flex mb-4">
-          <Label className="mb-2">
-            <Text className="text-sm">Email</Text>
+        <View className='w-full flex mb-4'>
+          <Label className='mb-2'>
+            <Text className='text-sm'>Email</Text>
           </Label>
           <Input
-            placeholder="Your email"
+            placeholder='Your email'
             value={email}
             readOnly={true}
-            aria-labelledby="inputLabel"
-            aria-errormessage="inputError"
+            aria-labelledby='inputLabel'
+            aria-errormessage='inputError'
           />
         </View>
 
-        <View className="w-full flex mb-4">
-          <Label className="mb-2 text-sm">
-            <Text className="text-sm">Username</Text>
+        <View className='w-full flex mb-4'>
+          <Label className='mb-2 text-sm'>
+            <Text className='text-sm'>Username</Text>
           </Label>
           <Input
-            placeholder="Your username"
+            placeholder='Your username'
             value={username}
             onChangeText={setUsername}
             readOnly={!isUserEditable}
-            aria-labelledby="inputLabel"
-            aria-errormessage="inputError"
-            className="w-full mb-4"
+            aria-labelledby='inputLabel'
+            aria-errormessage='inputError'
+            className='w-full mb-4'
           />
         </View>
         {isUserEditable && (
-          <Button onPress={saveUser} className="self-end">
+          <Button onPress={saveUser} className='self-end'>
             <Text>Save</Text>
           </Button>
         )}
       </View>
 
       {/* Kids Details Section */}
-      <View className="w-10/12 m-auto">
-        <View className="flex flex-row items-center justify-between mb-4">
-          <Text className="text-xl font-bold">Kids Details</Text>
+      <View className='w-10/12 m-auto'>
+        <View className='flex flex-row items-center justify-between mb-4'>
+          <Text className='text-xl font-bold'>Kids Details</Text>
           {!isKidsEditable ? (
-            <Edit3
-              size={20}
-              color="#000"
-              onPress={() => setKidsEditable(true)}
-              className="ml-2"
-            />
+            <Edit3 size={20} color='#000' onPress={() => setKidsEditable(true)} className='ml-2' />
           ) : null}
         </View>
-        <View className="flex-col gap-y-4">
+        <View className='flex-col gap-y-4'>
           {kids.map((kid, index) => (
-            <View
-              key={kid.id}
-              className="border border-gray-300 p-4 rounded-lg mb-4"
-            >
+            <View key={kid.id} className='border border-gray-300 p-4 rounded-lg mb-4'>
               {isKidsEditable ? (
                 <View>
-                  <View className="mx-1 mb-6">
-                    <View className="flex flex-row items-center justify-between mb-2">
+                  <View className='mx-1 mb-6'>
+                    <View className='flex flex-row items-center justify-between mb-2'>
                       <Label>
-                        <Text className="text-sm">Name</Text>
+                        <Text className='text-sm'>Name</Text>
                       </Label>
                       <DeleteAlertIcon
-                        title={"Confirm Deletion"}
+                        title={'Confirm Deletion'}
                         description={
                           "Are you sure you want to delete this child's information? This action cannot be undone."
                         }
@@ -269,93 +232,76 @@ export const Profile: React.FC = () => {
                       />
                     </View>
                     <Input
-                      placeholder="Name"
+                      placeholder='Name'
                       value={kid.name}
-                      onChangeText={(text) => onChangeKid(index, "name", text)}
+                      onChangeText={(text) => onChangeKid(index, 'name', text)}
                       readOnly={!isKidsEditable}
-                      className="w-full text-md"
+                      className='w-full text-md'
                     />
                   </View>
 
-                  <View className="flex flex-row mx-1 mb-6">
-                    <View className="w-1/2">
-                      <Label className="mb-2">
-                        <Text className="text-sm">Age in Months</Text>
+                  <View className='flex flex-row mx-1 mb-6'>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text className='text-sm'>Age in Months</Text>
                       </Label>
                       <Input
-                        className="text-md"
-                        placeholder="Age"
+                        className='text-md'
+                        placeholder='Age'
                         value={String(kid.age)}
-                        onChangeText={(text) =>
-                          onChangeKid(index, "age", Number(text))
-                        }
-                        keyboardType="numeric"
+                        onChangeText={(text) => onChangeKid(index, 'age', Number(text))}
+                        keyboardType='numeric'
                         readOnly={!isKidsEditable}
                       />
                     </View>
-                    <View className="w-1/2">
-                      <Label className="mb-2">
-                        <Text className="text-sm">Biological Sex</Text>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text className='text-sm'>Biological Sex</Text>
                       </Label>
                       <ToggleGroup
                         disabled={!isKidsEditable}
                         value={kid.biologicalSex}
-                        onValueChange={(value) =>
-                          onChangeKid(index, "biologicalSex", value)
-                        }
-                        type="single"
-                        className="flex flex-row gap-x-2"
+                        onValueChange={(value) => onChangeKid(index, 'biologicalSex', value)}
+                        type='single'
+                        className='flex flex-row gap-x-2'
                       >
-                        <ToggleGroupItem value="male" className="rounded-xl">
+                        <ToggleGroupItem value='male' className='rounded-xl'>
                           <ToggleGroupIcon icon={IconGenderMale} size={18} />
                         </ToggleGroupItem>
-                        <ToggleGroupItem value="female" className="rounded-xl">
+                        <ToggleGroupItem value='female' className='rounded-xl'>
                           <ToggleGroupIcon icon={IconGenderFemale} size={18} />
                         </ToggleGroupItem>
-                        <ToggleGroupItem
-                          value="transgender"
-                          className="rounded-xl"
-                        >
-                          <ToggleGroupIcon
-                            icon={IconGenderTransgender}
-                            size={18}
-                          />
+                        <ToggleGroupItem value='transgender' className='rounded-xl'>
+                          <ToggleGroupIcon icon={IconGenderTransgender} size={18} />
                         </ToggleGroupItem>
                       </ToggleGroup>
                     </View>
                   </View>
 
-                  <View className="mx-1 mb-4">
-                    <View className="flex flex-row justify-between mb-2">
-                      <Label className="mb-2">
-                        <Text className="text-sm">Health Considerations</Text>
+                  <View className='mx-1 mb-4'>
+                    <View className='flex flex-row justify-between mb-2'>
+                      <Label className='mb-2'>
+                        <Text className='text-sm'>Health Considerations</Text>
                       </Label>
                       <HealthConsiderationsAlert
-                        title="Health Considerations"
+                        title='Health Considerations'
                         currentOptions={kid.healthConsiderations}
                         onSave={(selected, custom) => {
-                          custom === ""
-                            ? onChangeKid(
-                                index,
-                                "healthConsiderations",
-                                selected
-                              )
-                            : onChangeKid(index, "healthConsiderations", [
-                                ...selected,
-                                custom,
-                              ]);
+                          custom === ''
+                            ? onChangeKid(index, 'healthConsiderations', selected)
+                            : onChangeKid(index, 'healthConsiderations', [...selected, custom]);
                         }}
                       />
                     </View>
-                    <View className="flex flex-row flex-wrap gap-2">
+                    <View className='flex flex-row flex-wrap gap-2'>
                       {kid.healthConsiderations.map((consideration, index) => (
                         <Badge
                           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                           key={index}
-                          variant="outline"
-                          className="px-2 py-1"
+                          variant='outline'
+                          className='px-2 py-1'
                         >
-                          <Text className="text-md">{consideration}</Text>
+                          <Text className='text-md'>{consideration}</Text>
                         </Badge>
                       ))}
                     </View>
@@ -363,58 +309,53 @@ export const Profile: React.FC = () => {
                 </View>
               ) : (
                 <View>
-                  <View className="flex flex-row gap-2 items-center mb-6">
-                    <Baby strokeWidth={2} className="text-primary" />
-                    <Text className="text-2xl text-primary">{kid.name}</Text>
+                  <View className='flex flex-row gap-2 items-center mb-6'>
+                    <Baby strokeWidth={2} className='text-primary' />
+                    <Text className='text-2xl text-primary'>{kid.name}</Text>
                   </View>
 
-                  <View className="flex flex-row mx-1 mb-6">
-                    <View className="w-1/2">
-                      <Label className="mb-2">
-                        <Text className="text-sm">Age in Months</Text>
+                  <View className='flex flex-row mx-1 mb-6'>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text className='text-sm'>Age in Months</Text>
                       </Label>
-                      <Text className="text-md">{kid.age} Months</Text>
+                      <Text className='text-md'>{kid.age} Months</Text>
                     </View>
-                    <View className="w-1/2">
-                      <Label className="mb-2">
-                        <Text className="text-sm">Biological Sex</Text>
+                    <View className='w-1/2'>
+                      <Label className='mb-2'>
+                        <Text className='text-sm'>Biological Sex</Text>
                       </Label>
-                      {kid.biologicalSex === "male" ? (
+                      {kid.biologicalSex === 'male' ? (
                         <ToggleGroupIcon icon={IconGenderMale} size={20} />
                       ) : null}
-                      {kid.biologicalSex === "female" ? (
+                      {kid.biologicalSex === 'female' ? (
                         <ToggleGroupIcon icon={IconGenderFemale} size={20} />
                       ) : null}
-                      {kid.biologicalSex === "transgender" ? (
-                        <ToggleGroupIcon
-                          icon={IconGenderTransgender}
-                          size={20}
-                        />
+                      {kid.biologicalSex === 'transgender' ? (
+                        <ToggleGroupIcon icon={IconGenderTransgender} size={20} />
                       ) : null}
                     </View>
                   </View>
 
-                  <View className="flex flex-row mx-1 mb-6">
+                  <View className='flex flex-row mx-1 mb-6'>
                     <View>
-                      <Label className="mb-4">
-                        <Text className="text-sm">Health Considerations</Text>
+                      <Label className='mb-4'>
+                        <Text className='text-sm'>Health Considerations</Text>
                       </Label>
                       {kid.healthConsiderations.length === 0 ? (
-                        <Text className="text-l">'None.'</Text>
+                        <Text className='text-l'>'None.'</Text>
                       ) : (
-                        <View className="flex flex-row flex-wrap gap-2">
-                          {kid.healthConsiderations.map(
-                            (consideration, index) => (
-                              <Badge
-                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                                key={index}
-                                variant="outline"
-                                className="px-2 py-1 text-sm min-w-12"
-                              >
-                                <Text className="text-md">{consideration}</Text>
-                              </Badge>
-                            )
-                          )}
+                        <View className='flex flex-row flex-wrap gap-2'>
+                          {kid.healthConsiderations.map((consideration, index) => (
+                            <Badge
+                              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                              key={index}
+                              variant='outline'
+                              className='px-2 py-1 text-sm min-w-12'
+                            >
+                              <Text className='text-md'>{consideration}</Text>
+                            </Badge>
+                          ))}
                         </View>
                       )}
                     </View>
@@ -425,16 +366,16 @@ export const Profile: React.FC = () => {
           ))}
         </View>
         {isKidsEditable ? (
-          <View className="flex flex-row gap-2 justify-end">
+          <View className='flex flex-row gap-2 justify-end'>
             <Button
               onPress={() => {
                 setKidsEditable(false);
               }}
-              className="self-end bg-transparent border-primary border-[1px]"
+              className='self-end bg-transparent border-primary border-[1px]'
             >
-              <Text className="text-primary">Cancel</Text>
+              <Text className='text-primary'>Cancel</Text>
             </Button>
-            <Button onPress={saveKids} className="self-end">
+            <Button onPress={saveKids} className='self-end'>
               <Text>Save</Text>
             </Button>
           </View>
