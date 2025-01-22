@@ -14,7 +14,15 @@ import {
   IconGenderTransgender
 } from '@tabler/icons-react-native';
 import { getAuth, signOut } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  writeBatch
+} from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
 import { Baby, Edit3 } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
@@ -388,9 +396,48 @@ export const Profile: React.FC = () => {
         {isKidsEditable ? (
           <View className='flex flex-row gap-2 justify-end'>
             <Button
-              onPress={() => {
-                setKidsEditable(false);
+              onPress={async () => {
+                try {
+                  if (!user) {
+                    console.error('User not authenticated');
+                    return;
+                  }
+
+                  const userId = user.uid;
+
+                  // Add a new kid document in Firestore
+                  const newKidData: Kid = {
+                    id: '', // Firestore will generate the ID
+                    name: '',
+                    age: 0,
+                    biologicalSex: '',
+                    healthConsiderations: []
+                  };
+
+                  const kidDocRef = await addDoc(
+                    collection(fireStore, Collections.Users, userId, Collections.Kids),
+                    {
+                      name: newKidData.name,
+                      age: newKidData.age,
+                      biologicalSex: newKidData.biologicalSex,
+                      healthConsiderations: newKidData.healthConsiderations
+                    }
+                  );
+
+                  // Get the generated ID and update local state
+                  setKids((prevKids) => [...prevKids, { ...newKidData, id: kidDocRef.id }]);
+
+                  console.log('New kid added with ID:', kidDocRef.id);
+                } catch (error) {
+                  console.error('Error adding new kid:', error);
+                }
               }}
+              className='self-end bg-transparent border-primary border-[1px]'
+            >
+              <Text className='text-primary'>Add New Kid</Text>
+            </Button>
+            <Button
+              onPress={() => {}}
               className='self-end bg-transparent border-primary border-[1px]'
             >
               <Text className='text-primary'>Cancel</Text>
