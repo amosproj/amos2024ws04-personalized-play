@@ -26,7 +26,7 @@ export const ContextualQuestionActivityChoice: React.FC<ContextualQuestionProps>
   };
 
   const onChoreSelectionComplete = (choreType: string) => {
-    setFieldValue('choreType', choreType);
+    setFieldValue('type', choreType);
     onNext();
   };
 

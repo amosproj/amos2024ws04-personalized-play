@@ -14,7 +14,7 @@ import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
 export type Activity = {
   id: string;
   name: string;
-  activityType: string;
+  type: string;
   duration: number;
   energy: number;
   favorite: boolean;
@@ -60,7 +60,7 @@ export const Favorite: React.FC = () => {
           activities.push({
             id: doc.id,
             name: data.name as string,
-            activityType: data.activityType as string,
+            type: data.type as string,
             duration: Number.parseInt(data.duration),
             energy: Number.parseInt(data.energy),
             favorite: data.favorite || false
@@ -90,7 +90,7 @@ export const Favorite: React.FC = () => {
 
       await updateDoc(activityRef, {
         name: updateData.name,
-        activityType: updateData.activityType,
+        type: updateData.type,
         duration: updateData.duration,
         energy: updateData.energy,
         favorite: updateData.favorite
