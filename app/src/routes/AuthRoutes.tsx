@@ -8,6 +8,7 @@ import { Collections, Screens, fireAuth, fireStore } from '@src/constants';
 import {
   ActivityPlayer,
   Favorite,
+  Feedback,
   Home,
   NewKid,
   NewPlay,
@@ -29,6 +30,7 @@ export type AuthRoutesParams = {
   [Screens.Favorite]: undefined;
   [Screens.NewPlay]: undefined;
   [Screens.NewKid]: undefined;
+  [Screens.Feedback]: { activityId: string | undefined };
 };
 
 // Create a drawer navigator for authenticated routes
@@ -99,6 +101,11 @@ export const AuthRoutes: React.FC = () => {
       <AuthDrawer.Screen
         name={Screens.NewKid}
         component={NewKid}
+        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.Feedback}
+        component={Feedback}
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
     </AuthDrawer.Navigator>
