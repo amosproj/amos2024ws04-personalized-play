@@ -5,7 +5,7 @@ import { Screens, Stacks, fireAuth } from '@src/constants';
 import { Collections, fireStore } from '@src/constants';
 import type { AppNavigation } from '@src/types';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import { CircleArrowRight, UserIcon } from 'lucide-react-native';
+import { RotateCcw, UserIcon } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import type React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -114,7 +114,7 @@ export const Home: React.FC = () => {
   const renderFavoriteActivity = ({ item }: { item: Activity }) => (
     <View className='w-full p-4 rounded-lg mb-4 flex flex-row justify-between bg-secondary'>
       <Text className='flex-1 text-lg font-semibold text-secondary-foreground'>{item.name}</Text>
-      <CircleArrowRight
+      <RotateCcw
         color='#ffffff'
         onPress={() =>
           navigate(Stacks.Auth, { screen: Screens.ActivityPlayer, params: { activityId: item.id } })
