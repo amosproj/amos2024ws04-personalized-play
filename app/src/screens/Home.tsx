@@ -124,7 +124,9 @@ export const Home: React.FC = () => {
       <Text className='flex-1 text-lg font-semibold text-secondary-foreground'>{item.name}</Text>
       <CircleArrowRight
         color='#ffffff'
-        onPress={() => navigate(Stacks.Auth, { screen: Screens.NewPlay })}
+        onPress={() =>
+          navigate(Stacks.Auth, { screen: Screens.ActivityPlayer, params: { activityId: item.id } })
+        }
       />
     </View>
   );
