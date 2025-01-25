@@ -51,13 +51,13 @@ export const NewKid: React.FC = () => {
       // Commit the batch
       await batch.commit();
 
-      navigate(Stacks.Auth, {
-        screen: Screens.Profile
-      });
-
       formikRef.current?.resetForm();
       setIndex(0);
       flatListRef.current?.scrollToIndex({ index: 0, animated: false });
+
+      navigate(Stacks.Auth, {
+        screen: Screens.Profile
+      });
     } catch (error) {
       console.error('Error saving data:', error);
     }
