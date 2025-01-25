@@ -4,7 +4,7 @@ import { Card, CardHeader } from '@shadcn/components/ui/card';
 import { Screens, Stacks, fireAuth } from '@src/constants';
 import { Collections, fireStore } from '@src/constants';
 import type { AppNavigation } from '@src/types';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { CircleArrowRight, UserIcon } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import type React from 'react';
@@ -25,6 +25,32 @@ export const Home: React.FC = () => {
   const [user] = useAuthState(fireAuth);
   const [favoriteActivities, setFavoriteActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isOnboarded, setIsOnboarded] = useState(false);
+
+  const getUserData = async () => {
+    if (!user) return;
+    try {
+      const userDocRef = doc(fireStore, Collections.Users, user.uid);
+      const docSnap = await getDoc(userDocRef);
+
+      if (docSnap.exists()) {
+        // Document exists - you can access the data
+        return docSnap.data();
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting document:', error);
+      throw error;
+    }
+  };
+
+  const isUserOnboarded = async () => {
+    const userData = await getUserData();
+    if (!userData) {
+      return false;
+    }
+    return userData.isOnboarded;
+  };
 
   const fetchFavoriteActivities = async () => {
     if (!user) {
@@ -72,9 +98,26 @@ export const Home: React.FC = () => {
     }
   };
 
+  const onNewPlayPressed = () => {
+    if (isOnboarded) {
+      navigate(Stacks.Auth, { screen: Screens.NewPlay });
+      return;
+    }
+    navigate(Stacks.Auth, { screen: Screens.Onboarding });
+  };
+
   useEffect(() => {
     fetchFavoriteActivities();
   }, [user]);
+
+  useEffect(() => {
+    const checkUserOnboarded = async () => {
+      const userOnboarded = await isUserOnboarded();
+      setIsOnboarded(userOnboarded);
+      setLoading(false);
+    };
+    checkUserOnboarded();
+  }, []);
 
   const renderFavoriteActivity = ({ item }: { item: Activity }) => (
     <View className='w-full p-4 rounded-lg mb-4 flex flex-row justify-between bg-secondary'>
@@ -109,7 +152,17 @@ export const Home: React.FC = () => {
           <CircleArrowRight
             color='#ffffff'
             size={40}
-            onPress={() => navigate(Stacks.Auth, { screen: Screens.NewPlay })}
+            onPress={onNewPlayPressed}
+            disabled={loading}
+          />
+        </CardHeader>
+      </Card>
+      <Card className='w-full max-w-sm h-20 bg-primary'>
+        <CardHeader className='flex-row  items-center justify-between'>
+          <Text className='text-primary-foreground'>Profile</Text>
+          <CircleArrowRight
+            color='#ffffff'
+            onPress={() => navigate(Stacks.Auth, { screen: Screens.Profile })}
           />
         </CardHeader>
       </Card>

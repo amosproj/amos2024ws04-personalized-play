@@ -13,6 +13,7 @@ export * from './ContextualQuestionActivityChoice';
 export * from './ContextualQuestionUserName';
 export * from './ContextualQuestionEnergyLevel';
 export * from './ContextualQuestionNumberKids';
+export * from './ContextualQuestionNumberNewKids';
 export * from './ContextualQuestionPlayTime';
 export * from './ContextualQuestionSkill';
 export * from './ContextualQuestionAgeKids';

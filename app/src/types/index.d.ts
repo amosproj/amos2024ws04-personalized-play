@@ -29,6 +29,11 @@ export interface OnboardingFormData {
   choreType: string;
 }
 
+export interface NewKidFormData {
+  numberOfKids: number;
+  kids: Kid[];
+}
+
 export interface User {
   displayName: string;
   email: string;
@@ -41,7 +46,7 @@ export interface Kid {
   name: string;
   age: number;
   biologicalSex: 'male' | 'female' | 'other';
-  healthConsiderations: string[];
+  healthConsiderations: [];
 }
 
 export interface Activity {
@@ -72,10 +77,13 @@ export interface Activity {
 }
 
 export interface NewPlayFormData {
-  selectKids: Array;
-  energyLevel: number;
+  selectKids: string[];
+  energyLevel: 'low' | 'medium' | 'high';
   time: number;
-  activityType: string;
+  type: string;
+  choreType: string;
+  skillsToBeIntegrated: string[];
+  objects: string[];
 }
 
 export interface HistoryActivity {

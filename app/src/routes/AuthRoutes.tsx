@@ -9,10 +9,11 @@ import {
   ActivityPlayer,
   Favorite,
   Home,
+  NewKid,
   NewPlay,
   Onboarding,
   Profile,
-  Welcome
+  History
 } from '@src/screens';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -27,6 +28,7 @@ export type AuthRoutesParams = {
   [Screens.ActivityPlayer]: { activityId: string };
   [Screens.Favorite]: undefined;
   [Screens.NewPlay]: undefined;
+  [Screens.NewKid]: undefined;
   [Screens.History]: undefined;
 };
 
@@ -70,7 +72,7 @@ export const AuthRoutes: React.FC = () => {
     >
       <AuthDrawer.Screen
         name={Screens.Welcome}
-        component={Welcome}
+        component={History}
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
       <AuthDrawer.Screen name={Screens.Home} component={Home} options={{ headerShown: false }} />
@@ -93,6 +95,11 @@ export const AuthRoutes: React.FC = () => {
       <AuthDrawer.Screen
         name={Screens.NewPlay}
         component={NewPlay}
+        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.NewKid}
+        component={NewKid}
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
     </AuthDrawer.Navigator>

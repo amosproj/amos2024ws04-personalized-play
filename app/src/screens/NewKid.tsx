@@ -2,27 +2,13 @@ import { useNavigation } from '@react-navigation/native';
 import { Button, Text } from '@shadcn/components';
 import { ChevronLeft } from '@shadcn/icons';
 import {
-  ContextualQuestionActivityChoice,
-  ContextualQuestionCamera,
-  ContextualQuestionDisplayItemsIdentified,
-  ContextualQuestionEnergyLevel,
-  ContextualQuestionPlayTime,
-  ContextualQuestionSelectKids,
-  ContextualQuestionSkill,
+  ContextualQuestionAgeKids,
+  ContextualQuestionNumberNewKids,
   SubmitButton
 } from '@src/components';
-import {
-  Collections,
-  Screens,
-  Skills,
-  Stacks,
-  fireAuth,
-  fireFunction,
-  fireStore
-} from '@src/constants';
-import type { Activity, AppNavigation, NewPlayFormData } from '@src/types';
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
-import { httpsCallable } from 'firebase/functions';
+import { Collections, Screens, Stacks, fireAuth, fireStore } from '@src/constants';
+import type { AppNavigation, NewKidFormData } from '@src/types';
+import { collection, doc, writeBatch } from 'firebase/firestore';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -30,70 +16,55 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Dimensions, FlatList, View } from 'react-native';
 import * as Yup from 'yup';
 
-//add export
-export const onboardingQuestions = [
-  { key: 'selectKids', component: ContextualQuestionSelectKids },
-  { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
-  { key: 'time', component: ContextualQuestionPlayTime },
-  { key: 'type', component: ContextualQuestionActivityChoice },
-  { key: 'image', component: ContextualQuestionCamera },
-  { key: 'objects', component: ContextualQuestionDisplayItemsIdentified },
-  { key: 'skillsToBeIntegrated', component: ContextualQuestionSkill }
+const NewKidQuestions = [
+  { key: 'numberOfKids', component: ContextualQuestionNumberNewKids },
+  { key: 'kids', component: ContextualQuestionAgeKids }
 ];
 
-export const NewPlay: React.FC = () => {
+export const NewKid: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
-  const formikRef = useRef<FormikProps<NewPlayFormData>>(null);
+  const formikRef = useRef<FormikProps<NewKidFormData>>(null);
   const [index, setIndex] = useState(0);
   const [user] = useAuthState(fireAuth);
   const { navigate } = useNavigation<AppNavigation>();
 
   /**
-   * Called when the user is done with the onboarding flow.
+   * Called when the user is done with the NewKid flow.
    * @param values - The form values containing the user's input.
    * @returns A promise that resolves when the data is saved to Firestore.
    * @throws An error if any of the operations fail.
    */
-  const onDone = async (values: NewPlayFormData) => {
-    const { selectKids, type, choreType, energyLevel, time, skillsToBeIntegrated, objects } =
-      values;
-
+  const onDone = async (values: NewKidFormData) => {
+    const { kids } = values;
     try {
       if (!user) throw new Error('User not found');
 
-      const aData: Partial<Activity> = {
-        type: type,
-        energyLevel: energyLevel,
-        kids: selectKids,
-        choreType: choreType,
-        time: time,
-        skillsToBeIntegrated: skillsToBeIntegrated,
-        objects: objects,
-        createdAt: Timestamp.now()
-      };
+      const kColRef = collection(fireStore, Collections.Users, user.uid, Collections.Kids);
+      const batch = writeBatch(fireStore);
 
-      const userId = user.uid;
-      const aColRef = collection(fireStore, Collections.Users, userId, Collections.Activities);
+      // Add each kid document to the batch
+      for (const kid of kids) {
+        const newKidRef = doc(kColRef); // Generate a new document reference
+        batch.set(newKidRef, kid);
+      }
 
-      // Add the activity document and get its reference
-      const activity = await addDoc(aColRef, aData);
+      // Commit the batch
+      await batch.commit();
 
-      // Then call the cloud function to generate the activity
-      const generateActivity = httpsCallable(fireFunction, 'ChorsGeneratorFlow');
-      await generateActivity({ activityId: activity.id });
-
-      // Finally navigate to the activity player
       navigate(Stacks.Auth, {
-        screen: Screens.ActivityPlayer,
-        params: { activityId: activity.id }
+        screen: Screens.Profile
       });
+
+      formikRef.current?.resetForm();
+      setIndex(0);
+      flatListRef.current?.scrollToIndex({ index: 0, animated: false });
     } catch (error) {
-      console.error('Error saving data to Firestore:', error);
+      console.error('Error saving data:', error);
     }
   };
 
   /**
-   * Navigate to the next onboarding question.
+   * Navigate to the next NewKid question.
    * Validate the current form field and only move to the next question if the field is valid.
    * If the field is invalid, do not move to the next question.
    */
@@ -101,13 +72,13 @@ export const NewPlay: React.FC = () => {
     if (flatListRef.current && formikRef.current) {
       try {
         // If we are on the last question, do not move to the next question
-        if (index === onboardingQuestions.length - 1) return;
+        if (index === NewKidQuestions.length - 1) return;
         // Mark the current field as touched
-        await formikRef.current.setFieldTouched(onboardingQuestions[index].key, true);
+        await formikRef.current.setFieldTouched(NewKidQuestions[index].key, true);
         // Validate the current field
-        await formikRef.current.validateField(onboardingQuestions[index].key);
+        await formikRef.current.validateField(NewKidQuestions[index].key);
         // Get the error message for the current field
-        const { error } = formikRef.current.getFieldMeta(onboardingQuestions[index].key);
+        const { error } = formikRef.current.getFieldMeta(NewKidQuestions[index].key);
         // If the field is invalid, do not move to the next question
         if (error) {
           console.log(error);
@@ -124,7 +95,7 @@ export const NewPlay: React.FC = () => {
   };
 
   /**
-   * Navigate to the previous onboarding question.
+   * Navigate to the previous NewKid question.
    * If we are on the first question, do not move to the previous question.
    */
   const onPrevious = () => {
@@ -146,34 +117,27 @@ export const NewPlay: React.FC = () => {
     <View className='flex flex-col flex-1 justify-start items-stretch'>
       <Formik
         initialValues={{
-          selectKids: [],
-          energyLevel: 'medium',
-          time: 10,
-          type: '',
-          choreType: '',
-          displayItems: [],
-          image: '',
-          objects: [],
-          skillsToBeIntegrated: [Skills.COGNITIVE, Skills.MOTOR, Skills.SOCIAL, Skills.LANGUAGE]
+          numberOfKids: 1,
+          kids: []
         }}
-        innerRef={formikRef}
         validationSchema={Yup.object({
-          selectKids: Yup.array().min(1, 'Required'),
-          energyLevel: Yup.string().required('Required').oneOf(['low', 'medium', 'high']),
-          time: Yup.number()
+          numberOfKids: Yup.number()
             .required('Required')
-            .min(5, 'Must be at least 5 minutes')
-            .max(30, 'Cannot be more than 30 minutes'),
-          type: Yup.string().required('Required').oneOf(['chores', 'play']),
-          displayItems: Yup.array().of(Yup.string()),
-          image: Yup.string().required('Required'),
-          objects: Yup.array().of(Yup.string()).min(1, 'Required'),
-          skillsToBeIntegrated: Yup.array()
-            .of(Yup.string())
-            .required('Required')
-            .min(1, 'Required'),
-          choreType: Yup.string()
+            .min(1, 'Must have at least 1 kid')
+            .max(3, 'Cannot have more than 5 kids'),
+          kids: Yup.array().of(
+            Yup.object({
+              name: Yup.string().required('Required'),
+              biologicalSex: Yup.string().required('Required').oneOf(['male', 'female', 'other']),
+              age: Yup.number()
+                .required('Required')
+                .min(1, 'Must be at least 1 month')
+                .max(60, 'Cannot be more than 60 months'),
+              healthConsiderations: Yup.array().of(Yup.string()).notRequired()
+            })
+          )
         })}
+        innerRef={formikRef}
         onSubmit={onDone}
         validateOnBlur={true}
         validateOnChange={true}
@@ -182,7 +146,7 @@ export const NewPlay: React.FC = () => {
           <FlatList
             className='flex-1'
             ref={flatListRef}
-            data={onboardingQuestions}
+            data={NewKidQuestions}
             horizontal={true}
             pagingEnabled={true}
             showsHorizontalScrollIndicator={false}
@@ -200,13 +164,13 @@ export const NewPlay: React.FC = () => {
                   paddingTop: 24
                 }}
               >
-                <item.component onNext={onNext} component={onboardingQuestions[index].key} />
+                <item.component onNext={onNext} component={NewKidQuestions[index].key} />
               </View>
             )}
           />
-          <View className='flex flex-row items-center justify-end pt-4 pb-6 relative'>
-            <View className='flex flex-row justify-center items-center absolute left-1/2 -translate-x-1/2'>
-              {onboardingQuestions.map((_, i) => (
+          <View className='flex flex-row items-center justify-between pt-4 pb-6 px-6'>
+            <View className='flex flex-row justify-center items-center'>
+              {NewKidQuestions.map((_, i) => (
                 <View
                   key={`dot-${i.toString()}`}
                   style={{ opacity: i === index ? 1 : 0.12 }}
@@ -214,7 +178,7 @@ export const NewPlay: React.FC = () => {
                 />
               ))}
             </View>
-            <View className='flex flex-row items-center justify-center pr-6'>
+            <View className='flex flex-row items-center justify-center'>
               <Button
                 variant={'outline'}
                 size={'icon'}
@@ -224,7 +188,7 @@ export const NewPlay: React.FC = () => {
               >
                 <ChevronLeft size={24} className='text-primary' />
               </Button>
-              {index === onboardingQuestions.length - 1 ? (
+              {index === NewKidQuestions.length - 1 ? (
                 <SubmitButton size={'sm'} className='h-10'>
                   <Text>Save</Text>
                 </SubmitButton>
@@ -234,7 +198,7 @@ export const NewPlay: React.FC = () => {
                   size={'icon'}
                   className='rounded-xl'
                   onPress={onNext}
-                  disabled={index === onboardingQuestions.length - 1}
+                  disabled={index === NewKidQuestions.length - 1}
                 >
                   <ChevronLeft size={24} className='rotate-180 text-primary-foreground' />
                 </Button>

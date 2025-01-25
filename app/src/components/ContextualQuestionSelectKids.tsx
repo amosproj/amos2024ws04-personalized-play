@@ -88,7 +88,7 @@ export const ContextualQuestionSelectKids: React.FC = () => {
           {kidsNames.map((kid) => (
             <View key={kid} className='flex flex-row gap-x-4'>
               <Checkbox
-                checked={!!checkedItems[kid]}
+                checked={checkedItems[kid]}
                 onCheckedChange={(isChecked) => handleCheckboxChange(kid, isChecked as boolean)}
               />
               <Text>{kid}</Text>
