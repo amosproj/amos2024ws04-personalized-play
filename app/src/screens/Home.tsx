@@ -14,10 +14,6 @@ import { ActivityIndicator, FlatList, Image, View } from 'react-native';
 interface Activity {
   id: string;
   name: string;
-  activityType: string;
-  duration: number;
-  energy: number;
-  favorite: boolean;
 }
 
 export const Home: React.FC = () => {
@@ -77,14 +73,10 @@ export const Home: React.FC = () => {
         const data = doc.data();
 
         // Check if data is valid and has the necessary fields
-        if (data.favorite && data.name && data.type) {
+        if (data.favorite && data.activity.name) {
           activities.push({
             id: doc.id,
-            name: data.name,
-            activityType: data.type,
-            duration: Number.parseInt(data.duration, 10),
-            energy: Number.parseInt(data.energy, 10),
-            favorite: data.favorite
+            name: data.activity.name
           });
         }
       });
