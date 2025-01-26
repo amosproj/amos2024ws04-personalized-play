@@ -29,6 +29,7 @@ export type AuthRoutesParams = {
   [Screens.Favorite]: undefined;
   [Screens.NewPlay]: undefined;
   [Screens.NewKid]: undefined;
+  [Screens.History]: undefined;
 };
 
 // Create a drawer navigator for authenticated routes
