@@ -12,7 +12,8 @@ export enum Screens {
   Favorite = 'Favorite',
   NewPlay = 'NewPlay',
   NewKid = 'NewKid',
-  History = 'History'
+  History = 'History',
+  Feedback = 'Feedback'
 }
 
 export enum Stacks {

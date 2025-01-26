@@ -9,14 +9,14 @@ import type { AuthRoutesParams } from '@src/routes';
 import type { AppNavigation } from '@src/types';
 import {
   IconBrain,
-  IconChevronCompactLeft,
   IconHelp,
   IconPlayerPause,
   IconPlayerPlay,
   IconPlayerTrackNext,
   IconPlayerTrackPrev,
   IconReload,
-  IconRepeat
+  IconRepeat,
+  IconXboxX
 } from '@tabler/icons-react-native';
 import { Audio } from 'expo-av';
 import { httpsCallable } from 'firebase/functions';
@@ -31,6 +31,7 @@ iconWithClassName(IconPlayerPlay);
 iconWithClassName(IconPlayerPause);
 iconWithClassName(IconPlayerTrackNext);
 iconWithClassName(IconPlayerTrackPrev);
+iconWithClassName(IconXboxX);
 
 export const ActivityPlayer: React.FC = () => {
   const { navigate } = useNavigation<AppNavigation>();
@@ -124,6 +125,7 @@ export const ActivityPlayer: React.FC = () => {
       const generateActivity = httpsCallable(fireFunction, 'ChorsGeneratorFlow');
       await generateActivity({ activityId: params?.activityId });
       await activity?.reload();
+      await sound.current.unloadAsync();
       setIsPlaying(false);
       setIsFinished(false);
       setCurrentStep(0);
@@ -145,32 +147,21 @@ export const ActivityPlayer: React.FC = () => {
     return <Loading heading='Loading activity' description='Please wait...' />;
   }
 
+  const finishSession = () => {
+    navigate(Stacks.Auth, {
+      screen: Screens.Feedback,
+      params: { activityId: params?.activityId }
+    });
+  };
+
+  const isLastStep = currentStep === maxSteps - 1;
+
   return (
     <View className='flex flex-col flex-1 items-stretch p-6 gap-y-6'>
-      <View className='flex flex-row justify-between items-center gap-y-2'>
-        <Button
-          variant={'outline'}
-          size={'sm'}
-          onPress={() => navigate(Stacks.Auth, { screen: Screens.Home })}
-        >
-          <IconChevronCompactLeft className='text-base' size={16} />
-        </Button>
-        <Button variant={'outline'} size={'sm'} onPress={reloadActivity}>
-          <IconReload className='text-base' size={16} />
-        </Button>
-      </View>
       <View className='flex flex-col flex-[3] items-center gap-y-4'>
         <View className='flex flex-col items-center gap-y-2'>
           <Text className='text-xl font-medium'>{activity?.data.activity.name}</Text>
           <Text className='text-sm text-center'>{activity?.data.activity.description}</Text>
-        </View>
-        <View className='flex flex-row items-center gap-x-4'>
-          <Button variant={'secondary'} className='native:h-12 native:w-12 rounded-xl'>
-            <IconBrain className='text-base' size={20} />
-          </Button>
-          <Button variant={'secondary'} className='native:h-12 native:w-12 rounded-xl'>
-            <IconHelp className='text-base' size={20} />
-          </Button>
         </View>
         <LottieView
           autoPlay={true}
@@ -197,7 +188,7 @@ export const ActivityPlayer: React.FC = () => {
         <View className='flex flex-row items-center justify-center gap-x-12'>
           <Button
             variant={'secondary'}
-            className='native:h-20 native:w-20 rounded-xl'
+            className='native:h-20 native:w-24 rounded-xl'
             disabled={currentStep === 0 || isReloading}
             onPress={playPreviousAudio}
           >
@@ -225,13 +216,43 @@ export const ActivityPlayer: React.FC = () => {
               <IconPlayerPlay className='text-base text-primary-foreground' size={28} />
             )}
           </Button>
+          {isLastStep ? (
+            <Button
+              variant='secondary'
+              className='native:h-20 native:w-24 rounded-xl'
+              disabled={isPlaying}
+              onPress={finishSession}
+            >
+              <Text>Finish</Text>
+            </Button>
+          ) : (
+            <Button
+              variant={'secondary'}
+              className='native:h-20 native:w-24 rounded-xl'
+              disabled={isLastStep || isReloading}
+              onPress={playNextAudio}
+            >
+              <IconPlayerTrackNext className='text-base' size={28} />
+            </Button>
+          )}
+        </View>
+        <View className='flex flex-row items-center justify-center gap-x-12 w-full'>
+          <View className='native:w-24' />
           <Button
-            variant={'secondary'}
+            variant='destructive'
             className='native:h-20 native:w-20 rounded-xl'
-            disabled={currentStep === maxSteps - 1 || isReloading}
-            onPress={playNextAudio}
+            disabled={isReloading}
+            onPress={() => navigate(Stacks.Auth, { screen: Screens.Home })}
           >
-            <IconPlayerTrackNext className='text-base' size={28} />
+            <IconXboxX className='text-base text-primary-foreground' size={28} />
+          </Button>
+          <Button
+            variant='secondary'
+            className='native:h-20 native:w-24 rounded-xl'
+            disabled={isPlaying || isReloading}
+            onPress={reloadActivity}
+          >
+            <IconReload className='text-base' size={28} />
           </Button>
         </View>
       </View>
