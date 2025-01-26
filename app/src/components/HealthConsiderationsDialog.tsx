@@ -60,7 +60,7 @@ export function HealthConsiderationsAlert({
         <Plus size={20} className='text-primary' />
       </AlertDialogTrigger>
 
-      <AlertDialogContent className='w-[90%] h-full'>
+      <AlertDialogContent className='w-[90%]'>
         <AlertDialogHeader className='flex flex-row items-center justify-between'>
           <CheckCircle size={28} className='text-primary' />
           <AlertDialogTitle className='text-xl text-primary font-medium'>
@@ -76,36 +76,35 @@ export function HealthConsiderationsAlert({
         </AlertDialogDescription>
 
         {/* Options List */}
-        <View className='mb-4'>
-          <ScrollView scrollEnabled={true} persistentScrollbar={true}>
-            {options.map((option) => (
-              <Button
-                key={option}
-                className={`w-full mb-2 ${
-                  selectedOptions.includes(option) ? 'bg-primary' : 'bg-white border'
-                }`}
-                onPress={() => toggleOption(option)}
-              >
-                <Text className={selectedOptions.includes(option) ? 'text-white' : 'text-primary'}>
-                  {option}
-                </Text>
-              </Button>
-            ))}
-          </ScrollView>
-        </View>
+
+        <ScrollView className='h-[510px]' scrollEnabled={true} persistentScrollbar={true}>
+          {options.map((option) => (
+            <Button
+              key={option}
+              className={`w-full mb-2 ${
+                selectedOptions.includes(option) ? 'bg-primary' : 'bg-white border'
+              }`}
+              onPress={() => toggleOption(option)}
+            >
+              <Text className={selectedOptions.includes(option) ? 'text-white' : 'text-primary'}>
+                {option}
+              </Text>
+            </Button>
+          ))}
+        </ScrollView>
 
         {/* Custom Input */}
 
         {/* Footer */}
         <AlertDialogFooter className='flex flex-row justify-end'>
           <AlertDialogCancel className='border-primary text-primary rounded-xl w-24 text-center'>
-            <Text className='text-xl'>Cancel</Text>
+            <Text className='text-xl bg-inherit'>Cancel</Text>
           </AlertDialogCancel>
           <AlertDialogCancel
             className='bg-primary text-white rounded-xl w-24 text-center'
             onPress={handleSave}
           >
-            <Text className='text-xl'>Save</Text>
+            <Text className='text-xl bg-inherit'>Save</Text>
           </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
