@@ -1,15 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
 import { Card, CardHeader } from '@shadcn/components/ui/card';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { Screens, Stacks, fireAuth } from '@src/constants';
 import { Collections, fireStore } from '@src/constants';
 import type { AppNavigation } from '@src/types';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import { RotateCcw, UserIcon } from 'lucide-react-native';
+import { CircleArrowRight, RotateCcw, UserIcon, UserRoundCog } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import type React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ActivityIndicator, FlatList, Image, View } from 'react-native';
+
+iconWithClassName(UserRoundCog);
 
 interface Activity {
   id: string;
@@ -126,17 +129,23 @@ export const Home: React.FC = () => {
   return (
     <View className='flex flex-1 flex-col px-6 gap-y-4'>
       {/* Welcome Section */}
-      <View className='flex flex-row items-center gap-x-4'>
-        {user?.photoURL ? (
-          <Image source={{ uri: user.photoURL }} className='w-10 h-10 rounded-full mr-3' />
-        ) : (
-          <View className='w-10 h-10 rounded-full bg-gray-300 mr-3 flex items-center justify-center'>
-            <UserIcon className='text-gray-500 w-6 h-6' />
-          </View>
-        )}
-        <Text className='text-l font-bold text-primary text-xl '>
-          Welcome {user?.displayName || user?.email || 'Guest'}!
-        </Text>
+      <View className='flex flex-row items-center justify-between mt-4'>
+        <View className='flex flex-row items-center gap-x-4'>
+          {user?.photoURL ? (
+            <Image source={{ uri: user.photoURL }} className='w-10 h-10 rounded-full mr-3' />
+          ) : (
+            <View className='w-10 h-10 rounded-full bg-gray-300 mr-3 flex items-center justify-center'>
+              <UserIcon className='text-gray-500 w-6 h-6' />
+            </View>
+          )}
+          <Text className='text-l font-bold text-primary text-xl '>
+            Hi {user?.displayName || 'There'}!
+          </Text>
+        </View>
+        <UserRoundCog
+          className='text-primary'
+          onPress={() => navigate(Stacks.Auth, { screen: Screens.Profile })}
+        />
       </View>
 
       {/* "Add Fav activities" Card */}
@@ -148,15 +157,6 @@ export const Home: React.FC = () => {
             size={40}
             onPress={onNewPlayPressed}
             disabled={loading}
-          />
-        </CardHeader>
-      </Card>
-      <Card className='w-full max-w-sm h-20 bg-primary'>
-        <CardHeader className='flex-row  items-center justify-between'>
-          <Text className='text-primary-foreground'>Profile</Text>
-          <CircleArrowRight
-            color='#ffffff'
-            onPress={() => navigate(Stacks.Auth, { screen: Screens.Profile })}
           />
         </CardHeader>
       </Card>
