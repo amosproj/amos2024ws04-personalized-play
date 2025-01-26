@@ -18,8 +18,8 @@
     "build:pre-android": "eas build --platform android --profile pre:physical",
     "build:pre-ios": "eas build --platform ios --profile pre:virtual",
     "biome:lint": "biome lint --write .",
-    "biome:format": "biome format --write .",
-    "biome:check": "biome check"
+    "biome:format": "biome format --write . --fix",
+    "biome:check": "biome check --fix"
   },
   "dependencies": {
     "@animatereactnative/marquee": "^0.3.1",

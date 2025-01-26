@@ -10,7 +10,8 @@ export enum Screens {
   Onboarding = 'Onboarding',
   ActivityPlayer = 'ActivityPlayer',
   Favorite = 'Favorite',
-  NewPlay = 'NewPlay'
+  NewPlay = 'NewPlay',
+  NewKid = 'NewKid'
 }
 
 export enum Stacks {
