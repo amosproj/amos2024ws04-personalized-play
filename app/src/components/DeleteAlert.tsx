@@ -50,7 +50,7 @@ export function DeleteAlertIcon({ title, description, onDelete }: AlertIconDialo
             onPress={onDelete}
             className='bg-red-600 text-white rounded-lg px-4 py-2'
           >
-            <Text className='text-base'>Delete</Text>
+            <Text className='text-base bg-inherit'>Delete</Text>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
