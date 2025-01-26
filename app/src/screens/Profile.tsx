@@ -24,7 +24,7 @@ import {
   writeBatch
 } from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
-import { Baby, Edit3 } from 'lucide-react-native'; // Lucide edit icon
+import { Baby, DoorOpen, Edit3 } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ScrollView, View } from 'react-native';
@@ -124,13 +124,23 @@ export const Profile: React.FC = () => {
 
       // biome-ignore lint/complexity/noForEach: <explanation>
       kids.forEach((kid) => {
-        const kidDocRef = doc(fireStore, Collections.Users, userId, Collections.Kids, kid.id);
-        batch.update(kidDocRef, {
-          name: kid.name,
-          age: kid.age,
-          biologicalSex: kid.biologicalSex,
-          healthConsiderations: kid.healthConsiderations
-        });
+        if (kid.id.startsWith('temp-')) {
+          const newkidDocRef = doc(fireStore, Collections.Users, userId, Collections.Kids, kid.id);
+          batch.update(newkidDocRef, {
+            name: kid.name,
+            age: kid.age,
+            biologicalSex: kid.biologicalSex,
+            healthConsiderations: kid.healthConsiderations
+          });
+        } else {
+          const kidDocRef = doc(fireStore, Collections.Users, userId, Collections.Kids, kid.id);
+          batch.update(kidDocRef, {
+            name: kid.name,
+            age: kid.age,
+            biologicalSex: kid.biologicalSex,
+            healthConsiderations: kid.healthConsiderations
+          });
+        }
       });
 
       await batch.commit();
@@ -314,10 +324,8 @@ export const Profile: React.FC = () => {
                       <HealthConsiderationsAlert
                         title='Health Considerations'
                         currentOptions={kid.healthConsiderations}
-                        onSave={(selected, custom) => {
-                          custom === ''
-                            ? onChangeKid(index, 'healthConsiderations', selected)
-                            : onChangeKid(index, 'healthConsiderations', [...selected, custom]);
+                        onSave={(selected) => {
+                          onChangeKid(index, 'healthConsiderations', selected);
                         }}
                       />
                     </View>
@@ -437,7 +445,10 @@ export const Profile: React.FC = () => {
               <Text className='text-primary'>Add New Kid</Text>
             </Button>
             <Button
-              onPress={() => {}}
+              onPress={() => {
+                setKids((prevKids) => prevKids.filter((kid) => !kid.id.startsWith('temp-')));
+                setKidsEditable(false);
+              }}
               className='self-end bg-transparent border-primary border-[1px]'
             >
               <Text className='text-primary'>Cancel</Text>
@@ -448,9 +459,13 @@ export const Profile: React.FC = () => {
           </View>
         ) : null}
 
-        <View className='flex w-full justify-center mt-6 mb-2'>
-          <Button className='w-1/3' onPress={handleLogout}>
-            <Text>Log Out</Text>
+        <View className='w-full flex flex-row justify-start mt-6 mb-2'>
+          <Button
+            className='bg-white border border-primary flex flex-row gap-x-3'
+            onPress={handleLogout}
+          >
+            <DoorOpen size={18} className='text-primary' />
+            <Text className='text-primary'>Logout</Text>
           </Button>
         </View>
       </View>
