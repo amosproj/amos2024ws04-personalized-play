@@ -61,6 +61,7 @@ export interface Activity {
   description: string;
   kids: string[];
   createdAt: Timestamp;
+  favorite?: boolean;
   activity: {
     name: string;
     description: string;
@@ -83,4 +84,11 @@ export interface NewPlayFormData {
   choreType: string;
   skillsToBeIntegrated: string[];
   objects: string[];
+}
+
+export interface HistoryActivity {
+  id: string;
+  activity: string;
+  description: string;
+  isFavourite: boolean;
 }

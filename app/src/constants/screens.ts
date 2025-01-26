@@ -12,6 +12,7 @@ export enum Screens {
   Favorite = 'Favorite',
   NewPlay = 'NewPlay',
   NewKid = 'NewKid',
+  History = 'History',
   Feedback = 'Feedback'
 }
 

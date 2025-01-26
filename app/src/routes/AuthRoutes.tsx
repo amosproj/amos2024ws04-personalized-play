@@ -30,6 +30,7 @@ export type AuthRoutesParams = {
   [Screens.Favorite]: undefined;
   [Screens.NewPlay]: undefined;
   [Screens.NewKid]: undefined;
+  [Screens.History]: undefined;
   [Screens.Feedback]: { activityId: string | undefined };
 };
 
