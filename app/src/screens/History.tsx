@@ -10,6 +10,7 @@ import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import type { IconProps } from 'react-native-vector-icons/Icon';
+import { UserIcon } from 'lucide-react-native';
 
 
 export const History: React.FC = () => {
@@ -111,22 +112,28 @@ export const History: React.FC = () => {
   const iconColor = '#620674';
 
   return (
-    <View className='flex-1 bg-white'>
-      {/* Header Section */}
-      <View className='pt-12 px-4 pb-4'>
-        {/* Avatar + Welcome Row */}
-        <View className='flex-row items-center mb-6'>
-          {user?.photoURL ? (
-            <Image source={{ uri: user.photoURL }} className='w-8 h-8 rounded-full mr-2' />
-          ) : (
-            <FeatherIconCasted name='user' size={28} color={iconColor} style={{ marginRight: 8 }} />
-          )}
+    <View className='flex flex-1 flex-col px-6 gap-y-4'>
 
-          <Text className='text-xl font-semibold text-primary'>
-            {`Welcome ${user?.displayName || user?.email || 'User'}!`}
+      <View className='flex flex-row items-center justify-between mt-4'>
+        <View className='flex flex-row items-center gap-x-4'>
+          {user?.photoURL ? (
+            <Image source={{ uri: user.photoURL }} className='w-10 h-10 rounded-full mr-3' />
+          ) : (
+            <View className='w-10 h-10 rounded-full bg-gray-300 mr-3 flex items-center justify-center'>
+              <UserIcon className='text-gray-500 w-6 h-6' />
+            </View>
+          )}
+          <Text className='text-l font-bold text-primary text-xl '>
+            History
           </Text>
         </View>
 
+        <TouchableOpacity onPress={onHomeBtnPressed} className="ml-auto">
+          <FeatherIconCasted name="home" size={27} color="#620674" />
+        </TouchableOpacity>
+      </View>
+
+      <View className='pt-1 px-4 pb-4'>
         {/* Tabs */}
         <View className='flex-row'>
           <TouchableOpacity onPress={() => setActiveTab('all')}>
@@ -154,10 +161,6 @@ export const History: React.FC = () => {
               {activeTab === 'favorites' && <View className='h-1 w-14 bg-primary mt-1' />}
             </View>
           </TouchableOpacity>
-
-          <TouchableOpacity onPress={onHomeBtnPressed} className="ml-auto mr-3">
-            <FeatherIconCasted name="home" size={27} color="#620674" />
-          </TouchableOpacity>
         </View>
       </View>
 
@@ -169,7 +172,7 @@ export const History: React.FC = () => {
             className='flex-row items-center justify-between bg-gray-100 px-4 py-3 mx-4 mb-2 rounded-md'
           >
             {/* Item Info */}
-            <View>
+            <View  style={{ width: 200}}>
               <Text className='text-base text-primary'>{item.activity}</Text>
               <Text className='text-sm text-primary/70'>{item.description}</Text>
             </View>
