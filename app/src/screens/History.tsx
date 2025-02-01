@@ -99,6 +99,10 @@ export const History: React.FC = () => {
     });
   };
 
+  const onHomeBtnPressed = () => {
+    navigate(Stacks.Auth, { screen: Screens.Home });
+  };
+
   // Decide which items to show based on activeTab
   const itemsToShow =
     activeTab === 'all' ? items : items.filter((item) => item.isFavourite === true);
@@ -149,6 +153,10 @@ export const History: React.FC = () => {
               </Text>
               {activeTab === 'favorites' && <View className='h-1 w-14 bg-primary mt-1' />}
             </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={onHomeBtnPressed} className="ml-auto mr-3">
+            <FeatherIconCasted name="home" size={27} color="#620674" />
           </TouchableOpacity>
         </View>
       </View>

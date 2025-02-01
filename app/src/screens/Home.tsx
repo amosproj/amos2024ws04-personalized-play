@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation} from '@react-navigation/native';
 import { Text } from '@shadcn/components';
 import { Card, CardHeader } from '@shadcn/components/ui/card';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
@@ -7,7 +7,7 @@ import { Collections, fireStore } from '@src/constants';
 import type { AppNavigation } from '@src/types';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { CircleArrowRight, RotateCcw, UserIcon, UserRoundCog } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ActivityIndicator, FlatList, Image, TouchableOpacity, View } from 'react-native';
@@ -106,9 +106,12 @@ export const Home: React.FC = () => {
     navigate(Stacks.Auth, { screen: Screens.History });
   };
 
-  useEffect(() => {
-    fetchFavoriteActivities();
-  }, [user]);
+  useFocusEffect(
+    useCallback(() => {
+      // This will run every time the screen comes into focus
+      fetchFavoriteActivities();
+    }, [])
+  );
 
   useEffect(() => {
     const checkUserOnboarded = async () => {
