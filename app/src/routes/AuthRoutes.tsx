@@ -79,7 +79,11 @@ export const AuthRoutes: React.FC = () => {
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
       <AuthDrawer.Screen name={Screens.Home} component={Home} options={{ headerShown: false }} />
-      <AuthDrawer.Screen name={Screens.Profile} component={Profile} />
+      <AuthDrawer.Screen 
+        name={Screens.Profile} 
+        component={Profile} 
+        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+      />
       <AuthDrawer.Screen
         name={Screens.Onboarding}
         component={Onboarding}
