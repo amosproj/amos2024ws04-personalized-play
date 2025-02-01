@@ -154,6 +154,11 @@ export const ActivityPlayer: React.FC = () => {
     });
   };
 
+  const exitActivity = async () => {
+    await sound.current.unloadAsync();
+    navigate(Stacks.Auth, { screen: Screens.Home });
+  };
+
   const isLastStep = currentStep === maxSteps - 1;
 
   return (
@@ -242,7 +247,7 @@ export const ActivityPlayer: React.FC = () => {
             variant='destructive'
             className='native:h-20 native:w-20 rounded-xl'
             disabled={isReloading}
-            onPress={() => navigate(Stacks.Auth, { screen: Screens.Home })}
+            onPress={() => exitActivity()}
           >
             <IconXboxX className='text-base text-primary-foreground' size={28} />
           </Button>
