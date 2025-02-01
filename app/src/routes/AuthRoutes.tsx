@@ -14,7 +14,8 @@ import {
   NewPlay,
   Onboarding,
   Profile,
-  Welcome
+  Welcome,
+  History
 } from '@src/screens';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -107,6 +108,11 @@ export const AuthRoutes: React.FC = () => {
       <AuthDrawer.Screen
         name={Screens.Feedback}
         component={Feedback}
+        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.History}
+        component={History}
         options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
       />
     </AuthDrawer.Navigator>

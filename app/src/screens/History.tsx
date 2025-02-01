@@ -8,13 +8,18 @@ import type { AppNavigation } from '@src/types';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import MCIIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import type { IconProps } from 'react-native-vector-icons/Icon';
+
 
 export const History: React.FC = () => {
   const { navigate } = useNavigation<AppNavigation>();
   const [user] = useAuthState(fireAuth);
   const [activeTab, setActiveTab] = React.useState<'all' | 'favorites'>('all');
   const [items, setItems] = React.useState([] as HistoryActivity[]);
+
+  const MCIIcon = MaterialCommunityIcons as unknown as React.FC<IconProps>;
+  const FeatherIconCasted = FeatherIcon as unknown as React.FC<IconProps>;
 
   const fetchFavoriteActivities = async () => {
     if (!user) {
@@ -110,7 +115,7 @@ export const History: React.FC = () => {
           {user?.photoURL ? (
             <Image source={{ uri: user.photoURL }} className='w-8 h-8 rounded-full mr-2' />
           ) : (
-            <FeatherIcon name='user' size={28} color={iconColor} style={{ marginRight: 8 }} />
+            <FeatherIconCasted name='user' size={28} color={iconColor} style={{ marginRight: 8 }} />
           )}
 
           <Text className='text-xl font-semibold text-primary'>
@@ -180,10 +185,10 @@ export const History: React.FC = () => {
               {/* Bottom row */}
               <View className='flex-row'>
                 <TouchableOpacity className='m-2'>
-                  <FeatherIcon name='edit-3' size={20} color={iconColor} />
+                  <FeatherIconCasted name='edit-3' size={20} color={iconColor} />
                 </TouchableOpacity>
                 <TouchableOpacity className='m-2' onPress={() => replayActivity(item.id)}>
-                  <FeatherIcon name='refresh-cw' size={20} color={iconColor} />
+                  <FeatherIconCasted name='refresh-cw' size={20} color={iconColor} />
                 </TouchableOpacity>
               </View>
             </View>
