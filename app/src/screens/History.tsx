@@ -172,13 +172,13 @@ export const History: React.FC = () => {
             className='flex-row items-center justify-between bg-gray-100 px-4 py-3 mx-4 mb-2 rounded-md'
           >
             {/* Item Info */}
-            <View  style={{ width: 200}}>
+            <View style={{ width: '75%' }}>
               <Text className='text-base text-primary'>{item.activity}</Text>
               <Text className='text-sm text-primary/70'>{item.description}</Text>
             </View>
 
             {/* Action Buttons in two rows (2x2) */}
-            <View>
+            <View style={{ width: '25%' }}>
               {/* Top row */}
               <View className='flex-row'>
                 <TouchableOpacity className='m-2' onPress={() => handleToggleFavourite(item.id)}>
