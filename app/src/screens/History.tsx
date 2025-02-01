@@ -1,17 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
-import { fireAuth, Collections, fireStore, Screens, Stacks } from '@src/constants';
+import { Collections, Screens, Stacks, fireAuth, fireStore } from '@src/constants';
 import type { HistoryActivity } from '@src/types';
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
-import React, { useEffect } from 'react';
 import type { AppNavigation } from '@src/types';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { UserIcon } from 'lucide-react-native';
+import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import type { IconProps } from 'react-native-vector-icons/Icon';
-import { UserIcon } from 'lucide-react-native';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const History: React.FC = () => {
   const { navigate } = useNavigation<AppNavigation>();
@@ -113,7 +112,6 @@ export const History: React.FC = () => {
 
   return (
     <View className='flex flex-1 flex-col px-6 gap-y-4'>
-
       <View className='flex flex-row items-center justify-between mt-4'>
         <View className='flex flex-row items-center gap-x-4'>
           {user?.photoURL ? (
@@ -123,13 +121,11 @@ export const History: React.FC = () => {
               <UserIcon className='text-gray-500 w-6 h-6' />
             </View>
           )}
-          <Text className='text-l font-bold text-primary text-xl '>
-            History
-          </Text>
+          <Text className='text-l font-bold text-primary text-xl '>History</Text>
         </View>
 
-        <TouchableOpacity onPress={onHomeBtnPressed} className="ml-auto">
-          <FeatherIconCasted name="home" size={27} color="#620674" />
+        <TouchableOpacity onPress={onHomeBtnPressed} className='ml-auto'>
+          <FeatherIconCasted name='home' size={27} color='#620674' />
         </TouchableOpacity>
       </View>
 

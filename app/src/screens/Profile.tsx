@@ -7,8 +7,8 @@ import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { DeleteAlertIcon } from '@src/components/DeleteAlert';
 import { HealthConsiderationsAlert } from '@src/components/HealthConsiderationsDialog';
 import { Collections, Screens, Stacks, fireAuth, fireStore } from '@src/constants';
-import FeatherIcon from 'react-native-vector-icons/Feather';
 import type { AppNavigation } from '@src/types';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 import type { IconProps } from 'react-native-vector-icons/Icon';
 
 import {
@@ -27,10 +27,10 @@ import {
   writeBatch
 } from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
-import { Baby, DoorOpen, Edit3, UserIcon, UserRoundCog } from 'lucide-react-native'; // Lucide edit icon
+import { Baby, DoorOpen, Edit3, UserIcon } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { ScrollView, TouchableOpacity, View, Image } from 'react-native';
+import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 
 iconWithClassName(Baby);
 
@@ -213,13 +213,11 @@ export const Profile: React.FC = () => {
               <UserIcon className='text-gray-500 w-6 h-6' />
             </View>
           )}
-          <Text className='text-l font-bold text-primary text-xl '>
-            Profile
-          </Text>
+          <Text className='text-l font-bold text-primary text-xl '>Profile</Text>
         </View>
 
-        <TouchableOpacity onPress={onHomeBtnPressed} className="ml-auto">
-          <FeatherIconCasted name="home" size={27} color="#620674" />
+        <TouchableOpacity onPress={onHomeBtnPressed} className='ml-auto'>
+          <FeatherIconCasted name='home' size={27} color='#620674' />
         </TouchableOpacity>
       </View>
       <ScrollView className='flex-1'>
@@ -276,7 +274,12 @@ export const Profile: React.FC = () => {
           <View className='flex flex-row items-center justify-between mb-4'>
             <Text className='text-xl font-bold'>Kids Details</Text>
             {!isKidsEditable ? (
-              <Edit3 size={20} color='#000' onPress={() => setKidsEditable(true)} className='ml-2' />
+              <Edit3
+                size={20}
+                color='#000'
+                onPress={() => setKidsEditable(true)}
+                className='ml-2'
+              />
             ) : null}
           </View>
           <View className='flex-col gap-y-4'>

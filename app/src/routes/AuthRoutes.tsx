@@ -2,24 +2,24 @@
 // Description: This file defines the navigation structure for authenticated users using React Navigation.
 // It sets up a drawer navigator with routes for various authenticated screens such as Home and Profile.
 
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Drawer, Loading } from "@src/components";
-import { Collections, Screens, fireAuth, fireStore } from "@src/constants";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Drawer, Loading } from '@src/components';
+import { Collections, Screens, fireAuth, fireStore } from '@src/constants';
 import {
   ActivityPlayer,
   Favorite,
   Feedback,
+  History,
   Home,
   NewKid,
   NewPlay,
   Onboarding,
   Profile,
-  Welcome,
-  History
-} from "@src/screens";
-import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+  Welcome
+} from '@src/screens';
+import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 // Define the parameter types for the AuthRoutes drawer navigator
 export type AuthRoutesParams = {
@@ -54,7 +54,7 @@ export const AuthRoutes: React.FC = () => {
         if (!user) return;
         const userDocRef = doc(fireStore, Collections.Users, user.uid);
         const docData = await getDoc(userDocRef);
-        setIsFirstTimeUser(!docData.exists() || !docData.get("kids"));
+        setIsFirstTimeUser(!docData.exists() || !docData.get('kids'));
       } catch (error) {
         console.log(error);
       } finally {
@@ -65,12 +65,7 @@ export const AuthRoutes: React.FC = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <Loading
-        heading="Loading..."
-        description="Please wait while we load the content."
-      />
-    );
+    return <Loading heading='Loading...' description='Please wait while we load the content.' />;
   }
 
   return (
@@ -83,20 +78,16 @@ export const AuthRoutes: React.FC = () => {
         component={Welcome}
         options={{
           headerShown: false,
-          gestureHandlerProps: { enabled: false },
+          gestureHandlerProps: { enabled: false }
         }}
       />
-      <AuthDrawer.Screen
-        name={Screens.Home}
-        component={Home}
-        options={{ headerShown: false }}
-      />
+      <AuthDrawer.Screen name={Screens.Home} component={Home} options={{ headerShown: false }} />
       <AuthDrawer.Screen
         name={Screens.Profile}
         component={Profile}
         options={{
           headerShown: false,
-          gestureHandlerProps: { enabled: false },
+          gestureHandlerProps: { enabled: false }
         }}
       />
       <AuthDrawer.Screen
@@ -104,7 +95,7 @@ export const AuthRoutes: React.FC = () => {
         component={Onboarding}
         options={{
           headerShown: false,
-          gestureHandlerProps: { enabled: false },
+          gestureHandlerProps: { enabled: false }
         }}
       />
       <AuthDrawer.Screen
@@ -112,7 +103,7 @@ export const AuthRoutes: React.FC = () => {
         component={ActivityPlayer}
         options={{
           headerShown: false,
-          gestureHandlerProps: { enabled: false },
+          gestureHandlerProps: { enabled: false }
         }}
       />
       <AuthDrawer.Screen
@@ -120,7 +111,7 @@ export const AuthRoutes: React.FC = () => {
         component={Favorite}
         options={{
           headerShown: false,
-          gestureHandlerProps: { enabled: false },
+          gestureHandlerProps: { enabled: false }
         }}
       />
       <AuthDrawer.Screen
@@ -128,7 +119,7 @@ export const AuthRoutes: React.FC = () => {
         component={NewPlay}
         options={{
           headerShown: false,
-          gestureHandlerProps: { enabled: false },
+          gestureHandlerProps: { enabled: false }
         }}
       />
       <AuthDrawer.Screen
@@ -136,23 +127,23 @@ export const AuthRoutes: React.FC = () => {
         component={NewKid}
         options={{
           headerShown: false,
-          gestureHandlerProps: { enabled: false },
+          gestureHandlerProps: { enabled: false }
         }}
       />
       <AuthDrawer.Screen
         name={Screens.Feedback}
         component={Feedback}
-        options={{ 
-          headerShown: false, 
-          gestureHandlerProps: { enabled: false },
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
         }}
       />
       <AuthDrawer.Screen
         name={Screens.History}
         component={History}
-        options={{ 
-          headerShown: false, 
-          gestureHandlerProps: { enabled: false },
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
         }}
       />
     </AuthDrawer.Navigator>

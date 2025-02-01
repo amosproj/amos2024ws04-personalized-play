@@ -1,4 +1,5 @@
-import { useFocusEffect, useNavigation} from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
 import { Card, CardHeader } from '@shadcn/components/ui/card';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
@@ -11,7 +12,6 @@ import { useCallback, useEffect, useState } from 'react';
 import type React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ActivityIndicator, FlatList, Image, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 iconWithClassName(UserRoundCog);
 
@@ -174,11 +174,11 @@ export const Home: React.FC = () => {
         <ActivityIndicator size='large' color='#0000ff' />
       ) : (
         <View className='w-full flex'>
-          <View className="flex-row items-center justify-between my-4">
+          <View className='flex-row items-center justify-between my-4'>
             {/* Recent Favorites */}
             <Text className='text-2xl font-bold my-4'>Added to Favorites</Text>
             <TouchableOpacity onPress={onHistoryBtnPressed}>
-              <Ionicons name="time-outline" size={30} className="mr-3" color="#620674"/>
+              <Ionicons name='time-outline' size={30} className='mr-3' color='#620674' />
             </TouchableOpacity>
           </View>
           {favoriteActivities.length === 0 ? (
