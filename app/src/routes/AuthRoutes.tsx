@@ -142,12 +142,18 @@ export const AuthRoutes: React.FC = () => {
       <AuthDrawer.Screen
         name={Screens.Feedback}
         component={Feedback}
-        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+        options={{ 
+          headerShown: false, 
+          gestureHandlerProps: { enabled: false },
+        }}
       />
       <AuthDrawer.Screen
         name={Screens.History}
         component={History}
-        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+        options={{ 
+          headerShown: false, 
+          gestureHandlerProps: { enabled: false },
+        }}
       />
     </AuthDrawer.Navigator>
   );
