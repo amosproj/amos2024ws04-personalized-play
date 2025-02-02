@@ -156,6 +156,10 @@ export const ActivityPlayer: React.FC = () => {
 
   const exitActivity = async () => {
     await sound.current.unloadAsync();
+    setIsPlaying(false);
+    setIsFinished(false);
+    setIsReloading(false);
+    setCurrentStep(0);
     navigate(Stacks.Auth, { screen: Screens.Home });
   };
 
