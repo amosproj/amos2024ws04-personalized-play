@@ -1,25 +1,23 @@
 import { useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { Collections, Screens, Stacks, fireAuth, fireStore } from '@src/constants';
 import type { HistoryActivity } from '@src/types';
 import type { AppNavigation } from '@src/types';
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
-import { UserIcon } from 'lucide-react-native';
+import { Brain, Heart, House, PenLine, RefreshCw, UserIcon } from 'lucide-react-native';
 import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import type { IconProps } from 'react-native-vector-icons/Icon';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+iconWithClassName(PenLine);
+iconWithClassName(RefreshCw);
 
 export const History: React.FC = () => {
   const { navigate } = useNavigation<AppNavigation>();
   const [user] = useAuthState(fireAuth);
   const [activeTab, setActiveTab] = React.useState<'all' | 'favorites'>('all');
-  const [items, setItems] = React.useState([] as HistoryActivity[]);
-
-  const MCIIcon = MaterialCommunityIcons as unknown as React.FC<IconProps>;
-  const FeatherIconCasted = FeatherIcon as unknown as React.FC<IconProps>;
+  const [items, setItems] = React.useState<HistoryActivity[]>([]);
 
   const fetchFavoriteActivities = async () => {
     if (!user) {
@@ -104,11 +102,7 @@ export const History: React.FC = () => {
   };
 
   // Decide which items to show based on activeTab
-  const itemsToShow =
-    activeTab === 'all' ? items : items.filter((item) => item.isFavourite === true);
-
-  // Icon color
-  const iconColor = '#620674';
+  const itemsToShow = activeTab === 'all' ? items : items.filter((item) => item.isFavourite);
 
   return (
     <View className='flex flex-1 flex-col px-6 gap-y-4'>
@@ -125,7 +119,7 @@ export const History: React.FC = () => {
         </View>
 
         <TouchableOpacity onPress={onHomeBtnPressed} className='ml-auto'>
-          <FeatherIconCasted name='home' size={27} color='#620674' />
+          <House size={27} className='text-primary' />
         </TouchableOpacity>
       </View>
 
@@ -179,23 +173,22 @@ export const History: React.FC = () => {
               <View className='flex-row'>
                 <TouchableOpacity className='m-2' onPress={() => handleToggleFavourite(item.id)}>
                   {/* If isFavourite = true => heart (filled), else => heart-outline */}
-                  <MCIIcon
-                    name={item.isFavourite ? 'heart' : 'heart-outline'}
+                  <Heart
                     size={20}
-                    color={iconColor}
+                    className={`text-primary ${item.isFavourite ? 'fill-primary' : ''}`}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity className='m-2'>
-                  <MCIIcon name='brain' size={20} color={iconColor} />
+                  <Brain size={20} className='text-primary' />
                 </TouchableOpacity>
               </View>
               {/* Bottom row */}
               <View className='flex-row'>
                 <TouchableOpacity className='m-2'>
-                  <FeatherIconCasted name='edit-3' size={20} color={iconColor} />
+                  <PenLine size={20} className='text-primary' />
                 </TouchableOpacity>
                 <TouchableOpacity className='m-2' onPress={() => replayActivity(item.id)}>
-                  <FeatherIconCasted name='refresh-cw' size={20} color={iconColor} />
+                  <RefreshCw size={20} className='text-primary' />
                 </TouchableOpacity>
               </View>
             </View>
