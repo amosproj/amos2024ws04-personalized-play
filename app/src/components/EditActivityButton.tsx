@@ -45,7 +45,7 @@ export function EditActivityButton({ activity, updateActivity }: AlertIconDialog
     const newActivity: Activity = {
       id: activity.id,
       name: values.name,
-      activityType: activity.activityType,
+      type: activity.type,
       duration: values.duration,
       energy: values.energy,
       favorite: activity.favorite

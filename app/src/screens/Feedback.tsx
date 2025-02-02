@@ -154,7 +154,7 @@ export const Feedback: React.FC = () => {
                 />
 
                 <View className='flex flex-row justify-end mt-4'>
-                  <Button className='' onPress={handleSubmit}>
+                  <Button className='' onPress={handleSubmit} disabled={message.length === 0}>
                     <Text className='text-primary-foreground'>Submit</Text>
                   </Button>
                 </View>
