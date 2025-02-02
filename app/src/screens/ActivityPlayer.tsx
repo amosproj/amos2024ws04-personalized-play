@@ -148,6 +148,10 @@ export const ActivityPlayer: React.FC = () => {
   }
 
   const finishSession = () => {
+    setIsPlaying(false);
+    setIsFinished(false);
+    setIsReloading(false);
+    setCurrentStep(0);
     navigate(Stacks.Auth, {
       screen: Screens.Feedback,
       params: { activityId: params?.activityId }
