@@ -126,7 +126,7 @@ export const Home: React.FC = () => {
     <View className='w-full p-4 rounded-lg mb-4 flex flex-row justify-between bg-secondary'>
       <Text className='flex-1 text-lg font-semibold text-secondary-foreground'>{item.name}</Text>
       <RotateCcw
-        color='#ffffff'
+        className='text-primary-foreground'
         onPress={() =>
           navigate(Stacks.Auth, { screen: Screens.ActivityPlayer, params: { activityId: item.id } })
         }
