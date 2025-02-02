@@ -13,7 +13,7 @@ import { Text } from '@shadcn/components/ui/text';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { CheckCircle, Plus, X } from 'lucide-react-native';
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 
 iconWithClassName(Plus);
 iconWithClassName(CheckCircle);

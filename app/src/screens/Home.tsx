@@ -1,4 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
 import { Card, CardHeader } from '@shadcn/components/ui/card';
 import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
@@ -7,10 +8,10 @@ import { Collections, fireStore } from '@src/constants';
 import type { AppNavigation } from '@src/types';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { CircleArrowRight, RotateCcw, UserIcon, UserRoundCog } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { ActivityIndicator, FlatList, Image, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, TouchableOpacity, View } from 'react-native';
 
 iconWithClassName(UserRoundCog);
 
@@ -101,9 +102,16 @@ export const Home: React.FC = () => {
     navigate(Stacks.Auth, { screen: Screens.Onboarding });
   };
 
-  useEffect(() => {
-    fetchFavoriteActivities();
-  }, [user]);
+  const onHistoryBtnPressed = () => {
+    navigate(Stacks.Auth, { screen: Screens.History });
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      // This will run every time the screen comes into focus
+      fetchFavoriteActivities();
+    }, [])
+  );
 
   useEffect(() => {
     const checkUserOnboarded = async () => {
@@ -118,7 +126,7 @@ export const Home: React.FC = () => {
     <View className='w-full p-4 rounded-lg mb-4 flex flex-row justify-between bg-secondary'>
       <Text className='flex-1 text-lg font-semibold text-secondary-foreground'>{item.name}</Text>
       <RotateCcw
-        color='#ffffff'
+        className='text-primary-foreground'
         onPress={() =>
           navigate(Stacks.Auth, { screen: Screens.ActivityPlayer, params: { activityId: item.id } })
         }
@@ -166,8 +174,13 @@ export const Home: React.FC = () => {
         <ActivityIndicator size='large' color='#0000ff' />
       ) : (
         <View className='w-full flex'>
-          {/* Recent Favorites */}
-          <Text className='text-2xl font-bold my-4'>Added to Favorites</Text>
+          <View className='flex-row items-center justify-between my-4'>
+            {/* Recent Favorites */}
+            <Text className='text-2xl font-bold my-4'>Added to Favorites</Text>
+            <TouchableOpacity onPress={onHistoryBtnPressed}>
+              <Ionicons name='time-outline' size={30} className='mr-3' color='#620674' />
+            </TouchableOpacity>
+          </View>
           {favoriteActivities.length === 0 ? (
             <Text className='text-center text-lg text-gray-500'>No favorite activities found.</Text>
           ) : (
