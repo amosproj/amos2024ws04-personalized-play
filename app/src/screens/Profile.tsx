@@ -8,8 +8,6 @@ import { DeleteAlertIcon } from '@src/components/DeleteAlert';
 import { HealthConsiderationsAlert } from '@src/components/HealthConsiderationsDialog';
 import { Collections, Screens, Stacks, fireAuth, fireStore } from '@src/constants';
 import type { AppNavigation } from '@src/types';
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import type { IconProps } from 'react-native-vector-icons/Icon';
 
 import {
   IconGenderFemale,
@@ -27,7 +25,7 @@ import {
   writeBatch
 } from 'firebase/firestore';
 import { deleteDoc } from 'firebase/firestore'; // Import deleteDoc
-import { Baby, DoorOpen, Edit3, UserIcon } from 'lucide-react-native'; // Lucide edit icon
+import { Baby, DoorOpen, Edit3, House, UserIcon } from 'lucide-react-native'; // Lucide edit icon
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
@@ -51,7 +49,6 @@ export const Profile: React.FC = () => {
   const [isKidsEditable, setKidsEditable] = useState<boolean>(false);
   const { navigate, reset } = useNavigation<AppNavigation>();
   const auth = getAuth();
-  const FeatherIconCasted = FeatherIcon as unknown as React.FC<IconProps>;
 
   const fetchData = async () => {
     try {
@@ -217,7 +214,7 @@ export const Profile: React.FC = () => {
         </View>
 
         <TouchableOpacity onPress={onHomeBtnPressed} className='ml-auto'>
-          <FeatherIconCasted name='home' size={27} color='#620674' />
+          <House size={27} className='text-primary' />
         </TouchableOpacity>
       </View>
       <ScrollView className='flex-1'>
