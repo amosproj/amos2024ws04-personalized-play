@@ -1,24 +1,23 @@
-import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Text } from '@shadcn/components';
 import { Card, CardHeader } from '@shadcn/components/ui/card';
+import { iconWithClassName } from '@shadcn/icons/iconWithClassName';
 import { Screens, Stacks, fireAuth } from '@src/constants';
 import { Collections, fireStore } from '@src/constants';
 import type { AppNavigation } from '@src/types';
-import { collection, getDocs } from 'firebase/firestore';
-import { CircleArrowRight, UserIcon } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { CircleArrowRight, RotateCcw, UserIcon, UserRoundCog } from 'lucide-react-native';
+import { useCallback, useEffect, useState } from 'react';
 import type React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { ActivityIndicator, FlatList, Image, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ActivityIndicator, FlatList, Image, TouchableOpacity, View } from 'react-native';
+
+iconWithClassName(UserRoundCog);
 
 interface Activity {
   id: string;
   name: string;
-  activityType: string;
-  duration: number;
-  energy: number;
-  favorite: boolean;
 }
 
 export const Home: React.FC = () => {
@@ -26,6 +25,32 @@ export const Home: React.FC = () => {
   const [user] = useAuthState(fireAuth);
   const [favoriteActivities, setFavoriteActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isOnboarded, setIsOnboarded] = useState(false);
+
+  const getUserData = async () => {
+    if (!user) return;
+    try {
+      const userDocRef = doc(fireStore, Collections.Users, user.uid);
+      const docSnap = await getDoc(userDocRef);
+
+      if (docSnap.exists()) {
+        // Document exists - you can access the data
+        return docSnap.data();
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting document:', error);
+      throw error;
+    }
+  };
+
+  const isUserOnboarded = async () => {
+    const userData = await getUserData();
+    if (!userData) {
+      return false;
+    }
+    return userData.isOnboarded;
+  };
 
   const fetchFavoriteActivities = async () => {
     if (!user) {
@@ -52,14 +77,10 @@ export const Home: React.FC = () => {
         const data = doc.data();
 
         // Check if data is valid and has the necessary fields
-        if (data.favorite && data.name && data.type) {
+        if (data.favorite && data.activity.name) {
           activities.push({
             id: doc.id,
-            name: data.name,
-            activityType: data.type,
-            duration: Number.parseInt(data.duration, 10),
-            energy: Number.parseInt(data.energy, 10),
-            favorite: data.favorite
+            name: data.activity.name
           });
         }
       });
@@ -73,16 +94,42 @@ export const Home: React.FC = () => {
     }
   };
 
+  const onNewPlayPressed = () => {
+    if (isOnboarded) {
+      navigate(Stacks.Auth, { screen: Screens.NewPlay });
+      return;
+    }
+    navigate(Stacks.Auth, { screen: Screens.Onboarding });
+  };
+
+  const onHistoryBtnPressed = () => {
+    navigate(Stacks.Auth, { screen: Screens.History });
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      // This will run every time the screen comes into focus
+      fetchFavoriteActivities();
+    }, [])
+  );
+
   useEffect(() => {
-    fetchFavoriteActivities();
-  }, [user]);
+    const checkUserOnboarded = async () => {
+      const userOnboarded = await isUserOnboarded();
+      setIsOnboarded(userOnboarded);
+      setLoading(false);
+    };
+    checkUserOnboarded();
+  }, []);
 
   const renderFavoriteActivity = ({ item }: { item: Activity }) => (
     <View className='w-full p-4 rounded-lg mb-4 flex flex-row justify-between bg-secondary'>
       <Text className='flex-1 text-lg font-semibold text-secondary-foreground'>{item.name}</Text>
-      <CircleArrowRight
-        color='#ffffff'
-        onPress={() => navigate(Stacks.Auth, { screen: Screens.NewPlay })}
+      <RotateCcw
+        className='text-primary-foreground'
+        onPress={() =>
+          navigate(Stacks.Auth, { screen: Screens.ActivityPlayer, params: { activityId: item.id } })
+        }
       />
     </View>
   );
@@ -90,12 +137,8 @@ export const Home: React.FC = () => {
   return (
     <View className='flex flex-1 flex-col px-6 gap-y-4'>
       {/* Welcome Section */}
-      <View className='flex flex-row items-center gap-x-4'>
-        <TouchableOpacity
-          onPress={() => navigate(Stacks.Auth, { screen: Screens.Profile })}
-          accessibilityRole='button'
-          accessibilityLabel='Navigate to profile screen'
-        >
+      <View className='flex flex-row items-center justify-between mt-4'>
+        <View className='flex flex-row items-center gap-x-4'>
           {user?.photoURL ? (
             <Image source={{ uri: user.photoURL }} className='w-10 h-10 rounded-full mr-3' />
           ) : (
@@ -103,10 +146,14 @@ export const Home: React.FC = () => {
               <UserIcon className='text-gray-500 w-6 h-6' />
             </View>
           )}
-        </TouchableOpacity>
-        <Text className='text-l font-bold text-primary text-xl '>
-          Welcome {user?.displayName || user?.email || 'Guest'}!
-        </Text>
+          <Text className='text-l font-bold text-primary text-xl '>
+            Hi {user?.displayName || 'There'}!
+          </Text>
+        </View>
+        <UserRoundCog
+          className='text-primary'
+          onPress={() => navigate(Stacks.Auth, { screen: Screens.Profile })}
+        />
       </View>
 
       {/* "Add Fav activities" Card */}
@@ -116,7 +163,8 @@ export const Home: React.FC = () => {
           <CircleArrowRight
             color='#ffffff'
             size={40}
-            onPress={() => navigate(Stacks.Auth, { screen: Screens.NewPlay })}
+            onPress={onNewPlayPressed}
+            disabled={loading}
           />
         </CardHeader>
       </Card>
@@ -126,8 +174,13 @@ export const Home: React.FC = () => {
         <ActivityIndicator size='large' color='#0000ff' />
       ) : (
         <View className='w-full flex'>
-          {/* Recent Favorites */}
-          <Text className='text-2xl font-bold my-4'>Added to Favorites</Text>
+          <View className='flex-row items-center justify-between my-4'>
+            {/* Recent Favorites */}
+            <Text className='text-2xl font-bold my-4'>Added to Favorites</Text>
+            <TouchableOpacity onPress={onHistoryBtnPressed}>
+              <Ionicons name='time-outline' size={30} className='mr-3' color='#620674' />
+            </TouchableOpacity>
+          </View>
           {favoriteActivities.length === 0 ? (
             <Text className='text-center text-lg text-gray-500'>No favorite activities found.</Text>
           ) : (

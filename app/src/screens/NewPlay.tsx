@@ -1,9 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import { Button, Text } from '@shadcn/components';
 import { ChevronLeft } from '@shadcn/icons';
 import {
   ContextualQuestionActivityChoice,
   ContextualQuestionCamera,
-  ContextualQuestionDetectedItems,
   ContextualQuestionDisplayItemsIdentified,
   ContextualQuestionEnergyLevel,
   ContextualQuestionPlayTime,
@@ -11,9 +11,18 @@ import {
   ContextualQuestionSkill,
   SubmitButton
 } from '@src/components';
-import { Collections, fireAuth, fireStore } from '@src/constants';
-import type { NewPlayFormData } from '@src/types';
-import { Timestamp, collection, doc, writeBatch } from 'firebase/firestore';
+import {
+  Collections,
+  Screens,
+  Skills,
+  Stacks,
+  fireAuth,
+  fireFunction,
+  fireStore
+} from '@src/constants';
+import type { Activity, AppNavigation, NewPlayFormData } from '@src/types';
+import { Timestamp, addDoc, collection } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 import { Formik, type FormikProps } from 'formik';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -26,11 +35,10 @@ export const onboardingQuestions = [
   { key: 'selectKids', component: ContextualQuestionSelectKids },
   { key: 'energyLevel', component: ContextualQuestionEnergyLevel },
   { key: 'time', component: ContextualQuestionPlayTime },
-  { key: 'activityType', component: ContextualQuestionActivityChoice },
-  { key: 'camera', component: ContextualQuestionCamera },
-  { key: 'detectedItems', component: ContextualQuestionDetectedItems },
-  { key: 'displayItems', component: ContextualQuestionDisplayItemsIdentified },
-  { key: 'skill', component: ContextualQuestionSkill }
+  { key: 'type', component: ContextualQuestionActivityChoice },
+  { key: 'image', component: ContextualQuestionCamera },
+  { key: 'objects', component: ContextualQuestionDisplayItemsIdentified },
+  { key: 'skillsToBeIntegrated', component: ContextualQuestionSkill }
 ];
 
 export const NewPlay: React.FC = () => {
@@ -38,6 +46,7 @@ export const NewPlay: React.FC = () => {
   const formikRef = useRef<FormikProps<NewPlayFormData>>(null);
   const [index, setIndex] = useState(0);
   const [user] = useAuthState(fireAuth);
+  const { navigate } = useNavigation<AppNavigation>();
 
   /**
    * Called when the user is done with the onboarding flow.
@@ -46,34 +55,38 @@ export const NewPlay: React.FC = () => {
    * @throws An error if any of the operations fail.
    */
   const onDone = async (values: NewPlayFormData) => {
-    const { selectKids, activityType, energyLevel, time } = values;
+    const { selectKids, type, choreType, energyLevel, time, skillsToBeIntegrated, objects } =
+      values;
+
     try {
-      if (!user) {
-        console.error('User not authenticated');
-        return;
-      }
-      const userId = user.uid;
+      if (!user) throw new Error('User not found');
 
-      // Save the activities data (only once)
-      const activityCollectionRef = collection(
-        fireStore,
-        Collections.Users,
-        userId,
-        Collections.Activities
-      );
-      const activityDocRef = doc(activityCollectionRef);
-
-      const activityDoc = {
-        selectedKids: selectKids,
-        activityType: activityType,
+      const aData: Partial<Activity> = {
+        type: type,
         energyLevel: energyLevel,
+        kids: selectKids,
+        choreType: choreType,
         time: time,
+        skillsToBeIntegrated: skillsToBeIntegrated,
+        objects: objects,
         createdAt: Timestamp.now()
       };
-      // Use batch to save all data at once
-      const batch = writeBatch(fireStore);
-      batch.set(activityDocRef, activityDoc);
-      await batch.commit();
+
+      const userId = user.uid;
+      const aColRef = collection(fireStore, Collections.Users, userId, Collections.Activities);
+
+      // Add the activity document and get its reference
+      const activity = await addDoc(aColRef, aData);
+
+      // Then call the cloud function to generate the activity
+      const generateActivity = httpsCallable(fireFunction, 'ChorsGeneratorFlow');
+      await generateActivity({ activityId: activity.id });
+
+      // Finally navigate to the activity player
+      navigate(Stacks.Auth, {
+        screen: Screens.ActivityPlayer,
+        params: { activityId: activity.id }
+      });
     } catch (error) {
       console.error('Error saving data to Firestore:', error);
     }
@@ -134,21 +147,32 @@ export const NewPlay: React.FC = () => {
       <Formik
         initialValues={{
           selectKids: [],
-          energyLevel: 1,
+          energyLevel: 'medium',
           time: 10,
-          activityType: 'chores',
-          displayItems: []
+          type: '',
+          choreType: '',
+          displayItems: [],
+          image: '',
+          objects: [],
+          skillsToBeIntegrated: [Skills.COGNITIVE, Skills.MOTOR, Skills.SOCIAL, Skills.LANGUAGE]
         }}
         innerRef={formikRef}
         validationSchema={Yup.object({
-          selectKids: Yup.array(),
-          energyLevel: Yup.number().required('Energy level is required'),
-          time: Yup.number().required('Time is required'),
-          activityType: Yup.string().required('Activity type is required'),
+          selectKids: Yup.array().min(1, 'Required'),
+          energyLevel: Yup.string().required('Required').oneOf(['low', 'medium', 'high']),
+          time: Yup.number()
+            .required('Required')
+            .min(5, 'Must be at least 5 minutes')
+            .max(30, 'Cannot be more than 30 minutes'),
+          type: Yup.string().required('Required').oneOf(['chores', 'play']),
           displayItems: Yup.array().of(Yup.string()),
-          camera: Yup.string().required('Picture is required.'),
-          detectedItems: Yup.array(),
-          skill: Yup.array().of(Yup.string())
+          image: Yup.string().required('Required'),
+          objects: Yup.array().of(Yup.string()).min(1, 'Required'),
+          skillsToBeIntegrated: Yup.array()
+            .of(Yup.string())
+            .required('Required')
+            .min(1, 'Required'),
+          choreType: Yup.string()
         })}
         onSubmit={onDone}
         validateOnBlur={true}

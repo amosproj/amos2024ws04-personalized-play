@@ -14,6 +14,7 @@ import { FieldArray, useFormikContext } from 'formik';
 import LottieView from 'lottie-react-native';
 import { Baby, Cake, IdCard, Stethoscope } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
+import type React from 'react';
 import { Modal, ScrollView, View } from 'react-native';
 import { TextInput } from './FormikTextInput';
 
@@ -44,7 +45,7 @@ const KidDetails: React.FC<{ index: number; setModalKidIndex: (index: number | n
       <TextInput lable='Name' fieldName={`kids.${index}.name`} leadingIcon={IdCard} />
       <View className='flex flex-row gap-x-4'>
         <TextInput
-          lable='Age'
+          lable='Age in months'
           fieldName={`kids.${index}.age`}
           keyboardType='numeric'
           leadingIcon={Cake}
@@ -151,39 +152,48 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = () =
   const [modalKidIndex, setModalKidIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    if (values.numberOfKids === 0) return;
-    (async () => {
-      const currentCount = values.kids.length;
-      const desiredCount = values.numberOfKids;
-      if (currentCount > desiredCount) {
-        // Trim the array if too many kids exist
-        await setFieldValue('kids', values.kids.slice(0, desiredCount));
-      } else if (currentCount < desiredCount) {
-        // Add placeholders for new kids
-        const newKids = Array(desiredCount - currentCount).fill({
-          name: '',
-          age: 0,
-          biologicalSex: 'male',
-          healthConsiderations: []
-        });
-        await setFieldValue('kids', [...values.kids, ...newKids]);
-      }
-    })();
+    // Skip if no kids are specified
+    if (!values.numberOfKids) return;
+
+    const createEmptyKid = () => ({
+      name: '',
+      age: 0,
+      biologicalSex: 'male',
+      healthConsiderations: []
+    });
+
+    const updateKidsCount = async () => {
+      const targetCount = values.numberOfKids;
+      const currentKids = values.kids;
+
+      // No changes needed if counts match
+      if (currentKids.length === targetCount) return;
+
+      // Either trim or expand the kids array
+      const updatedKids =
+        targetCount > currentKids.length
+          ? [...currentKids, ...Array(targetCount - currentKids.length).fill(createEmptyKid())]
+          : currentKids.slice(0, targetCount);
+
+      await setFieldValue('kids', updatedKids);
+    };
+
+    updateKidsCount();
   }, [values.numberOfKids]);
 
   return (
     <View className='flex flex-1 items-stretch justify-center'>
-      <View className='flex flex-1 flex-col items-center justify-center mb-4'>
-        <LottieView
-          autoPlay={true}
-          loop={true}
-          source={require('../../assets/kids.json')}
-          style={{ width: 320, height: 320 }}
-        />
-      </View>
-      <View className='flex flex-1 flex-col items-stretch'>
-        <Text className='text-2xl text-center font-medium mb-6'>Tell us about your kids</Text>
-        <ScrollView className='flex flex-1' horizontal={false} showsVerticalScrollIndicator={false}>
+      <ScrollView className='flex flex-1' horizontal={false} showsVerticalScrollIndicator={true}>
+        <View className='flex flex-1 flex-col items-center justify-center mb-4'>
+          <LottieView
+            autoPlay={true}
+            loop={true}
+            source={require('../../assets/kids.json')}
+            style={{ width: 320, height: 320 }}
+          />
+        </View>
+        <View className='flex flex-1 flex-col items-stretch'>
+          <Text className='text-2xl text-center font-medium mb-6'>Tell us about your kids</Text>
           <FieldArray
             name='kids'
             render={() =>
@@ -199,18 +209,16 @@ export const ContextualQuestionAgeKids: React.FC<ContextualQuestionProps> = () =
                 ))
             }
           />
-        </ScrollView>
-        {modalKidIndex !== null && (
-          <HealthConsiderationsModal
-            isVisible={modalKidIndex !== null}
-            onClose={() => setModalKidIndex(null)}
-            selectedOptions={values.kids[modalKidIndex]?.healthConsiderations || []}
-            onSave={(options) =>
-              setFieldValue(`kids.${modalKidIndex}.healthConsiderations`, options)
-            }
-          />
-        )}
-      </View>
+        </View>
+      </ScrollView>
+      {modalKidIndex !== null && (
+        <HealthConsiderationsModal
+          isVisible={true}
+          onClose={() => setModalKidIndex(null)}
+          selectedOptions={values.kids[modalKidIndex]?.healthConsiderations || []}
+          onSave={(options) => setFieldValue(`kids.${modalKidIndex}.healthConsiderations`, options)}
+        />
+      )}
     </View>
   );
 };

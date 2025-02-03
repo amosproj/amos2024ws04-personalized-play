@@ -71,6 +71,7 @@ export const ContextualQuestionCamera: React.FC<ContextualQuestionProps> = ({ on
       if (!result.canceled && result.assets && result.assets[0]?.uri) {
         const base64Image = await convertImageToBase64(result.assets[0].uri);
         setFieldValue('image', base64Image);
+        if (onNext) onNext();
       }
     } catch (error) {
       console.error('Error accessing gallery:', error);

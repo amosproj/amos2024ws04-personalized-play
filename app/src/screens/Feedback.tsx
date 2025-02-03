@@ -1,9 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Text } from '@shadcn/components';
 import { Brain, Home, ThumbsDown, ThumbsUp } from '@shadcn/icons';
+import { Loading } from '@src/components';
 import { FavouriteButton } from '@src/components/FavouriteButton';
 import { Screens, Stacks } from '@src/constants';
 import { Collections, fireAuth, fireStore } from '@src/constants';
+import type { AuthRoutesParams } from '@src/routes';
 import type { AppNavigation } from '@src/types';
 import { doc, updateDoc } from 'firebase/firestore';
 import LottieView from 'lottie-react-native';
@@ -11,15 +13,22 @@ import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { TextInput, View } from 'react-native';
-import { activityDocRefId } from './Onboarding';
 
 export const Feedback: React.FC = () => {
+  const { navigate } = useNavigation<AppNavigation>();
   const { reset } = useNavigation<AppNavigation>();
-  const [favourite, setFavourite] = useState<boolean>(false);
+  const { params } = useRoute<RouteProp<AuthRoutesParams>>();
+  const activityId = params?.activityId;
+  const [favourite, setFavorite] = useState<boolean>(false);
   const [message, setMessage] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [messageSubmitted, setMessageSubmitted] = useState(false);
   const [user] = useAuthState(fireAuth);
+
+  if (!activityId) {
+    navigate(Stacks.Auth, { screen: Screens.Home });
+    return <Loading description={'Redirecting...'} />;
+  }
 
   const saveInFirestore = async (data: object) => {
     if (!user) {
@@ -33,7 +42,7 @@ export const Feedback: React.FC = () => {
         Collections.Users,
         userId,
         Collections.Activities,
-        activityDocRefId
+        activityId
       );
       await updateDoc(activityDocRef, data);
     } catch (error) {
@@ -42,16 +51,14 @@ export const Feedback: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    // Here you would typically send the message to your backend
     console.log('Message submitted:', message);
-    saveInFirestore({ feedback_message: message });
+    saveInFirestore({ feedbackMessage: message });
     setMessageSubmitted(true);
   };
 
   const handleFeedback = async (type: 'positive' | 'negative') => {
-    // Here you would typically send the feedback to your backend
     console.log(`Feedback submitted: ${type}`);
-    saveInFirestore({ feedback_type: type });
+    saveInFirestore({ feedbackType: type });
     setFeedbackSubmitted(true);
   };
 
@@ -147,7 +154,7 @@ export const Feedback: React.FC = () => {
                 />
 
                 <View className='flex flex-row justify-end mt-4'>
-                  <Button className='' onPress={handleSubmit}>
+                  <Button className='' onPress={handleSubmit} disabled={message.length === 0}>
                     <Text className='text-primary-foreground'>Submit</Text>
                   </Button>
                 </View>
@@ -178,7 +185,7 @@ export const Feedback: React.FC = () => {
             title={'Activity saved to favorites!'}
             description={'You can view and replay this activity from your favorites!'}
             active={favourite}
-            onPress={() => setFavourite(!favourite)}
+            onPress={() => setFavorite(!favourite)}
           />
         </View>
       </View>

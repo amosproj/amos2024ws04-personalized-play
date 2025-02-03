@@ -8,7 +8,10 @@ import { Collections, Screens, fireAuth, fireStore } from '@src/constants';
 import {
   ActivityPlayer,
   Favorite,
+  Feedback,
+  History,
   Home,
+  NewKid,
   NewPlay,
   Onboarding,
   Profile,
@@ -27,6 +30,9 @@ export type AuthRoutesParams = {
   [Screens.ActivityPlayer]: { activityId: string };
   [Screens.Favorite]: undefined;
   [Screens.NewPlay]: undefined;
+  [Screens.NewKid]: undefined;
+  [Screens.History]: undefined;
+  [Screens.Feedback]: { activityId: string | undefined };
 };
 
 // Create a drawer navigator for authenticated routes
@@ -70,29 +76,82 @@ export const AuthRoutes: React.FC = () => {
       <AuthDrawer.Screen
         name={Screens.Welcome}
         component={Welcome}
-        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
       />
-      <AuthDrawer.Screen name={Screens.Home} component={Home} options={{ headerShown: false }} />
-      <AuthDrawer.Screen name={Screens.Profile} component={Profile} />
+      <AuthDrawer.Screen
+        name={Screens.Home}
+        component={Home}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.Profile}
+        component={Profile}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
+      />
       <AuthDrawer.Screen
         name={Screens.Onboarding}
         component={Onboarding}
-        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
       />
       <AuthDrawer.Screen
         name={Screens.ActivityPlayer}
         component={ActivityPlayer}
-        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
       />
       <AuthDrawer.Screen
         name={Screens.Favorite}
         component={Favorite}
-        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
       />
       <AuthDrawer.Screen
         name={Screens.NewPlay}
         component={NewPlay}
-        options={{ headerShown: false, gestureHandlerProps: { enabled: false } }}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.NewKid}
+        component={NewKid}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.Feedback}
+        component={Feedback}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
+      />
+      <AuthDrawer.Screen
+        name={Screens.History}
+        component={History}
+        options={{
+          headerShown: false,
+          gestureHandlerProps: { enabled: false }
+        }}
       />
     </AuthDrawer.Navigator>
   );

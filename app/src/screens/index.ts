@@ -14,3 +14,5 @@ export * from './Feedback';
 export * from './ActivityPlayer';
 export * from './Favorite';
 export * from './NewPlay';
+export * from './NewKid';
+export * from './History';
