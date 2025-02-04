@@ -10,4 +10,9 @@
 
 :heavy_check_mark: Planning Document
 
+:heavy_check_mark: Build Documentation PDF
+
+:heavy_check_mark: Technical Design Documentation PDF
+
+:heavy_check_mark: User Documentation PDF
 
