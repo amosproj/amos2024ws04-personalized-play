@@ -1,13 +1,7 @@
 ## Checklist of Sprint 15 Deliverables: 
 
-:hourglass_flowing_sand: Feature Board Screenshot
+:heavy_check_mark: Project summary (PDF + DOCX)
 
-:hourglass_flowing_sand: Feature Board TSV File
-
-:hourglass_flowing_sand: Imp-Squared Backlog Screenshot
-
-:hourglass_flowing_sand: Imp-Squared Backlog TSV File
-
-:hourglass_flowing_sand: Planning Document
+:heavy_check_mark: Project report
 
 
